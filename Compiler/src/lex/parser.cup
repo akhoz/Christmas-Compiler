@@ -1,8 +1,8 @@
-package ParserLexer;
+package lex;
 import java_cup.runtime.*;
 
 
-//utiliza class BasicLexerCupV que genera el lexer.jflex, pequeños cambios de lo tomado de la página de cup
+//utiliza class Lexer que genera el lexer.jflex, pequeños cambios de lo tomado de la página de cup
 //cambios en parser code, init with y scan with {:
 
 action code {:
@@ -23,11 +23,11 @@ action code {:
 
 parser code {:
     // Connect this parser to a scanner!
-    BasicLexerCupV lex;
+    Lexer parser;
 
     @SuppressWarnings("deprecation")
-    public parser(BasicLexerCupV lex){
-        this.lex=lex;
+    public parser(Lexer parser){
+        this.parser=parser;
         this.symbolFactory = new DefaultSymbolFactory();
     }
 
@@ -36,7 +36,7 @@ parser code {:
 init with {: :};
 
 /* define how to connect to the scanner! */
-scan with {: return lex.next_token(); :};
+scan with {: return parser.next_token(); :};
 
 /* Terminales (tokens retornados por el scanner). */
 terminal INTEGER, STRING, CHAR, IDENTIFICADOR, L_INTEGER, ASIGNA, COMPARACION, SUMA, L_STRING;

@@ -1,0 +1,51 @@
+package ParserLexer;
+import java_cup.runtime.*;
+
+
+//utiliza class BasicLexerCupV que genera el lexer.jflex, pequeños cambios de lo tomado de la página de cup
+//cambios en parser code, init with y scan with {:
+
+action code {:
+    /*CODIGO DE JAVA
+    https://www.jflex.de/
+    http://www2.cs.tum.edu/projects/cup/examples.php*/
+
+    public void hola(){
+        
+                System.out.println("Hola");
+    }    
+
+    public void adios(){
+        
+                System.out.println("Adiós");
+    }
+:}
+
+parser code {:
+    // Connect this parser to a scanner!
+    BasicLexerCupV lex;
+
+    @SuppressWarnings("deprecation")
+    public parser(BasicLexerCupV lex){
+        this.lex=lex; 
+        this.symbolFactory = new DefaultSymbolFactory();
+    }
+
+:}
+
+init with {: :};
+
+/* define how to connect to the scanner! */
+scan with {: return lex.next_token(); :};
+
+/* Terminales (tokens retornados por el scanner). */
+terminal INTEGER, STRING, CHAR, IDENTIFICADOR, L_INTEGER, ASIGNA, COMPARACION, SUMA, L_STRING;
+
+// no terminales
+non terminal programa, programaAux ;
+
+//produccion de inicio
+start with programa;
+
+programa ::= programaAux ;
+programa ::= INTEGER ;
