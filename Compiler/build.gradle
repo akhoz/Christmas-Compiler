@@ -12,6 +12,9 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation files('libs/java-cup-11b-runtime.jar')
+    implementation files('libs/java-cup-11b.jar')
+    implementation files('libs/jflex-full-1.9.1.jar')
 }
 
 test {

@@ -6,7 +6,7 @@
 package ParserLexer;
 
 /** CUP generated class containing symbol constants. */
-public class parser/sym {
+public class sym {
   /* terminals */
   public static final int COMPARACION = 8;
   public static final int INTEGER = 2;
