@@ -1,87 +1,101 @@
-/* JFlex example: partial Java language lexer specification */
-    import java_cup.runtime.*;
+/*
+ * JFlex example from the user Manual
+ *
+ * Copyright 2020, Gerwin Klein, Régis Décamps, Steve Rowe
+ * SPDX-License-Identifier: GPL-2.0-only
+ */
 
-    /**
-     * This class is a simple example lexer.
-     */
-    %%
+package jflex.examples.minijava;
 
-    %class Lexer
-    %unicode
-    %cup
-    %line
-    %column
+import java_cup.runtime.Symbol;
 
-    %{
-      StringBuffer string = new StringBuffer();
+/** Lexer of a very minimal version of the Java programming language. */
 
-      private Symbol symbol(int type) {
-        return new Symbol(type, yyline, yycolumn);
-      }
-      private Symbol symbol(int type, Object value) {
-        return new Symbol(type, yyline, yycolumn, value);
-      }
-    %}
+%%
 
-    LineTerminator = \r|\n|\r\n
-    InputCharacter = [^\r\n]
-    WhiteSpace     = {LineTerminator} | [ \t\f]
+%public
+%class Lexer
+%unicode
+%cup
+%line
+%column
+%throws UnknownCharacterException
 
-    /* comments */
-    Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
+%{
+  StringBuffer string = new StringBuffer();
 
-    TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
-    // Comment can be the last line of the file, without line terminator.
-    EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
-    DocumentationComment = "/**" {CommentContent} "*"+ "/"
-    CommentContent       = ( [^*] | \*+ [^/*] )*
+  private Symbol symbol(int type) {
+    return new Symbol(type, yyline, yycolumn);
+  }
+  private Symbol symbol(int type, Object value) {
+    return new Symbol(type, yyline, yycolumn, value);
+  }
+%}
 
-    Identifier = [:jletter:] [:jletterdigit:]*
 
-    DecIntegerLiteral = 0 | [1-9][0-9]*
+LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
+WhiteSpace     = {LineTerminator} | [ \t\f]
 
-    %state STRING
+/* comments */
+Comment = {TraditionalComment} | {EndOfLineComment} | {DocumentationComment}
 
-    %%
+TraditionalComment   = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+// Comment can be the last line of the file, without line terminator.
+EndOfLineComment     = "//" {InputCharacter}* {LineTerminator}?
+DocumentationComment = "/**" {CommentContent} "*"+ "/"
+CommentContent       = ( [^*] | \*+ [^/*] )*
 
-    /* keywords */
-    <YYINITIAL> "abstract"           { return symbol(sym.ABSTRACT); }
-    <YYINITIAL> "boolean"            { return symbol(sym.BOOLEAN); }
-    <YYINITIAL> "break"              { return symbol(sym.BREAK); }
+Identifier = [:jletter:] [:jletterdigit:]*
 
-    <YYINITIAL> {
-      /* identifiers */ 
-      {Identifier}                   { return symbol(sym.IDENTIFIER); }
-     
-      /* literals */
-      {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL); }
-      \"                             { string.setLength(0); yybegin(STRING); }
+DecIntegerLiteral = 0 | [1-9][0-9]*
 
-      /* operators */
-      "="                            { return symbol(sym.EQ); }
-      "=="                           { return symbol(sym.EQEQ); }
-      "+"                            { return symbol(sym.PLUS); }
 
-      /* comments */
-      {Comment}                      { /* ignore */ }
-     
-      /* whitespace */
-      {WhiteSpace}                   { /* ignore */ }
-    }
+%state STRING
 
-    <STRING> {
-      \"                             { yybegin(YYINITIAL); 
-                                       return symbol(sym.STRING_LITERAL, 
-                                       string.toString()); }
-      [^\n\r\"\\]+                   { string.append( yytext() ); }
-      \\t                            { string.append('\t'); }
-      \\n                            { string.append('\n'); }
+%%
 
-      \\r                            { string.append('\r'); }
-      \\\"                           { string.append('\"'); }
-      \\                             { string.append('\\'); }
-    }
 
-    /* error fallback */
-    [^]                              { throw new Error("Illegal character <"+
-                                                        yytext()+">"); }
+/* keywords */
+<YYINITIAL> "abstract"           { return symbol(sym.ABSTRACT); }
+<YYINITIAL> "boolean"            { return symbol(sym.BOOLEAN); }
+<YYINITIAL> "break"              { return symbol(sym.BREAK); }
+
+
+<YYINITIAL> {
+  /* identifiers */
+  {Identifier}                   { return symbol(sym.IDENTIFIER); }
+
+  /* literals */
+  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL); }
+  \"                             { string.setLength(0); yybegin(STRING); }
+
+  /* operators */
+  "="                            { return symbol(sym.EQ); }
+  "=="                           { return symbol(sym.EQEQ); }
+  "+"                            { return symbol(sym.PLUS); }
+
+  /* comments */
+  {Comment}                      { /* ignore */ }
+
+  /* whitespace */
+  {WhiteSpace}                   { /* ignore */ }
+}
+
+
+<STRING> {
+  \"                             { yybegin(YYINITIAL);
+                                   return symbol(sym.STRING_LITERAL,
+                                   string.toString()); }
+  [^\n\r\"\\]+                   { string.append( yytext() ); }
+  \\t                            { string.append('\t'); }
+  \\n                            { string.append('\n'); }
+
+  \\r                            { string.append('\r'); }
+  \\\"                           { string.append('\"'); }
+  \\                             { string.append('\\'); }
+}
+
+
+/* error fallback */
+[^]                              { throw new UnknownCharacterException(yytext()); }
