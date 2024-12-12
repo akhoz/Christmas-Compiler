@@ -39,7 +39,7 @@ init with {: :};
 scan with {: return parser.next_token(); :};
 
 /* Terminales (tokens retornados por el scanner). */
-terminal INTEGER, STRING, CHAR, IDENTIFICADOR, L_INTEGER, ASIGNA, COMPARACION, SUMA, L_STRING;
+terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL;
 
 // no terminales
 non terminal programa, programaAux ;

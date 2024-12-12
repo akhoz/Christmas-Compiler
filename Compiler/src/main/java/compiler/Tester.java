@@ -5,8 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
-import java_cup.Lexer;
 import java_cup.runtime.Symbol;
+
+import parser.Lexer;
 
 public class Tester {
     public void ejercicioVeranoV2024(String rutaScanner) throws IOException {
