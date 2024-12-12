@@ -1,4 +1,5 @@
 /* JFlex example: partial Java language lexer specification */
+package parser;
 import java_cup.runtime.*;
 
 /**
@@ -6,6 +7,7 @@ import java_cup.runtime.*;
  */
 %%
 
+%public
 %class Lexer
 %unicode
 %cup
