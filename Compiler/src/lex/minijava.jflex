@@ -147,7 +147,6 @@ Digit = [0-9]
   [a-zA-Z0-9_]+ {
     System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
   }
-
   . {
     System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
   }

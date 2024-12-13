@@ -1,0 +1,30 @@
+rodolfo _sumita_ abreregalo rodolfo _x_, rodolfo _y_ cierraregalo abrecuento
+rodolfo _res_ entrega _x_ navidad _y_ finregalo
+envia _res_ finregalo
+cierracuento
+
+_verano_
+abrecuento
+
+rodolfo _contador entrega 0 finregalo
+bromista _valPi_ entrega 3.14.159 finregalo
+trueno _flag_ entrega tru finregalo
+cometa _texto entrega "Hola mundo finregalo"
+cupido _char_ entrega 'AB' finregalo
+
+elfo abreregalo _contador_ mary 10 cierraregalo abrecuento
+narra "Contador es 10" finregalo
+hada
+narra "Contador no es 10" finregalo
+cierracuento
+
+envuelve abreregalo _flag_ cierraregalo abrecuento
+narra "Dentro del while" finregalo
+_flag_ entrega fals finregalo
+cierracuento
+
+duende abreregalo rodolfo _i_ entrega 0 finregalo _i_ minstix 3 finregalo i navidad 1 cierraregalo abrecuento
+narra "Iteracion:" finregalo
+cierracuento
+
+cierraregalo  # ERROR: Bloque de cierre extra sin bloque que lo abra adecuadamente

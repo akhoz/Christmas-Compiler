@@ -1,0 +1,63 @@
+rodolfo _suma_ abreregalo rodolfo _a_, rodolfo _b_ cierraregalo abrecuento
+rodolfo _resultado_ entrega _a_ navidad _b_ finregalo
+envia _resultado_ finregalo
+cierracuento
+
+_verano_
+abrecuento
+rodolfo _contador_ entrega 0 finregalo
+bromista _valorPi_ entrega 3.14159 finregalo
+trueno _bandera_ entrega true finregalo
+cometa _mensaje_ entrega "Hola mundo" finregalo
+cupido _letra_ entrega 'A' finregalo
+
+rodolfo _arr_ abreempaque 5 cierraempaque entrega 0 finregalo
+_arr_ abreempaque 2 cierraempaque entrega 10 finregalo
+
+_contador_ entrega abreregalo _contador_ navidad 1 cierraregalo nochebuena 2 finregalo
+_contador_ entrega abreregalo _contador_ navidad 10 cierraregalo reyes 2 finregalo
+_contador_ entrega abreregalo _contador_ navidad 3 cierraregalo magos 2 finregalo
+_contador_ entrega abreregalo _contador_ navidad 2 cierraregalo adviento 3 finregalo
+_contador_ entrega intercambio 5 finregalo
+_contador_ quien finregalo
+_contador_ grinch finregalo
+
+elfo abreregalo baltazar abreregalo _bandera_ cierraregalo melchor abreregalo _contador_ snowball 10 cierraregalo cierraregalo abrecuento
+narra "Condicion verdadera" finregalo
+cierracuento
+
+elfo abreregalo _contador_ mary 0 cierraregalo abrecuento
+narra "Contador es 0" finregalo
+hada
+narra "Contador no es 0" finregalo
+cierracuento
+
+elfo abreregalo _contador_ openslae 4 cierraregalo abrecuento
+narra "Contador distinto de 4" finregalo
+cierracuento
+
+envuelve abreregalo _bandera_ cierraregalo abrecuento
+narra "Dentro del while" finregalo
+_bandera_ entrega false finregalo
+cierracuento
+
+duende abreregalo rodolfo _i_ entrega 0 finregalo _i_ minstix 3 finregalo _i_ navidad 1 cierraregalo abrecuento
+narra "Iteracion:" finregalo
+cierracuento
+
+varios abreregalo _contador_ cierraregalo abrecuento
+historia 1 sigue
+narra "Es 1" finregalo
+corta
+historia 2 sigue
+narra "Es 2" finregalo
+corta
+ultimo
+narra "Otro valor" finregalo
+cierracuento
+
+escucha _varEntrada_ finregalo
+narra "Resultado:" finregalo
+narra _suma_ abreregalo 3 2 cierraregalo finregalo
+
+cierracuento
