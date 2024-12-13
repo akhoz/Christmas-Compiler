@@ -26,7 +26,7 @@ public class Main {
     public static void main(String[] args) {
         Main mainInstance = new Main();
 
-        //mainInstance.generate("src/lex/minijava.jflex", "src/lex/parser.cup");
-        mainInstance.test("src/lex/test.txt");
+        mainInstance.generate("src/lex/minijava.jflex", "src/lex/parser.cup");
+        //mainInstance.test("src/lex/test.txt");
     }
 }
