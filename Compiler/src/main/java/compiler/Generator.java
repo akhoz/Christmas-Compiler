@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import java_cup.internal_error;
 import jflex.exceptions.SilentExit;
+import organizer.Organize;
 
 
 public class Generator {
@@ -11,6 +12,7 @@ public class Generator {
     public void inLexParser(String rutaLexer, String rutaParser) throws internal_error, Exception {
         GenerateLexer(rutaLexer);
         GenerateParser(rutaParser);
+        Organize.orderFiles();
     }
 
 

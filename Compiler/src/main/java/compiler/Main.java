@@ -1,6 +1,7 @@
 package compiler;
 
 import java.io.IOException;
+import organizer.Organize;
 
 public class Main {
 
@@ -27,6 +28,6 @@ public class Main {
         Main mainInstance = new Main();
 
         //mainInstance.generate("src/lex/minijava.jflex", "src/lex/parser.cup");
-        mainInstance.test("src/lex/test.txt");
+        //mainInstance.test("src/lex/test.txt");
     }
 }
