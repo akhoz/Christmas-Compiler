@@ -102,6 +102,7 @@ Digit = [0-9]
 <YYINITIAL> {Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
 <YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, true); }
 <YYINITIAL> "false" { return symbol(sym.BOOLEAN_LITERAL, false); }
+<YYINITIAL> \'[^\']*\'    { return symbol(sym.STRING_LITERAL, yytext()); }
 
 
 /* Main */
@@ -130,21 +131,24 @@ Digit = [0-9]
 
 <STRING> {
   \"                             { yybegin(YYINITIAL);
-                                   return symbol(sym.STRING_LITERAL,
-                                   string.toString()); }
-  [^\n\r\"\\]+                   { string.append( yytext() ); }
+                                   return symbol(sym.STRING_LITERAL, string.toString()); }
+  [^\n\r\"\\]+                   { string.append(yytext()); }
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }
-
   \\r                            { string.append('\r'); }
   \\\"                           { string.append('\"'); }
   \\\\                           { string.append('\\'); }
-  \'                             { string.append('\''); }
+  \\[^\n\r]                      { string.append(yytext().substring(1)); }
+  .                              { string.append(yytext()); }
 }
 
 /* error fallback */
 <YYINITIAL> {
-  [^] {
+  [a-zA-Z0-9_]+ {
+    System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
+  }
+
+  . {
     System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
   }
 }
