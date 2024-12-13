@@ -1,2 +1,3 @@
  abstract = boolean
- break ==
+break == pepe
+integer

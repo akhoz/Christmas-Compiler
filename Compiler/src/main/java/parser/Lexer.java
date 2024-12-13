@@ -353,9 +353,9 @@ public class Lexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\2\0\1\1\2\2\1\3\1\4\1\5\1\1\2\6"+
-    "\1\7\2\4\1\10\1\11\1\1\1\0\1\2\1\12"+
-    "\3\4\1\13\1\14\1\15\1\16\1\17\2\0\3\4"+
-    "\3\0\1\2\5\4\1\20\3\4\1\21\1\22";
+    "\1\7\2\4\1\10\1\11\2\0\1\2\1\12\3\4"+
+    "\1\13\1\14\1\15\1\16\1\17\2\0\3\4\3\0"+
+    "\1\2\5\4\1\20\3\4\1\21\1\22";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[48];
@@ -416,7 +416,7 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final String ZZ_TRANS_PACKED_0 =
     "\1\3\2\4\1\3\1\5\1\6\1\7\1\3\1\10"+
     "\1\11\1\12\1\13\1\14\1\3\1\15\1\16\11\7"+
-    "\2\17\1\3\1\17\1\3\1\20\7\17\1\21\13\17"+
+    "\2\17\1\0\1\17\1\0\1\20\7\17\1\21\13\17"+
     "\33\0\1\4\26\0\1\7\5\0\1\7\3\0\2\7"+
     "\2\0\13\7\7\0\1\22\1\0\1\23\31\0\2\13"+
     "\31\0\1\24\14\0\1\7\5\0\1\7\3\0\2\7"+
@@ -487,8 +487,8 @@ public class Lexer implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
     "\2\0\2\11\1\1\1\11\1\1\1\11\1\1\1\11"+
-    "\5\1\1\11\1\1\1\0\1\1\1\11\3\1\5\11"+
-    "\2\0\3\1\3\0\14\1";
+    "\5\1\1\11\2\0\1\1\1\11\3\1\5\11\2\0"+
+    "\3\1\3\0\14\1";
 
   private static int [] zzUnpackAttribute() {
     int [] result = new int[48];
@@ -1002,8 +1002,7 @@ public class Lexer implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { throw new Error("Illegal character <"+
-                                                    yytext()+">");
+            { System.err.println("Esto esta mal: <" + yytext() + "> linea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
             }
           // fall through
           case 19: break;

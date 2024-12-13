@@ -85,5 +85,8 @@ DecIntegerLiteral = 0 | [1-9][0-9]*
 }
 
 /* error fallback */
-[^]                              { throw new Error("Illegal character <"+
-                                                    yytext()+">"); }
+<YYINITIAL> {
+  [^] {
+    System.err.println("Esto esta mal: <" + yytext() + "> linea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
+  }
+}

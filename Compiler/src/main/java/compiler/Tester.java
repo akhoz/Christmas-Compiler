@@ -19,7 +19,7 @@ public class Tester {
         while (true) {
             token = lex.next_token();
             if (token.sym != 0) {
-                System.out.println("Token: " + token.sym + ", Valor: " +
+                System.out.println("Linea: " + (token.left + 1) + " Columna: " + (token.right + 1) + " Token: " + token.sym + " Valor: " +
                         (token.value == null ? lex.yytext() : token.value.toString()));
             } else {
                 break;
