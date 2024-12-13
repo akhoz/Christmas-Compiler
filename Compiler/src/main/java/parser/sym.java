@@ -20,6 +20,7 @@ public class sym {
   public static final int FOR = 40;
   public static final int MINUS = 21;
   public static final int DECREMENT = 27;
+  public static final int BOOLEAN_LITERAL = 52;
   public static final int SEMICOLON = 36;
   public static final int NOT = 35;
   public static final int AND = 33;
@@ -55,6 +56,7 @@ public class sym {
   public static final int DEFAULT = 43;
   public static final int FLOAT = 13;
   public static final int STRING = 8;
+  public static final int FLOAT_LITERAL = 51;
   public static final int GT = 31;
   public static final int PRINT = 46;
   public static final int INTEGER_LITERAL = 7;
@@ -110,7 +112,9 @@ public class sym {
   "READ",
   "MAIN",
   "COMMA",
-  "CHAR_LITERAL"
+  "CHAR_LITERAL",
+  "FLOAT_LITERAL",
+  "BOOLEAN_LITERAL"
   };
 }
 

@@ -37,6 +37,7 @@ CommentContent = ([^\_]|\\_+[^/])*
 Identifier = _[a-zA-Z0-9_]+_
 
 DecIntegerLiteral = 0 | [1-9][0-9]*
+Digit = [0-9]
 
 %state STRING
 
@@ -98,7 +99,9 @@ DecIntegerLiteral = 0 | [1-9][0-9]*
 /* Defaults */
 <YYINITIAL> "," { return symbol(sym.COMMA); }
 <YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, yytext()); }
-
+<YYINITIAL> {Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
+<YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, true); }
+<YYINITIAL> "false" { return symbol(sym.BOOLEAN_LITERAL, false); }
 
 
 /* Main */
