@@ -3,8 +3,17 @@ package organizer;
 import java.nio.file.*;
 import java.io.IOException;
 
+/**
+ * Clase Organize que permite organizar y mover archivos generados
+ * durante el proceso de compilación a sus ubicaciones correspondientes.
+ */
 public class Organize {
 
+    /**
+     * Mueve un archivo desde su ubicación original a un directorio objetivo.
+     *
+     * @param path la ruta del archivo que se desea mover.
+     */
     public static void organize(String path) {
         Path source = Paths.get(path);
         Path target = Paths.get("src/main/java/parser");
@@ -17,6 +26,13 @@ public class Organize {
         }
     }
 
+    /**
+     * Organiza los archivos generados durante el proceso de análisis léxico y sintáctico,
+     * moviéndolos a sus ubicaciones respectivas.
+     * <p>
+     * Este método utiliza el método organize para mover los archivos
+     * "Lexer.java", "parser.java", y "sym.java".
+     */
     public static void orderFiles() {
 
         organize("src/lex/Lexer.java");

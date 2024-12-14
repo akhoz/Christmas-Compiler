@@ -1,4 +1,4 @@
-rodolfo _sumita_ abreregalo rodolfo _x_, rodolfo _y_ cierraregalo abrecuento
+ rodolfo _sumita_ abreregalo rodolfo _x_, rodolfo _y_ cierraregalo abrecuento
 rodolfo _res_ entrega _x_ navidad _y_ finregalo
 envia _res_ finregalo
 cierracuento

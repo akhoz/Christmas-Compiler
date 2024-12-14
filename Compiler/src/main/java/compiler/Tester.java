@@ -9,8 +9,21 @@ import java_cup.runtime.Symbol;
 
 import parser.Lexer;
 
+/**
+ * Clase Tester para realizar el análisis léxico en un archivo fuente dado.
+ */
 public class Tester {
-    public void ejercicioVeranoV2024(String rutaScanner) throws IOException {
+
+    /**
+     * Realiza el análisis léxico en el archivo especificado.
+     * Este método lee el archivo, tokeniza su contenido utilizando la clase Lexer,
+     * y muestra los detalles de cada token, incluyendo el número de línea, número de columna,
+     * tipo de token y su valor.
+     *
+     * @param rutaScanner la ruta al archivo que se analizará léxicamente.
+     * @throws IOException si ocurre un error de entrada/salida al leer el archivo.
+     */
+    public void lexicalAnalysis(String rutaScanner) throws IOException {
         Reader reader = new BufferedReader(new FileReader(rutaScanner));
         reader.read();
         Lexer lex = new Lexer(reader);

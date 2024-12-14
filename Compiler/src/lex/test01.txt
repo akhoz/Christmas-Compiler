@@ -1,13 +1,13 @@
-rodolfo _suma_ abreregalo rodolfo _a_, rodolfo _b_ cierraregalo abrecuento
+ rodolfo _suma_ abreregalo rodolfo _a_, rodolfo _b_ cierraregalo abrecuento
 rodolfo _resultado_ entrega _a_ navidad _b_ finregalo
 envia _resultado_ finregalo
 cierracuento
 
 _verano_
 abrecuento
-rodolfo _contador_ entrega 0 finregalo
+rodolfo _contador_ entrega 0 finregalo abregalo
 bromista _valorPi_ entrega 3.14159 finregalo
-trueno _bandera_ entrega true finregalo
+trueno _bandera_ entrega true finregalo holamundo
 cometa _mensaje_ entrega "Hola mundo" finregalo
 cupido _letra_ entrega 'A' finregalo
 
@@ -16,12 +16,12 @@ _arr_ abreempaque 2 cierraempaque entrega 10 finregalo
 
 _contador_ entrega abreregalo _contador_ navidad 1 cierraregalo nochebuena 2 finregalo
 _contador_ entrega abreregalo _contador_ navidad 10 cierraregalo reyes 2 finregalo
-_contador_ entrega abreregalo _contador_ navidad 3 cierraregalo magos 2 finregalo
+_contador_ entrega abreregalo _contador_ navidad 3 cierraregalo magos 2 buenosdias finregalo
 _contador_ entrega abreregalo _contador_ navidad 2 cierraregalo adviento 3 finregalo
 _contador_ entrega intercambio 5 finregalo
-_contador_ quien finregalo
+_contador_ quien finregalo helloworld
 _contador_ grinch finregalo
-
+abregalo
 elfo abreregalo baltazar abreregalo _bandera_ cierraregalo melchor abreregalo _contador_ snowball 10 cierraregalo cierraregalo abrecuento
 narra "Condicion verdadera" finregalo
 cierracuento
@@ -48,16 +48,16 @@ cierracuento
 varios abreregalo _contador_ cierraregalo abrecuento
 historia 1 sigue
 narra "Es 1" finregalo
-corta
+corta abregalo
 historia 2 sigue
 narra "Es 2" finregalo
 corta
 ultimo
-narra "Otro valor" finregalo
+narra "Otro valor" finregalo abregalo
 cierracuento
 
 escucha _varEntrada_ finregalo
 narra "Resultado:" finregalo
 narra _suma_ abreregalo 3 2 cierraregalo finregalo
-
+abregalo
 cierracuento
