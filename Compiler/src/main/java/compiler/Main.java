@@ -1,6 +1,8 @@
 package compiler;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * Clase principal del compilador.
@@ -26,28 +28,62 @@ public class Main {
     /**
      * Prueba el análisis léxico utilizando un archivo de entrada especificado.
      *
-     * @param rutaScanner la ruta al archivo que se usará para probar el análisis léxico.
+     * @param rutaArchivo la ruta al archivo que se usará para probar el análisis léxico.
      */
-    public void test(String rutaScanner) {
+    public void test(String rutaArchivo) {
         Tester tester = new Tester();
         try {
-            tester.lexicalAnalysis(rutaScanner);
+            tester.lexicalAnalysis(rutaArchivo);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Método principal del programa.
-     * Descomenta la línea correspondiente para generar los archivos de análisis
-     * o para probar el análisis léxico con un archivo específico.
+     * Método de menu, llama a las distintas acciones del programa y espera respuestas para ver cual ejecutar.
      *
-     * @param args argumentos de línea de comandos (no utilizados en esta aplicación).
+     */
+    public void menu() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Generar lexer y otros archivos necesarios");
+            System.out.println("2. Usar el lexer");
+            System.out.println("3. Salir");
+            System.out.print("Seleccione una opcion: ");
+
+            String opcion = scanner.nextLine();
+
+            switch (opcion) {
+                case "1":
+                    generate("src/lex/minijava.jflex", "src/lex/parser.cup");
+                    break;
+                case "2":
+                    System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
+                    String rutaScanner = scanner.nextLine();
+                    File file = new File(rutaScanner);
+                    if (file.exists() && file.isFile() && rutaScanner.endsWith(".txt")) {
+                        test(rutaScanner);
+                    } else {
+                        System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt validoa");
+                    }
+                    scanner.close();
+                    return;
+                case "3":
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Opcion invalida");
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Método principal del programa.
+     *
      */
     public static void main(String[] args) {
         Main mainInstance = new Main();
-
-        //mainInstance.generate("src/lex/minijava.jflex", "src/lex/parser.cup");
-        mainInstance.test("src/lex/test01.txt");
+        mainInstance.menu();
     }
 }
