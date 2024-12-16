@@ -1,0 +1,18 @@
+fff9efc279c753c7d38385e59d857042eb389b4b,iZackk__26,feat: Added new test files,Fri Dec 13 14:10:09 2024 -0600
+32608e534464b9f4dba2f5c6e6c0cf0a37e7f993,iZackk__26,feat: Added new error exception to the .jflex file,Fri Dec 13 13:57:14 2024 -0600
+d2a2b27c9d4a58c23dfb774ff2756b2f7fd64fad,iZackk__26,feat: Added organizer module and organize class,Fri Dec 13 13:29:02 2024 -0600
+982c9516aac22ed80fbbefdcfef3d230a895f2f6,iZackk__26,feat: added booleand_literal,Fri Dec 13 11:17:27 2024 -0600
+9536143f8b00f9ace844ef344decb9ea86f442b9,iZackk__26,feat: Added new rules for .jflex files and fixed some errors,Fri Dec 13 11:11:24 2024 -0600
+65849217fa44e3bff1f29922cfa5f7c4e8a083ea,akhoz,feat: adding error handling and line/column indicators,Fri Dec 13 09:48:58 2024 -0600
+77e4862bb0d1ba90cafae91082180b0eafcd3a17,akhoz,feat: adding public features to Lexer class,Wed Dec 11 19:25:41 2024 -0600
+6f472238c2f77028a4fbbbcf16386b2782395c05,akhoz,feat: fixing lexer error, now it works, still need to check the grammar,Wed Dec 11 19:05:59 2024 -0600
+51aa297180f5012c80a09065d069529fd6081184,akhoz,fix: still need to fix Lexer errors,Wed Dec 11 16:40:52 2024 -0600
+150a638472651b26923c816516ece56f5aaef6c9,iZackk__26,feat: Added new version of project (functional),Wed Dec 11 15:20:17 2024 -0600
+810045e9751a3cc4c8a05150353cbeb483318f56,iZackk__26,fix: new files,Wed Dec 11 14:48:08 2024 -0600
+1fd46d4c820e2eba3b750af4eb99f07a3c673d2e,iZackk__26,fear: New Structure,Wed Dec 11 14:12:14 2024 -0600
+acb6e4a2be51ee177f2850b9790ea8e3fd2d49a7,iZackk__26,feat: added commands to run the lexer and sym,Wed Dec 11 13:55:04 2024 -0600
+e7ba3c82acc33e55dff3b3e9e1a31b3d562e9f79,akhoz,feat: adding jflex initial set up,Wed Dec 11 13:47:31 2024 -0600
+8dfcad2aaffbfe3ad5a67574ace0a61d8a7423b0,iZackk__26,feat: Added jflex file,Wed Dec 11 13:27:03 2024 -0600
+823c65041ecb57dba1bfa208a7b2011fd1fa7fa3,akhoz,feat: adding library files,Wed Dec 11 13:20:03 2024 -0600
+9f4e0656c72efcb6ce6995a8d5946a84a75900c0,iZackk__26,feat: Added PDF document,Wed Dec 11 13:12:44 2024 -0600
+155910b9194a6ffeb0effafbdf5154ee3dd5fb9d,akhoz,feat: Initial Commit,Wed Dec 11 13:11:09 2024 -0600
