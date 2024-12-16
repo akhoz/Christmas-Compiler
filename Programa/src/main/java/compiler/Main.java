@@ -59,10 +59,10 @@ public class Main {
                     break;
                 case "2":
                     System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
-                    String rutaScanner = scanner.nextLine();
-                    File file = new File(rutaScanner);
-                    if (file.exists() && file.isFile() && rutaScanner.endsWith(".txt")) {
-                        test(rutaScanner);
+                    String archivo = scanner.nextLine();
+                    File file = new File(archivo);
+                    if (file.exists() && file.isFile() && archivo.endsWith(".txt")) {
+                        test(archivo);
                     } else {
                         System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt validoa");
                     }

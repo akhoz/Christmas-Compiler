@@ -5,8 +5,8 @@ cierracuento
 
 _verano_
 abrecuento
-rodolfo _contador_ entrega 0 finregalo abregalo
-bromista _valorPi_ entrega 3.14159 finregalo
+rodolfo _contador_ entregarodolfo 0 finregalo abregalo
+bromista _valorPi_ 13entrega 3.14159 finregalo
 trueno _bandera_ entrega true finregalo holamundo
 cometa _mensaje_ entrega "Hola mundo" finregalo
 cupido _letra_ entrega 'A' finregalo
