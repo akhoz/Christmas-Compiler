@@ -45,10 +45,35 @@ terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING,
  IF, ELSE, WHILE, FOR, SWITCH, CASE, DEFAULT, RETURN, COLON, PRINT, READ, MAIN, COMMA, CHAR_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
 
 // no terminales
-non terminal programa, programaAux ;
+non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
+ literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro ;
 
 //produccion de inicio
 start with programa;
+
+// Generalidades
+tipos ::= INTEGER | STRING | CHAR | BOOLEAN | FLOAT ;
+literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT ;
+nombrar ::= tipos IDENTIFIER ;
+
+// Sentencias
+sentencias ::= sentencia | sentencias sentencias ;
+sentencia ::= creacion | creacionAsignacion ;
+
+creacion ::= nombrar SEMICOLON ;
+creacionAsignacion ::= nombrar EQ literales SEMICOLON ;
+
+// Funciones
+funciones ::= funcion | funciones funcion ;
+funcion ::= encabezadoFuncion bloque ;
+
+bloque ::= OPEN_BLOCK sentencias CLOSE_BLOCK ;
+encabezadoFuncion ::= nombrar parametros;
+
+parametros ::= OPEN_PAREN CLOSE_PAREN | OPEN_PAREN parametroAux CLOSE_PAREN ;
+parametroAux ::= parametro | parametroAux COMMA parametro ;
+parametro ::= nombrar ;
+
 
 programa ::= programaAux ;
 programa ::= INTEGER ;%
