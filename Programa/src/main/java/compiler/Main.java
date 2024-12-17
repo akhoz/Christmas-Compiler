@@ -39,6 +39,12 @@ public class Main {
         }
     }
 
+    public void test02 () {
+        for (int i = 0; i < 10; i++) {
+            System.out.println("Hola mundo");
+        }
+    }
+
     /**
      * Método de menu, llama a las distintas acciones del programa y espera respuestas para ver cual ejecutar.
      *

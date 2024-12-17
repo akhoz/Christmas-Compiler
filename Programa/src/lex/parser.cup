@@ -47,7 +47,9 @@ terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING,
 // no terminales
 non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
- estructuraControl, if_stmt, else_if_list, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion;
+ estructuraControl, if_stmt, else_if_list, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
+ expresion_aritmetica, termino, factor, literales_num, unary_operators, negacion, break_stmt_opt, case_list, arreglo,
+ listaValores, case_stmt, default_stmt;
 //produccion de inicio
 start with programa;
 
@@ -137,7 +139,7 @@ break_stmt_opt ::= BREAK SEMICOLON
 
 // Static Array
 arreglo ::= tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
-          | tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER EQ OPEN_BRACE listaValores CLOSE_BRACE SEMICOLON ;
+          | tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales
