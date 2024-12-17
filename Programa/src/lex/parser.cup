@@ -47,13 +47,18 @@ terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING,
 // no terminales
 non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
- estructuraControl, if_stmt, else_if_list, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion ;
+ estructuraControl, if_stmt, else_if_list, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion;
 //produccion de inicio
 start with programa;
 
 // Generalidades
 tipos ::= INTEGER | STRING | CHAR | BOOLEAN | FLOAT ;
 literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT ;
+
+// Literales Numéricos
+literales_num ::= INTEGER_LITERAL
+            | FLOAT_LITERAL ;
+
 nombrar ::= tipos IDENTIFIER ;
 expresion ::= IDENTIFIER
             | literales
@@ -68,9 +73,26 @@ expresion ::= IDENTIFIER
             | NOT expresion            // Negacion logica
             | OPEN_PAREN expresion CLOSE_PAREN ;  // Agrupacion con paréntesis
 
+// Expresiones
+expresion_aritmetica ::= expresion_aritmetica PLUS termino
+                      | expresion_aritmetica MINUS termino
+                      | termino ;
+
+termino ::= termino TIMES factor
+          | termino DIV factor
+          | termino MOD factor
+          | termino POW factor
+          | factor ;
+
+factor ::= OPEN_PAREN expresion_aritmetica CLOSE_PAREN
+         | IDENTIFIER
+         | literales_num ;
+
+
+
 // Sentencias
 sentencias ::= sentencia | sentencias sentencias ;
-sentencia ::= creacion | creacionAsignacion ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl ;
 
 creacion ::= nombrar SEMICOLON ;
 creacionAsignacion ::= nombrar EQ literales SEMICOLON ;
@@ -96,6 +118,37 @@ if_stmt ::= IF OPEN_PAREN expresion CLOSE_PAREN bloque // If simple
 
 else_if_list ::= ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque // Un elif
                | else_if_list ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque ; // Varios elif
+
+while_cicle ::= WHILE OPEN_PAREN expresion CLOSE_PAREN bloque ;
+
+// Switch-case
+switch_stmt ::= SWITCH OPEN_PAREN expresion_aritmetica CLOSE_PAREN OPEN_BLOCK case_list CLOSE_BLOCK ;
+
+case_list ::= case_list case_stmt
+            | case_stmt
+            | default_stmt ;
+
+case_stmt ::= CASE expresion_aritmetica COLON sentencias break_stmt_opt ;
+
+default_stmt ::= DEFAULT COLON sentencias ;
+
+break_stmt_opt ::= BREAK SEMICOLON
+                 | /* vacío */ ;
+
+// Static Array
+arreglo ::= tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
+          | tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER EQ OPEN_BRACE listaValores CLOSE_BRACE SEMICOLON ;
+
+// Lista de valores para inicialización
+listaValores ::= listaValores COMMA literales
+               | literales ;
+
+// Unary Operators
+unary_operators ::= negacion
+                  | IDENTIFIER INCREMENT
+                  | IDENTIFIER DECREMENT ;
+
+negacion ::= MINUS literales_num ;
 
 return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
 
