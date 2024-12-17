@@ -46,8 +46,8 @@ terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING,
 
 // no terminales
 non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
- literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro ;
-
+ literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
+ estructuraControl, if_stmt, else_if_list, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion ;
 //produccion de inicio
 start with programa;
 
@@ -55,6 +55,18 @@ start with programa;
 tipos ::= INTEGER | STRING | CHAR | BOOLEAN | FLOAT ;
 literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT ;
 nombrar ::= tipos IDENTIFIER ;
+expresion ::= IDENTIFIER
+            | literales
+            | expresion EQEQ expresion  // Comparacion ==
+            | expresion NEQ expresion  // Comparacion !=
+            | expresion LT expresion   // Menor que <
+            | expresion LE expresion   // Menor o igual que <=
+            | expresion GT expresion   // Mayor que >
+            | expresion GE expresion   // Mayor o igual que >=
+            | expresion AND expresion  // Operador logico AND
+            | expresion OR expresion   // Operador logico OR
+            | NOT expresion            // Negacion logica
+            | OPEN_PAREN expresion CLOSE_PAREN ;  // Agrupacion con paréntesis
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencias ;
@@ -73,6 +85,21 @@ encabezadoFuncion ::= nombrar parametros;
 parametros ::= OPEN_PAREN CLOSE_PAREN | OPEN_PAREN parametroAux CLOSE_PAREN ;
 parametroAux ::= parametro | parametroAux COMMA parametro ;
 parametro ::= nombrar ;
+
+// Estructuras de Control
+estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
+
+if_stmt ::= IF OPEN_PAREN expresion CLOSE_PAREN bloque // If simple
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque ELSE bloque  // If con else al final
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list // If con uno o varios elif
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list ELSE bloque ; // If con uno o varios elif y un else al final
+
+else_if_list ::= ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque // Un elif
+               | else_if_list ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque ; // Varios elif
+
+return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
+
+break_stmt ::= BREAK SEMICOLON ;
 
 
 programa ::= programaAux ;
