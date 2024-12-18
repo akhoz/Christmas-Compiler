@@ -49,7 +49,8 @@ non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, crea
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
  estructuraControl, if_stmt, else_if_list, else_if_list_opt, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
  expresion_aritmetica, termino, factor, literales_num, unary_operators, negacion, break_stmt_opt, case_list, arreglo,
- listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain;
+ listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
+ expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt;
 
 // Precedencias
 
@@ -74,36 +75,38 @@ literales_num ::= INTEGER_LITERAL
             | FLOAT_LITERAL ;
 
 nombrar ::= tipos IDENTIFIER ;
-expresion ::= IDENTIFIER
-            | literales
-            | unary_operators
-            | expresion EQEQ expresion  // Comparacion ==
-            | expresion NEQ expresion  // Comparacion !=
-            | expresion LT expresion   // Menor que <
-            | expresion LE expresion   // Menor o igual que <=
-            | expresion GT expresion   // Mayor que >
-            | expresion GE expresion   // Mayor o igual que >=
-            | expresion AND expresion  // Operador logico AND
-            | expresion OR expresion   // Operador logico OR
-            | NOT expresion            // Negacion logica
-            | OPEN_PAREN expresion CLOSE_PAREN ;  // Agrupacion con paréntesis
-
 // Expresiones
+expresion ::= expresion_logica ;
+
+expresion_logica ::= expresion_logica AND expresion_logica
+                   | expresion_logica OR expresion_logica
+                   | NOT expresion_logica
+                   | expresion_comparacion ;
+
+expresion_comparacion ::= expresion_aritmetica EQEQ expresion_aritmetica  // Comparacion ==
+                        | expresion_aritmetica NEQ expresion_aritmetica  // Comparacion !=
+                        | expresion_aritmetica LT expresion_aritmetica   // Menor que <
+                        | expresion_aritmetica LE expresion_aritmetica   // Menor o igual que <=
+                        | expresion_aritmetica GT expresion_aritmetica   // Mayor que >
+                        | expresion_aritmetica GE expresion_aritmetica   // Mayor o igual que >=
+                        | expresion_aritmetica ; // Sin comparación, pasa la aritmética
+
 expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
-                      | expresion_aritmetica MINUS expresion_aritmetica
-                      | expresion_aritmetica TIMES expresion_aritmetica
-                      | expresion_aritmetica DIV expresion_aritmetica
-                      | expresion_aritmetica MOD expresion_aritmetica
-                      | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
-                      | IDENTIFIER
-                      | literales_num ;
+                       | expresion_aritmetica MINUS expresion_aritmetica
+                       | expresion_aritmetica TIMES expresion_aritmetica
+                       | expresion_aritmetica DIV expresion_aritmetica
+                       | expresion_aritmetica MOD expresion_aritmetica
+                       | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
+                       | IDENTIFIER
+                       | literales
+                       | unary_operators ;
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt ;
 
 creacion ::= nombrar SEMICOLON ;
-creacionAsignacion ::= nombrar EQ literales SEMICOLON ;
+creacionAsignacion ::= nombrar EQ expresion SEMICOLON ;
 
 // Funciones
 funciones ::= funcion | funciones funcion ;
@@ -133,22 +136,33 @@ while_cicle ::= WHILE OPEN_PAREN expresion CLOSE_PAREN bloque ;
 
 break_stmt ::= BREAK SEMICOLON ;
 
+// Ciclo For
+for_cicle ::= FOR OPEN_PAREN condicion_for CLOSE_PAREN bloque ;
+condicion_for ::= inicializacion_opt SEMICOLON condicion_opt SEMICOLON actualizacion_opt ;
+
+inicializacion_opt ::= creacionAsignacion | expresion | /* vacío */ ;
+
+condicion_opt ::= expresion | /* vacío */ ;
+
+actualizacion_opt ::= expresion | /* vacío */ ;
+
+
 // Switch-case
-/*
-switch_stmt ::= SWITCH OPEN_PAREN expresion_aritmetica CLOSE_PAREN OPEN_BLOCK case_list CLOSE_BLOCK ;
+switch_stmt ::= SWITCH OPEN_PAREN expresion CLOSE_PAREN bloque_switch ;
 
-case_list ::= case_list case_stmt
-            | case_stmt
-            | default_stmt ;
+bloque_switch ::= OPEN_BLOCK case_list default_stmt_opt CLOSE_BLOCK ;
 
-case_stmt ::= CASE expresion_aritmetica COLON sentencias break_stmt | CASE expresion_aritmetica COLON sentencias ;
+case_list ::= case_stmt | case_list case_stmt ;
+
+case_stmt ::= CASE literales_num COLON sentencias ;
+
+default_stmt_opt ::= default_stmt | /* vacío */ ;
 
 default_stmt ::= DEFAULT COLON sentencias ;
-*/
 
 // Static Array
-arreglo ::= tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
-          | tipos OPEN_BRACKET CLOSE_BRACKET IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+arreglo ::= tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
+          | tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales | literales ;
@@ -162,7 +176,13 @@ negacion ::= MINUS literales_num ;
 
 return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
 
+// Print y Read
+
+print_stmt ::= PRINT OPEN_PAREN lista_print CLOSE_PAREN SEMICOLON ;
+lista_print ::= expresion | lista_print COMMA expresion ;
+
+read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
 programa ::= conjuntoFunciones ;
 conjuntoFunciones ::= funciones funcionMain ;
-funcionMain ::= tipos MAIN OPEN_PAREN CLOSE_PAREN bloque ;
+funcionMain ::= tipos MAIN bloque ;
