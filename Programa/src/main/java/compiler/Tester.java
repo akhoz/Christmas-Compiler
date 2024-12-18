@@ -44,4 +44,27 @@ public class Tester {
             }
         }
     }
+
+    /**
+     * Realiza el análisis sintáctico en el archivo especificado.
+     * Este método lee el archivo, crea un Lexer, y se lo pasa a la clase parser.
+     * Se analiza la sintaxis del archivo y se informa si la sintaxis es correcta o incorrecta.
+     *
+     * @param rutaScanner la ruta al archivo que se analizará sintácticamente.
+     * @throws IOException si ocurre un error de entrada/salida al leer el archivo.
+     */
+    public void syntacticAnalysis(String rutaScanner) throws IOException {
+        Reader reader = new BufferedReader(new FileReader(rutaScanner));
+        Lexer lex = new Lexer(reader);
+        parser parser = new parser(lex);
+
+        try {
+            parser.parse();
+            System.out.println("Análisis sintáctico completado correctamente.");
+        } catch (Exception e) {
+            System.err.println("Error durante el análisis sintáctico:");
+            e.printStackTrace();
+        }
+    }
+
 }

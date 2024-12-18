@@ -33,7 +33,7 @@ public class Main {
     public void test(String rutaArchivo) {
         Tester tester = new Tester();
         try {
-            tester.lexicalAnalysis(rutaArchivo, "src/lex/salida.txt");
+            tester.syntacticAnalysis(rutaArchivo);
         } catch (IOException e) {
             e.printStackTrace();
         }

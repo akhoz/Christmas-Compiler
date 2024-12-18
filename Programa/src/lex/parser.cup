@@ -39,16 +39,16 @@ init with {: :};
 scan with {: return parser.next_token(); :};
 
 /* Terminales (tokens retornados por el scanner). */
-terminal ABSTRACT, BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL,
- FLOAT, CHAR, OPEN_BLOCK, CLOSE_BLOCK, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN, ERROR,
+terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL,
+ FLOAT, CHAR, OPEN_BLOCK, CLOSE_BLOCK, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN,
  MINUS, TIMES, DIV, MOD, POW, INCREMENT, DECREMENT, NEQ, LT, LE, GT, GE, AND, OR, NOT, SEMICOLON,
  IF, ELSE, WHILE, FOR, SWITCH, CASE, DEFAULT, RETURN, COLON, PRINT, READ, MAIN, COMMA, CHAR_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
 
 // no terminales
-non terminal programa, programaAux, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
+non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
  estructuraControl, if_stmt, else_if_list, else_if_list_opt, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
- expresion_aritmetica, termino, factor, literales_num, unary_operators, negacion, break_stmt_opt, case_list, arreglo,
+ expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt;
 
@@ -62,17 +62,17 @@ precedence left AND, OR;
 
 precedence left PLUS, MINUS;
 precedence left TIMES, DIV, MOD;
+precedence left POW;
 
 //produccion de inicio
 start with programa;
 
 // Generalidades
 tipos ::= INTEGER | STRING | CHAR | BOOLEAN | FLOAT ;
-literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT ;
+literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT_LITERAL ;
 
 // Literales Numéricos
-literales_num ::= INTEGER_LITERAL
-            | FLOAT_LITERAL ;
+literales_num ::= INTEGER_LITERAL | FLOAT_LITERAL | CHAR_LITERAL ;
 
 nombrar ::= tipos IDENTIFIER ;
 // Expresiones
@@ -96,6 +96,7 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | expresion_aritmetica TIMES expresion_aritmetica
                        | expresion_aritmetica DIV expresion_aritmetica
                        | expresion_aritmetica MOD expresion_aritmetica
+                       | expresion_aritmetica POW expresion_aritmetica
                        | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
                        | IDENTIFIER
                        | literales
@@ -112,7 +113,7 @@ creacionAsignacion ::= nombrar EQ expresion SEMICOLON ;
 funciones ::= funcion | funciones funcion ;
 funcion ::= encabezadoFuncion bloque ;
 
-bloque ::= OPEN_BLOCK sentencias CLOSE_BLOCK ;
+bloque ::= OPEN_BLOCK sentencias CLOSE_BLOCK | OPEN_BLOCK CLOSE_BLOCK;
 encabezadoFuncion ::= nombrar parametros;
 
 parametros ::= OPEN_PAREN CLOSE_PAREN | OPEN_PAREN parametroAux CLOSE_PAREN ;
@@ -184,5 +185,5 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
 programa ::= conjuntoFunciones ;
-conjuntoFunciones ::= funciones funcionMain ;
+conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos MAIN bloque ;

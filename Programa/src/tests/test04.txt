@@ -24,8 +24,8 @@ abrecuento
 envuelve abreregalo _var2_ minstix 12.2 gaspar abreregalo 34 navidad 33
 cierraregalo minstix 12 cierraregalo
 abrecuento
-_var_ entrega _var_ intercambio 1 finregalo @semantico
-envia finregalo @sintactico
+_var_ entrega _var_ intercambio 1 finregalo
+envia finregalo
 cierracuento
 elfo abreregalo _var_ mary 0 cierraregalo
 abrecuento
@@ -43,7 +43,7 @@ envia finregalo
 ultimo sigue _id_ entrega _id_ finregalo
 cierracuento
 cierracuento
-envia 1 finregalo @hola
+envia 1 finregalo
 cierracuento
 rodolfo _verano_
 \_
