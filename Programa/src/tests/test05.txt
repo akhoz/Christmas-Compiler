@@ -6,6 +6,5 @@ int main {
 _/
 
 rodolfo _verano_ abrecuento
-    bromista _x_ entrega 0.75 finregalo
-    narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+ bromista _x_ entrega 0.75 finregalo
 cierracuento

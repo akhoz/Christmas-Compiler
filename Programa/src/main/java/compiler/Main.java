@@ -16,6 +16,7 @@ public class Main {
      * @param jflexPath la ruta al archivo JFlex.
      * @param cupPath la ruta al archivo CUP.
      */
+
     public void generate(String jflexPath, String cupPath) {
         Generator generator = new Generator();
         try {
@@ -66,10 +67,15 @@ public class Main {
                 case "2":
                     System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
                     String archivo = scanner.nextLine();
+                    if (archivo.equals("")) {
+                        archivo = "src/tests/test05.txt";
+                    }
                     File file = new File(archivo);
                     if (file.exists() && file.isFile() && archivo.endsWith(".txt")) {
+                        System.out.println(archivo);
                         test(archivo);
-                    } else {
+                    }
+                    else {
                         System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt validoa");
                     }
                     scanner.close();

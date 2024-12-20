@@ -44,60 +44,60 @@ Digit = [0-9]
 %%
 
 /* keywords */
-<YYINITIAL> "abrecuento"         { return symbol(sym.OPEN_BLOCK); }
-<YYINITIAL> "cierracuento"         { return symbol(sym.CLOSE_BLOCK); }
-<YYINITIAL> "rodolfo"            { return symbol(sym.INTEGER); }
-<YYINITIAL> "bromista"           { return symbol(sym.FLOAT); }
-<YYINITIAL> "trueno"             { return symbol(sym.BOOLEAN); }
-<YYINITIAL> "cupido"             { return symbol(sym.CHAR); }
-<YYINITIAL> "cometa"             { return symbol(sym.STRING); }
-<YYINITIAL> "abreempaque"        { return symbol(sym.OPEN_BRACKET); }
-<YYINITIAL> "cierraempaque"      { return symbol(sym.CLOSE_BRACKET); }
-<YYINITIAL> "abreregalo"         { return symbol(sym.OPEN_PAREN); }
-<YYINITIAL> "cierraregalo"       { return symbol(sym.CLOSE_PAREN); }
+<YYINITIAL> "abrecuento"         { return symbol(sym.OPEN_BLOCK, yytext()); }
+<YYINITIAL> "cierracuento"         { return symbol(sym.CLOSE_BLOCK, yytext()); }
+<YYINITIAL> "rodolfo"            { return symbol(sym.INTEGER, yytext()); }
+<YYINITIAL> "bromista"           { return symbol(sym.FLOAT, yytext()); }
+<YYINITIAL> "trueno"             { return symbol(sym.BOOLEAN, yytext()); }
+<YYINITIAL> "cupido"             { return symbol(sym.CHAR, yytext()); }
+<YYINITIAL> "cometa"             { return symbol(sym.STRING, yytext()); }
+<YYINITIAL> "abreempaque"        { return symbol(sym.OPEN_BRACKET, yytext()); }
+<YYINITIAL> "cierraempaque"      { return symbol(sym.CLOSE_BRACKET, yytext()); }
+<YYINITIAL> "abreregalo"         { return symbol(sym.OPEN_PAREN, yytext()); }
+<YYINITIAL> "cierraregalo"       { return symbol(sym.CLOSE_PAREN, yytext()); }
 
 /* Operators */
 <YYINITIAL> "entrega"            { return symbol(sym.EQ); }
 
 /* Arithmetic operators */
 
-<YYINITIAL> "navidad"            { return symbol(sym.PLUS); }
-<YYINITIAL> "intercambio"        { return symbol(sym.MINUS); }
-<YYINITIAL> "nochebuena"         { return symbol(sym.TIMES); }
-<YYINITIAL> "reyes"              { return symbol(sym.DIV); }
-<YYINITIAL> "magos"              { return symbol(sym.MOD); }
-<YYINITIAL> "adviento"           { return symbol(sym.POW); }
-<YYINITIAL> "quien"              { return symbol(sym.INCREMENT); }
-<YYINITIAL> "grinch"             { return symbol(sym.DECREMENT); }
+<YYINITIAL> "navidad"            { return symbol(sym.PLUS, yytext()); }
+<YYINITIAL> "intercambio"        { return symbol(sym.MINUS, yytext()); }
+<YYINITIAL> "nochebuena"         { return symbol(sym.TIMES, yytext()); }
+<YYINITIAL> "reyes"              { return symbol(sym.DIV, yytext()); }
+<YYINITIAL> "magos"              { return symbol(sym.MOD, yytext()); }
+<YYINITIAL> "adviento"           { return symbol(sym.POW, yytext()); }
+<YYINITIAL> "quien"              { return symbol(sym.INCREMENT, yytext()); }
+<YYINITIAL> "grinch"             { return symbol(sym.DECREMENT, yytext()); }
 
-<YYINITIAL> "mary"               { return symbol(sym.EQEQ); }
-<YYINITIAL> "openslae"           { return symbol(sym.NEQ); }
-<YYINITIAL> "snowball"           { return symbol(sym.LT); }
-<YYINITIAL> "evergreen"          { return symbol(sym.LE); }
-<YYINITIAL> "minstix"            { return symbol(sym.GT); }
-<YYINITIAL> "upatree"            { return symbol(sym.GE); }
+<YYINITIAL> "mary"               { return symbol(sym.EQEQ, yytext()); }
+<YYINITIAL> "openslae"           { return symbol(sym.NEQ, yytext()); }
+<YYINITIAL> "snowball"           { return symbol(sym.LT, yytext()); }
+<YYINITIAL> "evergreen"          { return symbol(sym.LE, yytext()); }
+<YYINITIAL> "minstix"            { return symbol(sym.GT, yytext()); }
+<YYINITIAL> "upatree"            { return symbol(sym.GE, yytext()); }
 
-<YYINITIAL> "melchor"            { return symbol(sym.AND); }
-<YYINITIAL> "gaspar"             { return symbol(sym.OR); }
-<YYINITIAL> "baltazar"           { return symbol(sym.NOT); }
-<YYINITIAL> "finregalo"          { return symbol(sym.SEMICOLON); }
+<YYINITIAL> "melchor"            { return symbol(sym.AND, yytext()); }
+<YYINITIAL> "gaspar"             { return symbol(sym.OR, yytext()); }
+<YYINITIAL> "baltazar"           { return symbol(sym.NOT, yytext()); }
+<YYINITIAL> "finregalo"          { return symbol(sym.SEMICOLON, yytext()); }
 
-<YYINITIAL> "elfo"               { return symbol(sym.IF); }
-<YYINITIAL> "hada"               { return symbol(sym.ELSE); }
-<YYINITIAL> "envuelve"           { return symbol(sym.WHILE); }
-<YYINITIAL> "duende"             { return symbol(sym.FOR); }
-<YYINITIAL> "varios"             { return symbol(sym.SWITCH); }
-<YYINITIAL> "historia"           { return symbol(sym.CASE); }
-<YYINITIAL> "ultimo"             { return symbol(sym.DEFAULT); }
-<YYINITIAL> "corta"              { return symbol(sym.BREAK); }
-<YYINITIAL> "envia"              { return symbol(sym.RETURN); }
-<YYINITIAL> "sigue"              { return symbol(sym.COLON); }
+<YYINITIAL> "elfo"               { return symbol(sym.IF, yytext()); }
+<YYINITIAL> "hada"               { return symbol(sym.ELSE, yytext()); }
+<YYINITIAL> "envuelve"           { return symbol(sym.WHILE, yytext()); }
+<YYINITIAL> "duende"             { return symbol(sym.FOR, yytext()); }
+<YYINITIAL> "varios"             { return symbol(sym.SWITCH, yytext()); }
+<YYINITIAL> "historia"           { return symbol(sym.CASE, yytext()); }
+<YYINITIAL> "ultimo"             { return symbol(sym.DEFAULT, yytext()); }
+<YYINITIAL> "corta"              { return symbol(sym.BREAK, yytext()); }
+<YYINITIAL> "envia"              { return symbol(sym.RETURN, yytext()); }
+<YYINITIAL> "sigue"              { return symbol(sym.COLON, yytext()); }
 
-<YYINITIAL> "narra"              { return symbol(sym.PRINT); }
-<YYINITIAL> "escucha"            { return symbol(sym.READ); }
+<YYINITIAL> "narra"              { return symbol(sym.PRINT, yytext()); }
+<YYINITIAL> "escucha"            { return symbol(sym.READ, yytext()); }
 
 /* Defaults */
-<YYINITIAL> "," { return symbol(sym.COMMA); }
+<YYINITIAL> "," { return symbol(sym.COMMA, yytext()); }
 <YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, yytext()); }
 <YYINITIAL> {Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
 <YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, true); }
@@ -106,21 +106,16 @@ Digit = [0-9]
 
 
 /* Main */
-<YYINITIAL> "_verano_"           { return symbol(sym.MAIN); }
+<YYINITIAL> "_verano_"           { return symbol(sym.MAIN, yytext()); }
 
 
 <YYINITIAL> {
   /* identifiers */
-  {Identifier}                   { return symbol(sym.IDENTIFIER); }
+  {Identifier}                   { return symbol(sym.IDENTIFIER, yytext()); }
 
   /* literals */
-  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL); }
+  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL, yytext()); }
   \"                             { string.setLength(0); yybegin(STRING); }
-
-  /* operators */
-  "="                            { return symbol(sym.EQ); }
-  "=="                           { return symbol(sym.EQEQ); }
-  "+"                            { return symbol(sym.PLUS); }
 
   /* comments */
   {Comment}                      { /* ignore */ }

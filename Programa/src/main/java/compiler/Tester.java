@@ -10,7 +10,8 @@ import parser.*;
  * Clase Tester para realizar el análisis léxico en un archivo fuente dado.
  */
 public class Tester {
-
+    int i = 0;
+    int result = i + 10;
     /**
      * Realiza el análisis léxico en el archivo especificado.
      * Este método lee el archivo, tokeniza su contenido utilizando la clase Lexer,
