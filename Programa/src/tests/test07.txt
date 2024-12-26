@@ -1,0 +1,37 @@
+
+rodolfo _verano_ abrecuento
+    # While
+    envuelve abreregalo _y_ minstix 0.85 cierraregalo abrecuento
+
+        # If
+        elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
+
+            # If
+            elfo abreregalo _x_ snowball 0.7 cierraregalo abrecuento
+                narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+            cierracuento
+
+            # Elif
+            hada elfo abreregalo _x_ evergreen 0.81 cierraregalo abrecuento
+                narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+            cierracuento
+
+            # Elif
+            hada elfo abreregalo _x_ evergreen 0.81 cierraregalo abrecuento
+                narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+            cierracuento
+
+            # Else
+            hada abrecuento
+               bromista navidad finregalo
+            cierracuento
+
+        cierracuento
+
+        # Else
+        hada abrecuento
+            narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+        cierracuento
+
+    cierracuento
+cierracuento

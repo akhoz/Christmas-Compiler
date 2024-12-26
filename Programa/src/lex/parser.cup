@@ -30,13 +30,39 @@ parser code {:
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
 
-
     @SuppressWarnings("deprecation")
     public parser(Lexer parser){
         this.parser=parser;
         this.symbolFactory = new DefaultSymbolFactory();
     }
 
+    @Override
+    public void report_error(String message, Object info) {
+        if (info instanceof Symbol) {
+            Symbol symbol = (Symbol) info;
+            System.err.println("Error sintactico, linea: " + (symbol.left + 1) + ", columna " + (symbol.right + 1) + ": " + symbol.value);
+        } else {
+            System.err.println("Error sintactico: " + message);
+        }
+    }
+
+    @Override
+    public void report_fatal_error(String message, Object info) {
+        // Reportar el error fatal sin detener el programa
+        if (info instanceof Symbol) {
+            Symbol symbol = (Symbol) info;
+            System.err.println("Error fatal sintactico " + (symbol.left + 1) + ", columna " + (symbol.right + 1) + ": " + symbol.value);
+        } else {
+            System.err.println("Error fatal de sintaxis: " + message);
+        }
+    }
+
+    @Override
+    public void unrecovered_syntax_error(Symbol info) {
+        if (info.value != null) {
+            System.err.println("Error no recuperable en la linea " + (info.left + 1) + ", columna " + (info.right + 1));
+        }
+    }
 :}
 
 init with {: :};
@@ -54,7 +80,7 @@ terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ,
 non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
  estructuraControl, if_stmt, else_if_list, else_if_list_opt, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
- expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
+ expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo, encontrar_error, encontrar_error_aux,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
  apertura_bloque, cierre_bloque, asignar, array_size;
@@ -74,6 +100,10 @@ precedence left POW;
 
 //produccion de inicio
 start with programa;
+
+// Errores
+encontrar_error ::= error encontrar_error_aux ;
+encontrar_error_aux ::= encontrar_error_aux error | /* vacio */ ;
 
 // Generalidades
 tipos ::= INTEGER {: RESULT = "int"; :}
@@ -142,12 +172,12 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | literales
                        | unary_operators
                        | funcion
-                       ;
-
+                       | encontrar_error SEMICOLON
+                       | encontrar_error CLOSE_PAREN ;
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | funcion;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | funcion | encontrar_error SEMICOLON ;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
@@ -184,7 +214,7 @@ funciones ::= funcion | funciones funcion ;
 funcion ::= encabezadoFuncion bloque ;
 
 bloque ::= apertura_bloque sentencias cierre_bloque
-         | apertura_bloque cierre_bloque ;
+         | apertura_bloque cierre_bloque | apertura_bloque encontrar_error cierre_bloque ;
 
 apertura_bloque ::= OPEN_BLOCK ;
 
@@ -248,13 +278,10 @@ estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_c
 
 if_stmt ::= IF OPEN_PAREN expresion CLOSE_PAREN bloque // If simple
           | IF OPEN_PAREN expresion CLOSE_PAREN bloque ELSE bloque  // If con else al final
-          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list // If con uno o varios elif
-          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list ELSE bloque ; // If con uno o varios elif y un else al final
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list ; // If con uno o varios elif
 
 else_if_list ::= ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list_opt ;
-else_if_list_opt ::= /* vacío */
-                   | else_if_list ;
-
+else_if_list_opt ::= /* vacío */ | else_if_list | ELSE bloque ;
 
 while_cicle ::= WHILE OPEN_PAREN expresion CLOSE_PAREN bloque ;
 
@@ -285,10 +312,10 @@ default_stmt_opt ::= default_stmt | /* vacío */ ;
 default_stmt ::= DEFAULT COLON sentencias ;
 
 // Static Array
-arreglo ::= tipos array_size IDENTIFIER SEMICOLON  // Declaración sin inicialización
-          | tipos array_size IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+arreglo ::= tipos IDENTIFIER array_size SEMICOLON  // Declaración sin inicialización
+          | tipos IDENTIFIER array_size EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
 
-array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET ;
+array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET | OPEN_BRACKET IDENTIFIER CLOSE_BRACKET ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales | literales ;
@@ -309,6 +336,6 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones ;
+programa ::= conjuntoFunciones | encontrar_error ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos MAIN bloque ;

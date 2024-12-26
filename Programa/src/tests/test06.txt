@@ -1,0 +1,64 @@
+ \_
+int main {
+    float x = 0.75 ;
+    print(x, "Hello World!!") ;
+    ( ;
+
+    if ( x < 0.8 ) {
+        if ( x < 0.7 ) {
+            print(x, "Hello World!!") ;
+        }
+        else if ( x => 0.81 ) {
+            print(x, "Hello World!!") ;
+        }
+        else {
+           float ;
+        }
+    }
+    else {
+        print(x, "Hello World!!") ;
+    }
+}
+_/
+
+bromista _funcion01_ abreregalo cierraregalo abrecuento
+    _verano_ cierraempaque bromista rodolfo
+    duende navidad
+cierracuento
+
+rodolfo _verano_ abrecuento
+    abreempaque finregalo bromista rodolfo finregalo
+
+    bromista _y_ finregalo
+    bromista _x_ entrega 0.75 finregalo
+    narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+
+    rodolfo finregalo
+    bromista _y_ finregalo
+
+    envuelve abreregalo _y_ 0.5 cierraregalo abrecuento
+
+    cierracuento
+
+    elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
+
+        elfo abreregalo _x_ snowball 0.7 cierraregalo abrecuento
+            narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+        cierracuento
+
+        hada elfo abreregalo _x_ evergreen 0.81 cierraregalo abrecuento
+            narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+        cierracuento
+
+        hada abrecuento
+           bromista navidad
+        cierracuento
+
+
+    cierracuento
+
+    hada abrecuento
+        narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+    cierracuento
+
+cierracuento
