@@ -1,0 +1,625 @@
+package parser ;
+import tables.SymbolTable;
+import tables.SymbolInfo;
+
+import java_cup.runtime.*;
+
+//utiliza class Lexer que genera el lexer.jflex, pequeños cambios de lo tomado de la página de cup
+//cambios en parser code, init with y scan with {:
+
+action code {:
+    /*CODIGO DE JAVA
+    https://www.jflex.de/
+    http://www2.cs.tum.edu/projects/cup/examples.php*/
+
+    public void hola(){
+
+                System.out.println("Hola");
+    }
+
+    public void adios(){
+
+                System.out.println("Adiós");
+    }
+:}
+
+parser code {:
+    Lexer parser;
+    SymbolTable symbolTable = new SymbolTable();
+
+
+    @SuppressWarnings("deprecation")
+    public parser(Lexer parser){
+        this.parser=parser;
+        this.symbolFactory = new DefaultSymbolFactory();
+    }
+
+:}
+
+init with {: :};
+
+/* define how to connect to the scanner! */
+scan with {: return parser.next_token(); :};
+
+/* Terminales (tokens retornados por el scanner). */
+terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL,
+ FLOAT, CHAR, OPEN_BLOCK, CLOSE_BLOCK, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN,
+ MINUS, TIMES, DIV, MOD, POW, INCREMENT, DECREMENT, NEQ, LT, LE, GT, GE, AND, OR, NOT, SEMICOLON,
+ IF, ELSE, WHILE, FOR, SWITCH, CASE, DEFAULT, RETURN, COLON, PRINT, READ, MAIN, COMMA, CHAR_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
+
+// no terminales
+non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
+ literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
+ estructuraControl, if_stmt, else_if_list, else_if_list_opt, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
+ expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
+ listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
+ expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
+ apertura_bloque, cierre_bloque, Object, asignar, logical_and, logical_or, logical_not, logical_expr_simple, comparison_eqeq, comparison_neq,
+ comparison_lt, comparison_le, comparison_gt, comparison_ge, arithmetic_plus, arithmetic_minus, arithmetic_times, arithmetic_div, arithmetic_mod,
+ arithmetic_pow;
+
+
+// Precedencias
+
+precedence left ELSE;
+
+precedence left EQEQ, NEQ;
+precedence left LT, LE, GT, GE;
+precedence left AND, OR;
+
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV, MOD;
+precedence left POW;
+
+//produccion de inicio
+start with programa;
+
+// Generalidades
+tipos ::= INTEGER {: RESULT = "int"; :}
+       | STRING  {: RESULT = "string"; :}
+       | CHAR    {: RESULT = "char"; :}
+       | BOOLEAN {: RESULT = "boolean"; :}
+       | FLOAT   {: RESULT = "float"; :}
+       ;
+literales ::= INTEGER_LITERAL | STRING_LITERAL | CHAR_LITERAL | BOOLEAN_LITERAL | FLOAT_LITERAL ;
+
+// Literales Numéricos
+literales_num ::= INTEGER_LITERAL | FLOAT_LITERAL | CHAR_LITERAL ;
+
+nombrar ::= tipos:t IDENTIFIER:id
+{:
+    String tipo = (String) t;
+    String nombre = (String) id;
+    RESULT = new SymbolInfo(nombre, tipo);
+    System.out.println("Creando símbolo: " + RESULT);
+:};
+
+// Expresiones
+expresion ::= expresion_logica:e {: RESULT = e; :};
+
+// Logica
+expresion_logica ::= logical_and
+                   | logical_or
+                   | logical_not
+                   | logical_expr_simple
+                   ;
+
+logical_and ::= expresion_logica:left AND expresion_logica:right
+{:
+    if (left instanceof Boolean && right instanceof Boolean) {
+        RESULT = (Boolean) left && (Boolean) right;
+    } else {
+        throw new RuntimeException("Error de tipo: AND requiere operandos booleanos.");
+    }
+:};
+
+logical_or ::= expresion_logica:left OR expresion_logica:right
+{:
+    if (left instanceof Boolean && right instanceof Boolean) {
+        RESULT = (Boolean) left || (Boolean) right;
+    } else {
+        throw new RuntimeException("Error de tipo: OR requiere operandos booleanos.");
+    }
+:};
+
+logical_not ::= NOT expresion_logica:expr
+{:
+    if (expr instanceof Boolean) {
+        RESULT = !(Boolean) expr;
+    } else {
+        throw new RuntimeException("Error de tipo: NOT requiere un operando booleano.");
+    }
+:};
+
+logical_expr_simple ::= expresion_comparacion:e {: RESULT = e; :};
+
+// Comparacion
+
+expresion_comparacion ::= expresion_aritmetica:e
+{:
+    RESULT = e;
+:}
+| comparison_eqeq
+| comparison_neq
+| comparison_lt
+| comparison_le
+| comparison_gt
+| comparison_ge
+;
+
+comparison_eqeq ::= expresion_aritmetica:left EQEQ expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = ((Float) left).equals((Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: EQEQ requiere operandos numéricos.");
+    }
+:};
+
+comparison_neq ::= expresion_aritmetica:left NEQ expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = !((Float) left).equals((Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: NEQ requiere operandos numéricos.");
+    }
+:};
+
+comparison_lt ::= expresion_aritmetica:left LT expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left < (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: LT requiere operandos numéricos.");
+    }
+:};
+
+comparison_le ::= expresion_aritmetica:left LE expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left <= (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: LE requiere operandos numéricos.");
+    }
+:};
+
+comparison_gt ::= expresion_aritmetica:left GT expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left > (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: GT requiere operandos numéricos.");
+    }
+:};
+
+comparison_ge ::= expresion_aritmetica:left GE expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left >= (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: GE requiere operandos numéricos.");
+    }
+:};
+
+// Aritmetica
+
+expresion_aritmetica ::= arithmetic_plus
+                       | arithmetic_minus
+                       | arithmetic_times
+                       | arithmetic_div
+                       | arithmetic_mod
+                       | arithmetic_pow
+                       | OPEN_PAREN expresion_aritmetica:expr CLOSE_PAREN {:
+                             RESULT = expr;
+                         :}
+                       | IDENTIFIER:id {:
+                             SymbolInfo info = symbolTable.lookup((String) id);
+                             if(info != null && info.getValue() != null){
+                                 RESULT = (Float)info.getValue(); // Asumiendo que es Float
+                             } else {
+                                 System.err.println("Error: Variable '" + id + "' no declarada o sin valor.");
+                                 RESULT = 0.0f; // Valor por defecto
+                             }
+                         :}
+                       | literales:lit {:
+                             // Asignar el valor del literal
+                             if(lit instanceof Integer){
+                                 RESULT = ((Integer)lit).floatValue();
+                             } else if(lit instanceof Float){
+                                 RESULT = (Float)lit;
+                             } else if(lit instanceof Character){
+                                 RESULT = (float)((Character)lit).charValue();
+                             } else {
+                                 RESULT = 0.0f; // Valor por defecto
+                             }
+                         :}
+                       | unary_operators:unary_op {:
+                             // Asignar el valor de los operadores unarios
+                             RESULT = unary_op; // Asumiendo que unary_operators ya retorna Float
+                         :}
+                       ;
+
+arithmetic_plus ::= expresion_aritmetica:left PLUS expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left + (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: PLUS requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_minus ::= expresion_aritmetica:left MINUS expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left - (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: MINUS requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_times ::= expresion_aritmetica:left TIMES expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left * (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: TIMES requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_div ::= expresion_aritmetica:left DIV expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        if ((Float) right == 0) {
+            throw new RuntimeException("Error: División entre cero.");
+        }
+        RESULT = (Float) left / (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: DIV requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_mod ::= expresion_aritmetica:left MOD expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        if ((Float) right == 0) {
+            throw new RuntimeException("Error: Módulo con divisor cero.");
+        }
+        RESULT = (Float) left % (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: MOD requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_pow ::= expresion_aritmetica:left POW expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (float) Math.pow((Float) left, (Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: POW requiere operandos numéricos.");
+    }
+:};
+
+// Sentencias
+sentencias ::= sentencia | sentencias sentencia ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar;
+
+asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
+
+creacion ::= nombrar:n SEMICOLON
+{:
+    SymbolInfo info = (SymbolInfo) n;
+    boolean inserted = symbolTable.insert(info.getName(), info);
+    if (!inserted) {
+        System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
+    } else {
+        System.out.println("Insertando variable '" + info.getName() + "' de tipo '" + info.getType() + "' en la tabla de símbolos.");
+    }
+    RESULT = null; // 'creacion' no necesita un valor semántico
+:};
+
+// Expresiones
+expresion ::= expresion_logica:e {: RESULT = e; :};
+
+// Logica
+expresion_logica ::= logical_and
+                   | logical_or
+                   | logical_not
+                   | logical_expr_simple
+                   ;
+
+logical_and ::= expresion_logica:left AND expresion_logica:right
+{:
+    if (left instanceof Boolean && right instanceof Boolean) {
+        RESULT = (Boolean) left && (Boolean) right;
+    } else {
+        throw new RuntimeException("Error de tipo: AND requiere operandos booleanos.");
+    }
+:};
+
+logical_or ::= expresion_logica:left OR expresion_logica:right
+{:
+    if (left instanceof Boolean && right instanceof Boolean) {
+        RESULT = (Boolean) left || (Boolean) right;
+    } else {
+        throw new RuntimeException("Error de tipo: OR requiere operandos booleanos.");
+    }
+:};
+
+logical_not ::= NOT expresion_logica:expr
+{:
+    if (expr instanceof Boolean) {
+        RESULT = !(Boolean) expr;
+    } else {
+        throw new RuntimeException("Error de tipo: NOT requiere un operando booleano.");
+    }
+:};
+
+logical_expr_simple ::= expresion_comparacion:e {: RESULT = e; :};
+
+// Comparacion
+
+expresion_comparacion ::= comparison_eqeq
+                        | comparison_neq
+                        | comparison_lt
+                        | comparison_le
+                        | comparison_gt
+                        | comparison_ge
+                        ;
+
+comparison_eqeq ::= expresion_aritmetica:left EQEQ expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = ((Float) left).equals((Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: EQEQ requiere operandos numéricos.");
+    }
+:};
+
+comparison_neq ::= expresion_aritmetica:left NEQ expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = !((Float) left).equals((Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: NEQ requiere operandos numéricos.");
+    }
+:};
+
+comparison_lt ::= expresion_aritmetica:left LT expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left < (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: LT requiere operandos numéricos.");
+    }
+:};
+
+comparison_le ::= expresion_aritmetica:left LE expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left <= (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: LE requiere operandos numéricos.");
+    }
+:};
+
+comparison_gt ::= expresion_aritmetica:left GT expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left > (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: GT requiere operandos numéricos.");
+    }
+:};
+
+comparison_ge ::= expresion_aritmetica:left GE expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left >= (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: GE requiere operandos numéricos.");
+    }
+:};
+
+// Aritmetica
+
+expresion_aritmetica ::= arithmetic_plus
+                       | arithmetic_minus
+                       | arithmetic_times
+                       | arithmetic_div
+                       | arithmetic_mod
+                       | arithmetic_pow
+                       | OPEN_PAREN expresion_aritmetica:expr CLOSE_PAREN {:
+                             RESULT = expr;
+                         :}
+                       | IDENTIFIER:id {:
+                             SymbolInfo info = symbolTable.lookup((String) id);
+                             if(info != null && info.getValue() != null){
+                                 RESULT = (Float)info.getValue(); // Asumiendo que es Float
+                             } else {
+                                 System.err.println("Error: Variable '" + id + "' no declarada o sin valor.");
+                                 RESULT = 0.0f; // Valor por defecto
+                             }
+                         :}
+                       | literales:lit {:
+                             // Asignar el valor del literal
+                             if(lit instanceof Integer){
+                                 RESULT = ((Integer)lit).floatValue();
+                             } else if(lit instanceof Float){
+                                 RESULT = (Float)lit;
+                             } else if(lit instanceof Character){
+                                 RESULT = (float)((Character)lit).charValue();
+                             } else {
+                                 RESULT = 0.0f; // Valor por defecto
+                             }
+                         :}
+                       | unary_operators:unary_op {:
+                             // Asignar el valor de los operadores unarios
+                             RESULT = unary_op; // Asumiendo que unary_operators ya retorna Float
+                         :}
+                       ;
+
+arithmetic_plus ::= expresion_aritmetica:left PLUS expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left + (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: PLUS requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_minus ::= expresion_aritmetica:left MINUS expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left - (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: MINUS requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_times ::= expresion_aritmetica:left TIMES expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (Float) left * (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: TIMES requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_div ::= expresion_aritmetica:left DIV expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        if ((Float) right == 0) {
+            throw new RuntimeException("Error: División entre cero.");
+        }
+        RESULT = (Float) left / (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: DIV requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_mod ::= expresion_aritmetica:left MOD expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        if ((Float) right == 0) {
+            throw new RuntimeException("Error: Módulo con divisor cero.");
+        }
+        RESULT = (Float) left % (Float) right;
+    } else {
+        throw new RuntimeException("Error de tipo: MOD requiere operandos numéricos.");
+    }
+:};
+
+arithmetic_pow ::= expresion_aritmetica:left POW expresion_aritmetica:right
+{:
+    if (left instanceof Float && right instanceof Float) {
+        RESULT = (float) Math.pow((Float) left, (Float) right);
+    } else {
+        throw new RuntimeException("Error de tipo: POW requiere operandos numéricos.");
+    }
+:};
+
+creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
+{:
+    SymbolInfo existingInfo = symbolTable.lookup(((SymbolInfo) n).getName());
+    if (existingInfo != null) {
+        // Actualiza el valor del símbolo existente
+        existingInfo.setValue(e);
+        System.out.println("Actualizando valor de la variable '" + existingInfo.getName() + "' a " + e);
+    } else {
+        // Inserta un nuevo símbolo si no existe
+        SymbolInfo info = (SymbolInfo) n;
+        info.setValue(e);
+        boolean inserted = symbolTable.insert(info.getName(), info);
+        if (!inserted) {
+            System.err.println("Error: Variable '" + info.getName() + "' ya existe en este ámbito.");
+        } else {
+            System.out.println("Declaración y asignación de variable '" + info.getName() + "' con valor " + e);
+        }
+    }
+:};
+
+
+// Funciones
+funciones ::= funcion | funciones funcion ;
+funcion ::= encabezadoFuncion bloque ;
+
+bloque ::= apertura_bloque sentencias cierre_bloque
+         | apertura_bloque cierre_bloque ;
+
+apertura_bloque ::= OPEN_BLOCK {: symbolTable.beginScope(); :} ;
+cierre_bloque ::= CLOSE_BLOCK {: symbolTable.endScope(); :} ;
+
+encabezadoFuncion ::= nombrar parametros;
+
+parametros ::= OPEN_PAREN CLOSE_PAREN | OPEN_PAREN parametroAux CLOSE_PAREN ;
+parametroAux ::= parametro | parametroAux COMMA parametro ;
+parametro ::= nombrar ;
+
+// Estructuras de Control
+estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
+
+if_stmt ::= IF OPEN_PAREN expresion CLOSE_PAREN bloque // If simple
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque ELSE bloque  // If con else al final
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list // If con uno o varios elif
+          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list ELSE bloque ; // If con uno o varios elif y un else al final
+
+else_if_list ::= ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list_opt ;
+else_if_list_opt ::= /* vacío */
+                   | else_if_list ;
+
+
+while_cicle ::= WHILE OPEN_PAREN expresion CLOSE_PAREN bloque ;
+
+break_stmt ::= BREAK SEMICOLON ;
+
+// Ciclo For
+for_cicle ::= FOR OPEN_PAREN condicion_for CLOSE_PAREN bloque ;
+condicion_for ::= inicializacion_opt SEMICOLON condicion_opt SEMICOLON actualizacion_opt ;
+
+inicializacion_opt ::= creacionAsignacion | expresion | /* vacío */ ;
+
+condicion_opt ::= expresion | /* vacío */ ;
+
+actualizacion_opt ::= expresion | /* vacío */ ;
+
+
+// Switch-case
+switch_stmt ::= SWITCH OPEN_PAREN expresion CLOSE_PAREN bloque_switch ;
+
+bloque_switch ::= OPEN_BLOCK case_list default_stmt_opt CLOSE_BLOCK ;
+
+case_list ::= case_stmt | case_list case_stmt ;
+
+case_stmt ::= CASE literales_num COLON sentencias ;
+
+default_stmt_opt ::= default_stmt | /* vacío */ ;
+
+default_stmt ::= DEFAULT COLON sentencias ;
+
+// Static Array
+arreglo ::= tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
+          | tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+
+// Lista de valores para inicialización
+listaValores ::= listaValores COMMA literales | literales ;
+
+// Unary Operators
+unary_operators ::= negacion
+                  | IDENTIFIER INCREMENT
+                  | IDENTIFIER DECREMENT ;
+
+negacion ::= MINUS literales_num ;
+
+return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
+
+// Print y Read
+
+print_stmt ::= PRINT OPEN_PAREN lista_print CLOSE_PAREN SEMICOLON ;
+lista_print ::= expresion | lista_print COMMA expresion ;
+
+read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
+
+programa ::= conjuntoFunciones ;
+conjuntoFunciones ::= funciones funcionMain | funcionMain ;
+funcionMain ::= tipos MAIN bloque ;
+

@@ -1,7 +1,10 @@
 package parser ;
 import tables.SymbolTable;
 import tables.SymbolInfo;
-
+import tables.FunctionInfo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 import java_cup.runtime.*;
 
 //utiliza class Lexer que genera el lexer.jflex, pequeños cambios de lo tomado de la página de cup
@@ -54,7 +57,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar;
+ apertura_bloque, cierre_bloque, asignar, array_size;
 
 
 // Precedencias
@@ -113,12 +116,12 @@ nombrar ::= tipos:t IDENTIFIER:id
 :};
 
 // Expresiones
-expresion ::= expresion_logica:e {: RESULT = e; :};
+expresion ::= expresion_logica ;
 
 expresion_logica ::= expresion_logica AND expresion_logica
                    | expresion_logica OR expresion_logica
                    | NOT expresion_logica
-                   | expresion_comparacion:e {: RESULT = e; :} ;
+                   | expresion_comparacion ;
 
 expresion_comparacion ::= expresion_aritmetica EQEQ expresion_aritmetica  // Comparacion ==
                         | expresion_aritmetica NEQ expresion_aritmetica  // Comparacion !=
@@ -126,82 +129,50 @@ expresion_comparacion ::= expresion_aritmetica EQEQ expresion_aritmetica  // Com
                         | expresion_aritmetica LE expresion_aritmetica   // Menor o igual que <=
                         | expresion_aritmetica GT expresion_aritmetica   // Mayor que >
                         | expresion_aritmetica GE expresion_aritmetica   // Mayor o igual que >=
-                        | expresion_aritmetica:e {: RESULT = e; :} ; // Sin comparación, pasa la aritmética
+                        | expresion_aritmetica ; // Sin comparación, pasa la aritmética
 
-expresion_aritmetica ::= expresion_aritmetica:e1 PLUS expresion_aritmetica:e2
-                       {:
-                       RESULT = (Float) e1 + (Float) e1;
-                       :}
-                       | expresion_aritmetica:e1 MINUS expresion_aritmetica:e2
-                       {:
-                       RESULT = (Float) e1 - (Float) e1;
-                       :}
-                       | expresion_aritmetica:e1 TIMES expresion_aritmetica:e2
-                       {:
-                       RESULT = (Float) e1 * (Float) e1;
-                       :}
-                       | expresion_aritmetica:e1 DIV expresion_aritmetica:e2
-                       {:
-                       RESULT = (Float) e1 / (Float) e1;
-                       :}
-                       | expresion_aritmetica:e1 MOD expresion_aritmetica:e2
-                       {:
-                       RESULT = (Float) e1 % (Float) e1;
-                       :}
-                       | expresion_aritmetica:e1 POW expresion_aritmetica:e2
-                       {:
-                       RESULT = (float) Math.pow((Float) e1, (Float) e1);
-
-                       :}
+expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
+                       | expresion_aritmetica MINUS expresion_aritmetica
+                       | expresion_aritmetica TIMES expresion_aritmetica
+                       | expresion_aritmetica DIV expresion_aritmetica
+                       | expresion_aritmetica MOD expresion_aritmetica
+                       | expresion_aritmetica POW expresion_aritmetica
                        | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
-                       | IDENTIFIER:id
-                       {:
-                           SymbolInfo info = symbolTable.lookup(id.toString());
-                           if (info != null) {
-                               RESULT = info.getValue();
-                           } else {
-                               System.err.println("Error semántico: La variable '" + id + "' no está declarada.");
-                               RESULT = null;
-                           }
-                       :}
-                       | literales:l
-                       {:
-                       RESULT = l;
-                       :}
-                       | unary_operators ;
+                       | IDENTIFIER
+                       | literales
+                       | unary_operators
+                       | funcion
+                       ;
 
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | funcion;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
 creacion ::= nombrar:n SEMICOLON
 {:
     SymbolInfo info = (SymbolInfo) n;
-    boolean inserted = symbolTable.insert(info.getName(), info);
+    FunctionInfo currentTable = symbolTable.getCurrentScope();
+    boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
     } else {
-        System.out.println("Insertando variable '" + info.getName() + "' de tipo '" + info.getType() + "' en la tabla de símbolos.");
+        System.out.println("Declaración de variable " + info.getName());
     }
     RESULT = null; // 'creacion' no necesita un valor semántico
 :};
 
 creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 {:
-    System.out.println("Entrando en creacionAsignacion");
-    System.out.println("Valor de n (SymbolInfo): " + n);
-    System.out.println("Valor de e (expresion): " + e);
-
     SymbolInfo info = (SymbolInfo) n;
-    info.setValue(e);
-    boolean inserted = symbolTable.insert(info.getName(), info);
+    FunctionInfo currentTable = symbolTable.getCurrentScope();
+    boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
     } else {
-        System.out.println("Declaración y asignación de variable '" + info.getName() + "' con valor " + e);
+        System.out.println("Declaración de variable " + info.getName() + " con valor inicial");
     }
     RESULT = null; // 'creacionAsignacion' no necesita un valor semántico
 :};
@@ -215,14 +186,62 @@ funcion ::= encabezadoFuncion bloque ;
 bloque ::= apertura_bloque sentencias cierre_bloque
          | apertura_bloque cierre_bloque ;
 
-apertura_bloque ::= OPEN_BLOCK {: symbolTable.beginScope(); :} ;
-cierre_bloque ::= CLOSE_BLOCK {: symbolTable.endScope(); :} ;
+apertura_bloque ::= OPEN_BLOCK ;
 
-encabezadoFuncion ::= nombrar parametros;
+cierre_bloque ::= CLOSE_BLOCK
+    {:
+        FunctionInfo currentTable = symbolTable.getCurrentScope();
+        currentTable.printScopes();
+        symbolTable.popFunction();
+    :} ;
 
-parametros ::= OPEN_PAREN CLOSE_PAREN | OPEN_PAREN parametroAux CLOSE_PAREN ;
-parametroAux ::= parametro | parametroAux COMMA parametro ;
-parametro ::= nombrar ;
+
+encabezadoFuncion ::= nombrar:i parametros:e
+{:
+    SymbolInfo funcSymbol = (SymbolInfo)i;
+    String funcName = funcSymbol.getName();
+    String returnType = funcSymbol.getType();
+    System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
+    List<SymbolInfo> paramList = (List<SymbolInfo>) e;
+    System.out.println("Número de parámetros: " + paramList.size());
+    FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
+    //
+    symbolTable.functionScopes.push(fInfo);
+
+    boolean inserted = symbolTable.pushFunction(fInfo);
+    if (!inserted) {
+        System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
+    } else {
+        System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
+                           + paramList.size() + " parámetros insertada en la tabla.");
+    }
+:};
+
+parametros ::= OPEN_PAREN CLOSE_PAREN
+    {:
+    System.out.println("Sin parámetros");
+    RESULT = new ArrayList<SymbolInfo>();
+    :}
+    | OPEN_PAREN parametroAux:p CLOSE_PAREN
+     {:
+        RESULT = p;
+     :};
+
+parametroAux ::= parametro:p
+    {:
+        List<SymbolInfo> lista = new ArrayList<SymbolInfo>();
+        lista.add((SymbolInfo)p);
+        RESULT = lista;
+    :}
+    | parametroAux:pl  COMMA parametro:p
+    {:
+        List<SymbolInfo> lista = (List<SymbolInfo>) pl;
+        lista.add((SymbolInfo)p);
+        RESULT = lista;
+    :};
+
+
+parametro ::= nombrar:n {: RESULT = n; :};
 
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
@@ -266,8 +285,10 @@ default_stmt_opt ::= default_stmt | /* vacío */ ;
 default_stmt ::= DEFAULT COLON sentencias ;
 
 // Static Array
-arreglo ::= tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER SEMICOLON  // Declaración sin inicialización
-          | tipos OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+arreglo ::= tipos array_size IDENTIFIER SEMICOLON  // Declaración sin inicialización
+          | tipos array_size IDENTIFIER EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+
+array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales | literales ;

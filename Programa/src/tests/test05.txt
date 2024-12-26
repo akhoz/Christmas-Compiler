@@ -7,4 +7,5 @@ _/
 
 rodolfo _verano_ abrecuento
  bromista _x_ entrega 0.75 finregalo
+ rodolfo _z_ entrega _y_ navidad 3 finregalo
 cierracuento
