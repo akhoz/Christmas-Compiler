@@ -186,7 +186,7 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | funcion | encontrar_error SEMICOLON ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
