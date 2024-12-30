@@ -52,7 +52,7 @@ public class FunctionInfo extends SymbolInfo{
     }
 
     public void printScopes() {
-        System.out.println("=== Tabla de símbolos (desde el global al actual) ===");
+        System.out.println("=== Tabla de símbolos de función '" + this.getName() + "' (desde el global al actual) ===");
         for (int i = 0; i < scopes.size(); i++) {
             System.out.println("Ámbito " + i + ": " + scopes.get(i).keySet());
         }

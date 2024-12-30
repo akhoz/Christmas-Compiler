@@ -251,25 +251,28 @@ cierre_bloque ::= CLOSE_BLOCK
 
 
 encabezadoFuncion ::= nombrar:i parametros:e
-{:
-    SymbolInfo funcSymbol = (SymbolInfo)i;
-    String funcName = funcSymbol.getName();
-    String returnType = funcSymbol.getType();
-    System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
-    List<SymbolInfo> paramList = (List<SymbolInfo>) e;
-    System.out.println("Número de parámetros: " + paramList.size());
-    FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
-    //
-    symbolTable.functionScopes.push(fInfo);
+    {:
+        SymbolInfo funcSymbol = (SymbolInfo)i;
+        String funcName = funcSymbol.getName();
+        String returnType = funcSymbol.getType();
+        System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
+        List<SymbolInfo> paramList = (List<SymbolInfo>) e;
+        System.out.println("Número de parámetros: " + paramList.size());
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
 
-    boolean inserted = symbolTable.pushFunction(fInfo);
-    if (!inserted) {
-        System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
-                           + paramList.size() + " parámetros insertada en la tabla.");
-    }
-:};
+        // Insertar la función en la tabla de símbolos
+        boolean inserted = symbolTable.pushFunction(fInfo);
+        if (!inserted) {
+            System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
+        } else {
+            System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
+                               + paramList.size() + " parámetros insertada en la tabla.");
+        }
+
+        // Iniciar el primer scope de la función
+        fInfo.beginScope();
+    :};
+
 
 parametros ::= OPEN_PAREN CLOSE_PAREN
     {:

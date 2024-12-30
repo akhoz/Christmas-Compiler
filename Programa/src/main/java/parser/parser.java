@@ -1460,24 +1460,26 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-    SymbolInfo funcSymbol = (SymbolInfo)i;
-    String funcName = funcSymbol.getName();
-    String returnType = funcSymbol.getType();
-    System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
-    List<SymbolInfo> paramList = (List<SymbolInfo>) e;
-    System.out.println("Número de parámetros: " + paramList.size());
-    FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
-    //
-    symbolTable.functionScopes.push(fInfo);
+        SymbolInfo funcSymbol = (SymbolInfo)i;
+        String funcName = funcSymbol.getName();
+        String returnType = funcSymbol.getType();
+        System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
+        List<SymbolInfo> paramList = (List<SymbolInfo>) e;
+        System.out.println("Número de parámetros: " + paramList.size());
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
 
-    boolean inserted = symbolTable.pushFunction(fInfo);
-    if (!inserted) {
-        System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
-                           + paramList.size() + " parámetros insertada en la tabla.");
-    }
+        // Insertar la función en la tabla de símbolos
+        boolean inserted = symbolTable.pushFunction(fInfo);
+        if (!inserted) {
+            System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
+        } else {
+            System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
+                               + paramList.size() + " parámetros insertada en la tabla.");
+        }
 
+        // Iniciar el primer scope de la función
+        fInfo.beginScope();
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("encabezadoFuncion",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
