@@ -30,10 +30,18 @@ parser code {:
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
 
+    // Constructor del parser
     @SuppressWarnings("deprecation")
     public parser(Lexer parser){
-        this.parser=parser;
+        this.parser = parser;
         this.symbolFactory = new DefaultSymbolFactory();
+
+        // Inicializar el ámbito global
+        FunctionInfo globalFunction = new FunctionInfo("global", "void", new ArrayList<>());
+        if (!symbolTable.pushFunction(globalFunction)) {
+            System.err.println("Error: Función global ya está definida.");
+        }
+        globalFunction.beginScope();
     }
 
     @Override
@@ -69,6 +77,7 @@ init with {: :};
 
 /* define how to connect to the scanner! */
 scan with {: return parser.next_token(); :};
+
 
 /* Terminales (tokens retornados por el scanner). */
 terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL,
@@ -211,18 +220,33 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 
 // Funciones
 funciones ::= funcion | funciones funcion ;
-funcion ::= encabezadoFuncion bloque ;
+funcion ::= encabezadoFuncion bloque
+    {:
+        symbolTable.popFunction();
+    :};
 
 bloque ::= apertura_bloque sentencias cierre_bloque
          | apertura_bloque cierre_bloque | apertura_bloque encontrar_error cierre_bloque ;
 
-apertura_bloque ::= OPEN_BLOCK ;
+apertura_bloque ::= OPEN_BLOCK
+    {:
+        FunctionInfo currentFunction = symbolTable.getCurrentScope();
+        if (currentFunction != null) {
+            currentFunction.beginScope();
+        } else {
+            System.err.println("Error: No se puede abrir un bloque fuera de una función.");
+        }
+    :};
 
 cierre_bloque ::= CLOSE_BLOCK
     {:
         FunctionInfo currentTable = symbolTable.getCurrentScope();
-        currentTable.printScopes();
-        symbolTable.popFunction();
+        if (currentTable != null) {
+            currentTable.printScopes();
+            currentTable.endScope();
+        } else {
+            System.err.println("Error: No se puede cerrar un bloque fuera de una función.");
+        }
     :} ;
 
 

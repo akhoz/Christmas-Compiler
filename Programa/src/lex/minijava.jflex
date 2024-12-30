@@ -140,9 +140,9 @@ Digit = [0-9]
 /* error fallback */
 <YYINITIAL> {
   [a-zA-Z0-9_]+ {
-    System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
+    System.err.println("Error Lexico: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
   }
   . {
-    System.err.println("Esto está mal: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
+    System.err.println("Error Lexico: <" + yytext() + "> en línea: " + (yyline + 1) + ", columna: " + (yycolumn + 1));
   }
 }

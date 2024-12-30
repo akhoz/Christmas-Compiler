@@ -1,10 +1,13 @@
 
 rodolfo _verano_ abrecuento
     # While
+    rodolfo _y_ entrega 1 finregalo
     envuelve abreregalo _y_ minstix 0.85 cierraregalo abrecuento
 
         # If
+        rodolfo _x_ entrega 3 finregalo
         elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
+            rodolfo _z_ entrega 4 finregalo
 
             # If
             elfo abreregalo _x_ snowball 0.7 cierraregalo abrecuento
