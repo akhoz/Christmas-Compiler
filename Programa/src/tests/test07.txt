@@ -1,3 +1,5 @@
+ \_ aa
+ _/
 
 rodolfo _verano_ abrecuento
     # While
@@ -5,6 +7,9 @@ rodolfo _verano_ abrecuento
     rodolfo _a_ entrega 3 finregalo
     envuelve abreregalo _y_ minstix 0.85 cierraregalo abrecuento
 
+\_
+#$! _ sad
+_/
         # If
         rodolfo _x_ entrega 3 finregalo
         elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
@@ -41,3 +46,6 @@ rodolfo _verano_ abrecuento
 
     cierracuento
 cierracuento
+
+ \_ aa
+ _/

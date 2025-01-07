@@ -58,8 +58,8 @@ public class Tester {
         Reader reader = new BufferedReader(new FileReader(rutaScanner));
         Lexer lex = new Lexer(reader);
         parser parser = new parser(lex);
-
         try {
+            lexicalAnalysis(rutaScanner, "src/tests/output.txt");
             parser.parse();
             System.out.println("Análisis sintáctico completado correctamente.");
         } catch (Exception e) {

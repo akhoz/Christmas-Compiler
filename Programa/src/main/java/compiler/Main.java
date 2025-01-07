@@ -53,8 +53,8 @@ public class Main {
     public void menu() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("1. Generar lexer y otros archivos necesarios");
-            System.out.println("2. Usar el lexer");
+            System.out.println("1. Generar archivos necesarios");
+            System.out.println("2. Usar el compilador");
             System.out.println("3. Salir");
             System.out.print("Seleccione una opcion: ");
 
@@ -68,7 +68,7 @@ public class Main {
                     System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
                     String archivo = scanner.nextLine();
                     if (archivo.equals("")) {
-                        archivo = "src/tests/test05.txt";
+                        archivo = "src/tests/test07.txt";
                     }
                     File file = new File(archivo);
                     if (file.exists() && file.isFile() && archivo.endsWith(".txt")) {

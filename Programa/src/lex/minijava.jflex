@@ -30,13 +30,14 @@ InputCharacter = [^\r\n]
 WhiteSpace     = {LineTerminator} | [ \t\f]
 
 /* comments */
-Comment = "#" {InputCharacter}* {LineTerminator}? | "\\_" {CommentContent} "_/"
-CommentContent = ([^\_]|\\_+[^/])*
+Comment = "#" {InputCharacter}* {LineTerminator}? | "\\_" ([^\_]|_[^/])* "_/"
+CommentContent = ([^\_]|_[^/])*
 
 
 Identifier = _[a-zA-Z0-9_]+_
 
-DecIntegerLiteral = 0 | [1-9][0-9]*
+DecIntegerLiteral = "-"? (0 | [1-9][0-9]*)
+DecFloatLiteral = "-"? [0-9]+ "." [0-9]+
 Digit = [0-9]
 
 %state STRING
@@ -99,11 +100,10 @@ Digit = [0-9]
 /* Defaults */
 <YYINITIAL> "," { return symbol(sym.COMMA, yytext()); }
 <YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, yytext()); }
-<YYINITIAL> {Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
+<YYINITIAL> "-"?{Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
 <YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, true); }
 <YYINITIAL> "false" { return symbol(sym.BOOLEAN_LITERAL, false); }
 <YYINITIAL> \'[^\']*\'    { return symbol(sym.STRING_LITERAL, yytext()); }
-
 
 /* Main */
 <YYINITIAL> "_verano_"           { return symbol(sym.MAIN, yytext()); }
@@ -115,6 +115,7 @@ Digit = [0-9]
 
   /* literals */
   {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL, yytext()); }
+  {DecFloatLiteral}              { return symbol(sym.FLOAT_LITERAL, yytext()); }
   \"                             { string.setLength(0); yybegin(STRING); }
 
   /* comments */
