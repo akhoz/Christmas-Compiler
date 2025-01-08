@@ -6,8 +6,8 @@ public class FunctionInfo extends SymbolInfo{
     private Stack<HashMap<String, SymbolInfo>> scopes;
     private List<SymbolInfo> params;
 
-    public FunctionInfo(String name, String type, List<SymbolInfo> params) {
-        super(name, type);
+    public FunctionInfo(String name, String type, int line, int column, List<SymbolInfo> params) {
+        super(name, type, line, column);
         this.params = params;
         scopes = new Stack<>();
     }
@@ -54,10 +54,23 @@ public class FunctionInfo extends SymbolInfo{
     public void printScopes() {
         System.out.println("\n=== Tabla de símbolos de función '" + this.getName() + "' ===\n");
         for (int i = 0; i < scopes.size(); i++) {
-            System.out.println("Ámbito " + i + ": " + scopes.get(i).keySet());
+            System.out.print("Ámbito " + i + ": ");
+            HashMap<String, SymbolInfo> scope = scopes.get(i);
+            List<String> symbols = new ArrayList<>();
+
+            for (Map.Entry<String, SymbolInfo> entry : scope.entrySet()) {
+                String name = entry.getKey();
+                String type = entry.getValue().getType();
+                String line = String.valueOf(entry.getValue().getLine());
+                String column = String.valueOf(entry.getValue().getColumn());
+                symbols.add(name + ": " + type + " (" + line + ", " + column + ")");
+            }
+
+            System.out.println(symbols);
         }
         System.out.println();
     }
+
 
     public Set<String> getCurrentScopeSymbols() {
         if (!scopes.isEmpty()) {

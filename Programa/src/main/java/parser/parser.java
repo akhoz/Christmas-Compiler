@@ -8,6 +8,7 @@ package parser;
 import tables.SymbolTable;
 import tables.SymbolInfo;
 import tables.FunctionInfo;
+import tables.TokenInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -696,7 +697,7 @@ public class parser extends java_cup.runtime.lr_parser {
         this.symbolFactory = new DefaultSymbolFactory();
 
         // Inicializar el ámbito global
-        FunctionInfo globalFunction = new FunctionInfo("global", "void", new ArrayList<>());
+        FunctionInfo globalFunction = new FunctionInfo("global", "void",0,0, new ArrayList<>());
         if (!symbolTable.pushFunction(globalFunction)) {
             System.err.println("Error: Función global ya está definida.");
         }
@@ -966,10 +967,22 @@ class CUP$parser$actions {
 		int idright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object id = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
+    // Obtener el tipo
     String tipo = (String) t;
-    String nombre = (String) id;
-    RESULT = new SymbolInfo(nombre, tipo);
-    System.out.println("Creando símbolo: " + RESULT);
+
+    // Cast correcto de 'id' a TokenInfo
+    TokenInfo token = (TokenInfo) id;
+
+    // Obtener el nombre, línea y columna
+    String nombre = token.getValue();
+    int linea = token.getLine() + 1;
+    int columna = token.getColumn() + 1;
+
+    // Imprimir la información de declaración
+    //System.out.println("Declaración de variable '" + nombre + "' de tipo '" + tipo + "' en línea " + linea + ", columna " + columna);
+
+    // Crear el SymbolInfo con la información de posición
+    RESULT = new SymbolInfo(nombre, tipo, linea, columna);
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("nombrar",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1321,8 +1334,6 @@ class CUP$parser$actions {
     boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Declaración de variable " + info.getName());
     }
     RESULT = null; // 'creacion' no necesita un valor semántico
 
@@ -1346,8 +1357,6 @@ class CUP$parser$actions {
     boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Declaración de variable " + info.getName() + " con valor inicial");
     }
     RESULT = null; // 'creacionAsignacion' no necesita un valor semántico
 
@@ -1455,21 +1464,20 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        SymbolInfo funcSymbol = (SymbolInfo)i;
+        SymbolInfo funcSymbol = (SymbolInfo) i;
         String funcName = funcSymbol.getName();
         String returnType = funcSymbol.getType();
-        System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
+        System.out.println("\n Función: '" + funcName + "' con tipo de retorno '" + returnType + "'");
         List<SymbolInfo> paramList = (List<SymbolInfo>) e;
-        System.out.println("Número de parámetros: " + paramList.size());
-        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
+        for (SymbolInfo param : paramList) {
+            System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
+        }
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType,0,0, paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
         if (!inserted) {
             System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
-        } else {
-            System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
-                               + paramList.size() + " parámetros insertada en la tabla.");
         }
 
         // Iniciar el primer scope de la función
@@ -2006,7 +2014,7 @@ class CUP$parser$actions {
           case 121: // programa ::= encontrar_error 
             {
               Object RESULT =null;
-
+		 System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("programa",0, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

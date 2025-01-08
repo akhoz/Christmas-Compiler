@@ -1,5 +1,6 @@
 /* JFlex example: partial Java language lexer specification */
 package parser;
+import tables.TokenInfo;
 import java_cup.runtime.*;
 
 /**
@@ -97,6 +98,7 @@ Digit = [0-9]
 <YYINITIAL> "narra"              { return symbol(sym.PRINT, yytext()); }
 <YYINITIAL> "escucha"            { return symbol(sym.READ, yytext()); }
 
+
 /* Defaults */
 <YYINITIAL> "," { return symbol(sym.COMMA, yytext()); }
 <YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, yytext()); }
@@ -111,7 +113,7 @@ Digit = [0-9]
 
 <YYINITIAL> {
   /* identifiers */
-  {Identifier}                   { return symbol(sym.IDENTIFIER, yytext()); }
+  {Identifier}                   { return symbol(sym.IDENTIFIER, new TokenInfo(yytext(), yyline, yycolumn)); }
 
   /* literals */
   {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL, yytext()); }

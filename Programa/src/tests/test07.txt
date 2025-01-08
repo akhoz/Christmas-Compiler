@@ -1,6 +1,21 @@
  \_ aa
  _/
 
+rodolfo _func_ abreregalo rodolfo _a_ cierraregalo abrecuento
+    cupido _variabledefunc1_ finregalo
+
+    elfo abreregalo _variablefuc1_ snowball 0.8 cierraregalo abrecuento
+        trueno _varbool_ finregalo
+         \_ aa
+         _/
+    cierracuento
+
+cierracuento
+
+trueno _funcion2_ abreregalo rodolfo _arg1_ , cupido _arg2_ cierraregalo abrecuento
+    cometa _varfunc2_ finregalo
+cierracuento
+
 rodolfo _verano_ abrecuento
     # While
     rodolfo _y_ entrega 1 finregalo

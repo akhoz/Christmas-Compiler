@@ -2,6 +2,7 @@ package parser ;
 import tables.SymbolTable;
 import tables.SymbolInfo;
 import tables.FunctionInfo;
+import tables.TokenInfo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ parser code {:
         this.symbolFactory = new DefaultSymbolFactory();
 
         // Inicializar el ámbito global
-        FunctionInfo globalFunction = new FunctionInfo("global", "void", new ArrayList<>());
+        FunctionInfo globalFunction = new FunctionInfo("global", "void",0,0, new ArrayList<>());
         if (!symbolTable.pushFunction(globalFunction)) {
             System.err.println("Error: Función global ya está definida.");
         }
@@ -83,7 +84,7 @@ scan with {: return parser.next_token(); :};
 terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ, PLUS, STRING_LITERAL,
  FLOAT, CHAR, OPEN_BLOCK, CLOSE_BLOCK, OPEN_BRACKET, CLOSE_BRACKET, OPEN_PAREN, CLOSE_PAREN,
  MINUS, TIMES, DIV, MOD, POW, INCREMENT, DECREMENT, NEQ, LT, LE, GT, GE, AND, OR, NOT, SEMICOLON,
- IF, ELSE, WHILE, FOR, SWITCH, CASE, DEFAULT, RETURN, COLON, PRINT, READ, MAIN, COMMA, CHAR_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL;
+ IF, ELSE, WHILE, FOR, SWITCH, CASE, DEFAULT, RETURN, COLON, PRINT, READ, MAIN, COMMA, CHAR_LITERAL, FLOAT_LITERAL, BOOLEAN_LITERAL, TokenInfo;
 
 // no terminales
 non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
@@ -148,10 +149,22 @@ literales_num ::= INTEGER_LITERAL | FLOAT_LITERAL | CHAR_LITERAL ;
 
 nombrar ::= tipos:t IDENTIFIER:id
 {:
+    // Obtener el tipo
     String tipo = (String) t;
-    String nombre = (String) id;
-    RESULT = new SymbolInfo(nombre, tipo);
-    System.out.println("Creando símbolo: " + RESULT);
+
+    // Cast correcto de 'id' a TokenInfo
+    TokenInfo token = (TokenInfo) id;
+
+    // Obtener el nombre, línea y columna
+    String nombre = token.getValue();
+    int linea = token.getLine() + 1;
+    int columna = token.getColumn() + 1;
+
+    // Imprimir la información de declaración
+    //System.out.println("Declaración de variable '" + nombre + "' de tipo '" + tipo + "' en línea " + linea + ", columna " + columna);
+
+    // Crear el SymbolInfo con la información de posición
+    RESULT = new SymbolInfo(nombre, tipo, linea, columna);
 :};
 
 // Expresiones
@@ -197,8 +210,6 @@ creacion ::= nombrar:n SEMICOLON
     boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Declaración de variable " + info.getName());
     }
     RESULT = null; // 'creacion' no necesita un valor semántico
 :};
@@ -210,8 +221,6 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     boolean inserted = currentTable.insert(info.getName(), info);
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    } else {
-        System.out.println("Declaración de variable " + info.getName() + " con valor inicial");
     }
     RESULT = null; // 'creacionAsignacion' no necesita un valor semántico
 :};
@@ -252,21 +261,20 @@ cierre_bloque ::= CLOSE_BLOCK
 
 encabezadoFuncion ::= nombrar:i parametros:e
     {:
-        SymbolInfo funcSymbol = (SymbolInfo)i;
+        SymbolInfo funcSymbol = (SymbolInfo) i;
         String funcName = funcSymbol.getName();
         String returnType = funcSymbol.getType();
-        System.out.println("Creando función '" + funcName + "' con tipo de retorno '" + returnType + "'");
+        System.out.println("\n Función: '" + funcName + "' con tipo de retorno '" + returnType + "'");
         List<SymbolInfo> paramList = (List<SymbolInfo>) e;
-        System.out.println("Número de parámetros: " + paramList.size());
-        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, paramList);
+        for (SymbolInfo param : paramList) {
+            System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
+        }
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType,0,0, paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
         if (!inserted) {
             System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
-        } else {
-            System.out.println("Función '" + funcName + "' con tipo de retorno '" + returnType + "' y "
-                               + paramList.size() + " parámetros insertada en la tabla.");
         }
 
         // Iniciar el primer scope de la función
@@ -363,6 +371,6 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones | encontrar_error ;
+programa ::= conjuntoFunciones | encontrar_error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos MAIN bloque ;

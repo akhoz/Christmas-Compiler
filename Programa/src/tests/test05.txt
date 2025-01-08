@@ -1,4 +1,4 @@
- rodolfo _func01_ abreregalo rodolfo _x_ , bromista _a_ cierraregalo abrecuento
+ rodolfo _func01_ abreregalo rodolfo _w_ , bromista _a_ cierraregalo abrecuento
     bromista _y_ entrega 0.75 finregalo
     rodolfo _z_ entrega _y_ navidad 3 finregalo
 cierracuento
@@ -6,6 +6,6 @@ cierracuento
 
 rodolfo _verano_ abrecuento
  bromista _x_ entrega 0.75 finregalo
- rodolfo _z_ entrega _y_ navidad 3 finregalo
+ rodolfo _t_ entrega _y_ navidad 3 finregalo
  _func01_ finregalo
 cierracuento

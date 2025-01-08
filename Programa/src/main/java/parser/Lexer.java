@@ -4,6 +4,7 @@
 
 /* JFlex example: partial Java language lexer specification */
 package parser;
+import tables.TokenInfo;
 import java_cup.runtime.*;
 
 /**
@@ -1043,7 +1044,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 78: break;
           case 17:
-            { return symbol(sym.IDENTIFIER, yytext());
+            { return symbol(sym.IDENTIFIER, new TokenInfo(yytext(), yyline, yycolumn));
             }
           // fall through
           case 79: break;
