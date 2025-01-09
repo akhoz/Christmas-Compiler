@@ -983,7 +983,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 66: break;
           case 5:
-            { return symbol(sym.INTEGER_LITERAL, yytext());
+            { return symbol(sym.INTEGER_LITERAL, new TokenInfo(yytext(), yyline, yycolumn));
             }
           // fall through
           case 67: break;
@@ -994,12 +994,14 @@ public class Lexer implements java_cup.runtime.Scanner {
           case 68: break;
           case 7:
             { yybegin(YYINITIAL);
-                                   return symbol(sym.STRING_LITERAL, string.toString());
+                                   String content = string.toString();
+                                   string.setLength(0);
+                                   return symbol(sym.STRING_LITERAL, new TokenInfo(content, yyline, yycolumn));
             }
           // fall through
           case 69: break;
           case 8:
-            { return symbol(sym.STRING_LITERAL, yytext());
+            { return symbol(sym.STRING_LITERAL, new TokenInfo(yytext(), yyline, yycolumn));
             }
           // fall through
           case 70: break;
@@ -1034,12 +1036,12 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 76: break;
           case 15:
-            { return symbol(sym.CHAR_LITERAL, yytext());
+            { return symbol(sym.CHAR_LITERAL, new TokenInfo(yytext(), yyline, yycolumn));
             }
           // fall through
           case 77: break;
           case 16:
-            { return symbol(sym.FLOAT_LITERAL, yytext());
+            { return symbol(sym.FLOAT_LITERAL, new TokenInfo(yytext(), yyline, yycolumn));
             }
           // fall through
           case 78: break;
@@ -1064,7 +1066,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 82: break;
           case 21:
-            { return symbol(sym.BOOLEAN_LITERAL, true);
+            { return symbol(sym.BOOLEAN_LITERAL, new TokenInfo("true", yyline, yycolumn));
             }
           // fall through
           case 83: break;
@@ -1079,7 +1081,7 @@ public class Lexer implements java_cup.runtime.Scanner {
           // fall through
           case 85: break;
           case 24:
-            { return symbol(sym.BOOLEAN_LITERAL, false);
+            { return symbol(sym.BOOLEAN_LITERAL, new TokenInfo("false", yyline, yycolumn));
             }
           // fall through
           case 86: break;

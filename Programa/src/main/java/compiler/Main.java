@@ -96,20 +96,7 @@ public class Main {
      *
      */
     public static void main(String[] args) {
-        if (suma() < 5) {
-            System.out.println("Menor a 5");
-        }
-        suma();
-        int result = suma();
-        int result2 = suma() + 5;
-
-
-
         Main mainInstance = new Main();
         mainInstance.menu();
-    }
-
-    public static int suma() {
-        return 5;
     }
 }

@@ -43,11 +43,9 @@ public class FunctionInfo extends SymbolInfo{
             HashMap<String, SymbolInfo> scope = scopes.get(i);
             if (scope.containsKey(name)) {
                 SymbolInfo info = scope.get(name);
-                System.out.println("Símbolo encontrado: " + info);
                 return info;
             }
         }
-        System.out.println("Símbolo no encontrado: " + name);
         return null;
     }
 

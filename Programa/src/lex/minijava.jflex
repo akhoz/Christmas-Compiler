@@ -101,11 +101,11 @@ Digit = [0-9]
 
 /* Defaults */
 <YYINITIAL> "," { return symbol(sym.COMMA, yytext()); }
-<YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, yytext()); }
-<YYINITIAL> "-"?{Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, yytext()); }
-<YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, true); }
-<YYINITIAL> "false" { return symbol(sym.BOOLEAN_LITERAL, false); }
-<YYINITIAL> \'[^\']*\'    { return symbol(sym.STRING_LITERAL, yytext()); }
+<YYINITIAL> \'[^\']\' { return symbol(sym.CHAR_LITERAL, new TokenInfo(yytext(), yyline, yycolumn)); }
+<YYINITIAL> "-"?{Digit}+("."{Digit}+) { return symbol(sym.FLOAT_LITERAL, new TokenInfo(yytext(), yyline, yycolumn)); }
+<YYINITIAL> "true"  { return symbol(sym.BOOLEAN_LITERAL, new TokenInfo("true", yyline, yycolumn)); }
+<YYINITIAL> "false" { return symbol(sym.BOOLEAN_LITERAL, new TokenInfo("false", yyline, yycolumn)); }
+<YYINITIAL> \'[^\']*\'    { return symbol(sym.STRING_LITERAL, new TokenInfo(yytext(), yyline, yycolumn)); }
 
 /* Main */
 <YYINITIAL> "_verano_"           { return symbol(sym.MAIN, yytext()); }
@@ -116,8 +116,8 @@ Digit = [0-9]
   {Identifier}                   { return symbol(sym.IDENTIFIER, new TokenInfo(yytext(), yyline, yycolumn)); }
 
   /* literals */
-  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL, yytext()); }
-  {DecFloatLiteral}              { return symbol(sym.FLOAT_LITERAL, yytext()); }
+  {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL, new TokenInfo(yytext(), yyline, yycolumn)); }
+  {DecFloatLiteral}              { return symbol(sym.FLOAT_LITERAL, new TokenInfo(yytext(), yyline, yycolumn)); }
   \"                             { string.setLength(0); yybegin(STRING); }
 
   /* comments */
@@ -129,7 +129,9 @@ Digit = [0-9]
 
 <STRING> {
   \"                             { yybegin(YYINITIAL);
-                                   return symbol(sym.STRING_LITERAL, string.toString()); }
+                                   String content = string.toString();
+                                   string.setLength(0);
+                                   return symbol(sym.STRING_LITERAL, new TokenInfo(content, yyline, yycolumn)); }
   [^\n\r\"\\]+                   { string.append(yytext()); }
   \\t                            { string.append('\t'); }
   \\n                            { string.append('\n'); }

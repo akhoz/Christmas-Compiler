@@ -3,6 +3,7 @@ import tables.SymbolTable;
 import tables.SymbolInfo;
 import tables.FunctionInfo;
 import tables.TokenInfo;
+import semanticalAnalysis.Variable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -90,7 +91,7 @@ terminal BOOLEAN, BREAK, IDENTIFIER, INTEGER, INTEGER_LITERAL, STRING, EQ, EQEQ,
 non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacion, nombrar,
  literales, funciones, funcion, bloque, encabezadoFuncion, parametros, parametroAux, parametro,
  estructuraControl, if_stmt, else_if_list, else_if_list_opt, while_cicle, switch_stmt, for_cicle, return_stmt, break_stmt, expresion,
- expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo, encontrar_error, encontrar_error_aux,
+ expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
  apertura_bloque, cierre_bloque, asignar, array_size;
@@ -111,10 +112,6 @@ precedence left POW;
 //produccion de inicio
 start with programa;
 
-// Errores
-encontrar_error ::= error encontrar_error_aux ;
-encontrar_error_aux ::= encontrar_error_aux error | /* vacio */ ;
-
 // Generalidades
 tipos ::= INTEGER {: RESULT = "int"; :}
        | STRING  {: RESULT = "string"; :}
@@ -124,25 +121,31 @@ tipos ::= INTEGER {: RESULT = "int"; :}
        ;
 
 literales ::= INTEGER_LITERAL:i
-    {:
-        RESULT = Integer.valueOf(i.toString());
-    :}
-  | STRING_LITERAL:s
-    {:
-        RESULT = s.toString();
-    :}
-  | CHAR_LITERAL:c
-    {:
-        RESULT = c.toString();
-    :}
-  | BOOLEAN_LITERAL:b
-    {:
-        RESULT = Boolean.valueOf(b.toString());
-    :}
-  | FLOAT_LITERAL:f
-    {:
-        RESULT = Float.valueOf(f.toString());
-    :};
+{:
+    TokenInfo token = (TokenInfo) i;
+    RESULT = new SymbolInfo("int", "int", token.getLine() + 1, token.getColumn() + 1);
+:}
+| STRING_LITERAL:s
+{:
+    TokenInfo token = (TokenInfo) s;
+    RESULT = new SymbolInfo("string", "string", token.getLine() + 1, token.getColumn() + 1);
+:}
+| CHAR_LITERAL:c
+{:
+    TokenInfo token = (TokenInfo) c;
+    RESULT = new SymbolInfo("char", "char", token.getLine() + 1, token.getColumn() + 1);
+:}
+| BOOLEAN_LITERAL:b
+{:
+    TokenInfo token = (TokenInfo) b;
+    RESULT = new SymbolInfo("boolean", "boolean", token.getLine() + 1, token.getColumn() + 1);
+:}
+| FLOAT_LITERAL:f
+{:
+    TokenInfo token = (TokenInfo) f;
+    RESULT = new SymbolInfo("float", "float", token.getLine() + 1, token.getColumn() + 1);
+:}
+;
 
 // Literales Numéricos
 literales_num ::= INTEGER_LITERAL | FLOAT_LITERAL | CHAR_LITERAL ;
@@ -190,16 +193,26 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | expresion_aritmetica MOD expresion_aritmetica
                        | expresion_aritmetica POW expresion_aritmetica
                        | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
-                       | IDENTIFIER
                        | literales
                        | unary_operators
                        | funcion
-                       | encontrar_error SEMICOLON
-                       | encontrar_error CLOSE_PAREN ;
+                       | error SEMICOLON
+                       | error CLOSE_PAREN
+                       | IDENTIFIER:id
+                       {:
+                           TokenInfo token = (TokenInfo) id;
+                           SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+
+                           FunctionInfo currentTable = symbolTable.getCurrentScope();
+
+                           Variable.checkExistance(variable, currentTable);
+
+                           RESULT = variable;
+                       :};
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | error SEMICOLON ;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
@@ -207,22 +220,24 @@ creacion ::= nombrar:n SEMICOLON
 {:
     SymbolInfo info = (SymbolInfo) n;
     FunctionInfo currentTable = symbolTable.getCurrentScope();
+
+    Variable.checkRepeated(info, currentTable);
+
     boolean inserted = currentTable.insert(info.getName(), info);
-    if (!inserted) {
-        System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    }
-    RESULT = null; // 'creacion' no necesita un valor semántico
+
+    RESULT = null;
 :};
 
 creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 {:
     SymbolInfo info = (SymbolInfo) n;
     FunctionInfo currentTable = symbolTable.getCurrentScope();
+
+    Variable.checkRepeated(info, currentTable);
+
     boolean inserted = currentTable.insert(info.getName(), info);
-    if (!inserted) {
-        System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
-    }
-    RESULT = null; // 'creacionAsignacion' no necesita un valor semántico
+
+    RESULT = null;
 :};
 
 
@@ -235,7 +250,7 @@ funcion ::= encabezadoFuncion bloque
     :};
 
 bloque ::= apertura_bloque sentencias cierre_bloque
-         | apertura_bloque cierre_bloque | apertura_bloque encontrar_error cierre_bloque ;
+         | apertura_bloque cierre_bloque | apertura_bloque error cierre_bloque ;
 
 apertura_bloque ::= OPEN_BLOCK
     {:
@@ -273,9 +288,6 @@ encabezadoFuncion ::= nombrar:i parametros:e
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
-        if (!inserted) {
-            System.err.println("Error semántico: La función '" + funcName + "' ya existe en este ámbito.");
-        }
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
@@ -371,6 +383,6 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones | encontrar_error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
+programa ::= conjuntoFunciones | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos MAIN bloque ;
