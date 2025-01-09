@@ -21,7 +21,9 @@ public class Variable {
         }
     }
 
-    public static void checkType(SymbolInfo variable, SymbolInfo expressionResult) {
+    public static void checkType(SymbolInfo variable, SymbolInfo expressionResult, FunctionInfo currentScope) {
+        variable = currentScope.lookup(variable.getName());
+
         String varType = variable.getType();
         String exprType = expressionResult.getType();
 

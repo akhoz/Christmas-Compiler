@@ -4,12 +4,14 @@
 rodolfo _func_ abreregalo rodolfo _a_ cierraregalo abrecuento
     cupido _variabledefunc1_ finregalo
 
+    trueno _vartipomalo_ entrega 1 finregalo
+    _vartipomalo_ entrega 'holamundo' finregalo
+
     elfo abreregalo _variablefuc1_ snowball 0.8 cierraregalo abrecuento
         trueno _varbool_ finregalo
          \_ aa
          _/
     cierracuento
-
 cierracuento
 
 trueno _funcion2_ abreregalo rodolfo _arg1_ , cupido _arg2_ cierraregalo abrecuento
@@ -21,6 +23,7 @@ rodolfo _verano_ abrecuento
     rodolfo _y_ entrega 1 finregalo
     rodolfo _a_ entrega 3 finregalo
     envuelve abreregalo _y_ minstix 0.85 cierraregalo abrecuento
+    rodolfo finregalo
 
 \_
 #$! _ sad
@@ -28,12 +31,12 @@ _/
         # If
         rodolfo _x_ entrega 3 finregalo
         elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
-            rodolfo _z_ entrega 4 finregalo
+            rodolfo _z_ entrega _pepe_ finregalo
 
             # If
-            elfo abreregalo _x_ snowball 0.7 cierraregalo abrecuento
+            elfo abreregalo _juan_ snowball 0.7 cierraregalo abrecuento
                 narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
-                rodolfo _w_ entrega 4 finregalo
+                rodolfo _a_ entrega 4 finregalo
             cierracuento
 
             # Elif
@@ -44,19 +47,21 @@ _/
 
             # Elif
             hada elfo abreregalo _x_ evergreen 0.81 cierraregalo abrecuento
-                narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+                narra abreregalo _x_ , "Hello World!!", true , 1 , 0.7 , 'a' cierraregalo finregalo
             cierracuento
 
             # Else
             hada abrecuento
                bromista navidad finregalo
             cierracuento
+            rodolfo finregalo
 
         cierracuento
 
         # Else
         hada abrecuento
-            narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+            narra abreregalo _p_ , "Hello World!!" cierraregalo finregalo
+
         cierracuento
 
     cierracuento

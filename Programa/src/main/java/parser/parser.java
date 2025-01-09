@@ -960,7 +960,10 @@ class CUP$parser$actions {
           case 15: // expresion ::= expresion_logica 
             {
               Object RESULT =null;
-
+		int elleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int elright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object el = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = el; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -996,7 +999,10 @@ class CUP$parser$actions {
           case 19: // expresion_logica ::= expresion_comparacion 
             {
               Object RESULT =null;
-
+		int ecleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ecright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ec = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = ec; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1059,7 +1065,10 @@ class CUP$parser$actions {
           case 26: // expresion_comparacion ::= expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ealeft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int earight = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = ea; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1131,7 +1140,10 @@ class CUP$parser$actions {
           case 34: // expresion_aritmetica ::= literales 
             {
               Object RESULT =null;
-
+		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = l; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1296,6 +1308,20 @@ class CUP$parser$actions {
           case 51: // asignar ::= IDENTIFIER EQ expresion SEMICOLON 
             {
               Object RESULT =null;
+		int idleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		
+    TokenInfo token = (TokenInfo) id;
+    SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+    SymbolInfo expressionResult = (SymbolInfo) e;
+    FunctionInfo currentTable = symbolTable.getCurrentScope();
+
+    // Verificar compatibilidad de tipos
+    Variable.checkType(variable, expressionResult, currentTable);
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("asignar",49, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1335,10 +1361,13 @@ class CUP$parser$actions {
 		
     SymbolInfo info = (SymbolInfo) n;
     FunctionInfo currentTable = symbolTable.getCurrentScope();
+    SymbolInfo expressionResult = (SymbolInfo) e;
 
-    Variable.checkRepeated(info, currentTable);
+     Variable.checkRepeated(info, currentTable);
 
     boolean inserted = currentTable.insert(info.getName(), info);
+
+    Variable.checkType(info, expressionResult, currentTable);
 
     RESULT = null;
 
