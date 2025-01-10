@@ -193,7 +193,7 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | expresion_aritmetica MOD expresion_aritmetica
                        | expresion_aritmetica POW expresion_aritmetica
                        | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
-                       | literales
+                       | literales:l {: RESULT = l; :}
                        | unary_operators
                        | funcion
                        | error SEMICOLON
@@ -214,7 +214,17 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
 sentencias ::= sentencia | sentencias sentencia ;
 sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | error SEMICOLON ;
 
-asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
+asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
+{:
+    TokenInfo token = (TokenInfo) id;
+    SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+    SymbolInfo expressionResult = (SymbolInfo) e;
+
+    // Verificar compatibilidad de tipos
+    System.out.println("----Expresion: "+ e);
+
+:};
+
 
 creacion ::= nombrar:n SEMICOLON
 {:
