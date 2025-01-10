@@ -41,6 +41,7 @@ public class Variable {
 
             // Si no es un literal (es un identifier) existe en la tabla de simbolos, entonces lo bscamos primero y luego comparamos tipos
             if (SymbolTableExpressionResult != null) {
+                System.out.println(SymbolTableExpressionResult.getName() + SymbolTableVariable + "-------");
                 String exprType = SymbolTableExpressionResult.getType();
                 if (!varType.equals(exprType)) {
                     System.err.println("Error semantico: Tipos incompatibles. Se esperaba '" + varType + "' pero se encontró '" + exprType + "'. " +

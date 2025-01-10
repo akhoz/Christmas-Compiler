@@ -1302,25 +1302,11 @@ class CUP$parser$actions {
 		
     TokenInfo token = (TokenInfo) id;
     SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
-
+    SymbolInfo expressionResult = (SymbolInfo) e;
     FunctionInfo currentTable = symbolTable.getCurrentScope();
 
-    if (e instanceof FunctionInfo) {
-        // Si la expresión es una función
-            System.out.println("IF++++++++++++++++++++++++++");
-        FunctionInfo functionResult = (FunctionInfo) e;
-        SymbolInfo expressionFunction = new SymbolInfo("function", functionResult.getType(), 0, 0);
-
-        // Verificar compatibilidad de tipos
-        Variable.checkType(variable, expressionFunction, currentTable);
-    } else {
-        // Si la expresión no es una función (es un SymbolInfo)
-        System.out.println("ELSE--------------------------------");
-        SymbolInfo expressionResult = (SymbolInfo) e;
-
-        // Verificar compatibilidad de tipos
-        Variable.checkType(variable, expressionResult, currentTable);
-    }
+    // Verificar compatibilidad de tipos
+    Variable.checkType(variable, expressionResult, currentTable);
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("asignar",49, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1579,10 +1565,18 @@ class CUP$parser$actions {
         TokenInfo token = (TokenInfo) id;
 
         String funcName = token.getValue();
-        System.out.println(token.getValue());
-        FunctionInfo function = symbolTable.lookupFunction("_func_");
-        System.out.println(function + "------------+++-----");
-        RESULT = function;
+        FunctionInfo function = symbolTable.lookupFunction(funcName);
+
+        if (function != null) {
+
+            SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
+
+            RESULT = symbolFunc;
+
+        } else {
+            System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + token.getLine() + " y columna: " + token.getColumn());
+            RESULT = null;
+        }
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("llamada_funcion",51, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
