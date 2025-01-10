@@ -94,7 +94,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos;
 
 
 // Precedencias
@@ -195,7 +195,7 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
                        | literales:l {: RESULT = l; :}
                        | unary_operators
-                       | funcion
+                       | llamada_funcion:lf {: RESULT = lf; :}
                        | error SEMICOLON
                        | error CLOSE_PAREN
                        | IDENTIFIER:id
@@ -206,23 +206,36 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                            FunctionInfo currentTable = symbolTable.getCurrentScope();
 
                            Variable.checkExistance(variable, currentTable);
-
                            RESULT = variable;
                        :};
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | error SEMICOLON ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | llamada_funcion SEMICOLON | error SEMICOLON ;
 
 asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
 {:
     TokenInfo token = (TokenInfo) id;
     SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
-    SymbolInfo expressionResult = (SymbolInfo) e;
+
     FunctionInfo currentTable = symbolTable.getCurrentScope();
 
-    // Verificar compatibilidad de tipos
-    Variable.checkType(variable, expressionResult, currentTable);
+    if (e instanceof FunctionInfo) {
+        // Si la expresión es una función
+            System.out.println("IF++++++++++++++++++++++++++");
+        FunctionInfo functionResult = (FunctionInfo) e;
+        SymbolInfo expressionFunction = new SymbolInfo("function", functionResult.getType(), 0, 0);
+
+        // Verificar compatibilidad de tipos
+        Variable.checkType(variable, expressionFunction, currentTable);
+    } else {
+        // Si la expresión no es una función (es un SymbolInfo)
+        System.out.println("ELSE--------------------------------");
+        SymbolInfo expressionResult = (SymbolInfo) e;
+
+        // Verificar compatibilidad de tipos
+        Variable.checkType(variable, expressionResult, currentTable);
+    }
 :};
 
 creacion ::= nombrar:n SEMICOLON
@@ -243,7 +256,7 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     FunctionInfo currentTable = symbolTable.getCurrentScope();
     SymbolInfo expressionResult = (SymbolInfo) e;
 
-     Variable.checkRepeated(info, currentTable);
+    Variable.checkRepeated(info, currentTable);
 
     boolean inserted = currentTable.insert(info.getName(), info);
 
@@ -256,10 +269,7 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 
 // Funciones
 funciones ::= funcion | funciones funcion ;
-funcion ::= encabezadoFuncion bloque
-    {:
-        symbolTable.popFunction();
-    :};
+funcion ::= encabezadoFuncion bloque ;
 
 bloque ::= apertura_bloque sentencias cierre_bloque
          | apertura_bloque cierre_bloque | apertura_bloque error cierre_bloque ;
@@ -331,6 +341,19 @@ parametroAux ::= parametro:p
 
 
 parametro ::= nombrar:n {: RESULT = n; :};
+
+llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
+    {:
+        TokenInfo token = (TokenInfo) id;
+
+        String funcName = token.getValue();
+        System.out.println(token.getValue());
+        FunctionInfo function = symbolTable.lookupFunction("_func_");
+        System.out.println(function + "------------+++-----");
+        RESULT = function;
+    :} ;
+
+argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
 
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
