@@ -20,6 +20,7 @@ public class SymbolTable {
 
 
     public FunctionInfo lookupFunction(String name) {
+        System.out.println(functionScopes);
         for (int i = functionScopes.size() - 1; i >= 0; i--) {
             FunctionInfo function = functionScopes.get(i);
             if (function.getName().equals(name)) {

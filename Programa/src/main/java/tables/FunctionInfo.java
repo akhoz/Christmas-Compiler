@@ -3,7 +3,7 @@ package tables;
 import java.util.*;
 
 public class FunctionInfo extends SymbolInfo{
-    private Stack<HashMap<String, SymbolInfo>> scopes;
+    public Stack<HashMap<String, SymbolInfo>> scopes;
     private List<SymbolInfo> params;
 
     public FunctionInfo(String name, String type, int line, int column, List<SymbolInfo> params) {
