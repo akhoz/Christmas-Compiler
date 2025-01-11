@@ -10,6 +10,8 @@ import tables.SymbolInfo;
 import tables.FunctionInfo;
 import tables.TokenInfo;
 import semanticalAnalysis.Variable;
+import semanticalAnalysis.Function;
+import semanticalAnalysis.ControlStructureOperations;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -946,7 +948,9 @@ class CUP$parser$actions {
           case 16: // expresion_logica ::= expresion_logica AND expresion_logica 
             {
               Object RESULT =null;
-
+		
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -955,7 +959,9 @@ class CUP$parser$actions {
           case 17: // expresion_logica ::= expresion_logica OR expresion_logica 
             {
               Object RESULT =null;
-
+		
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -964,7 +970,9 @@ class CUP$parser$actions {
           case 18: // expresion_logica ::= NOT expresion_logica 
             {
               Object RESULT =null;
-
+		
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -976,7 +984,9 @@ class CUP$parser$actions {
 		int ecleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int ecright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object ec = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = ec; 
+		
+                       RESULT = ec;
+                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -985,7 +995,22 @@ class CUP$parser$actions {
           case 20: // expresion_comparacion ::= expresion_aritmetica EQEQ expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                           SymbolInfo op1 = (SymbolInfo) ea1;
+                           SymbolInfo op2 = (SymbolInfo) ea2;
 
+                           if (!op1.getType().equals(op2.getType())) {
+                                System.err.println("Error semantico, comparando dos cosas diferentes");
+                           }
+
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -994,7 +1019,9 @@ class CUP$parser$actions {
           case 21: // expresion_comparacion ::= expresion_aritmetica NEQ expresion_aritmetica 
             {
               Object RESULT =null;
-
+		
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1003,7 +1030,9 @@ class CUP$parser$actions {
           case 22: // expresion_comparacion ::= expresion_aritmetica LT expresion_aritmetica 
             {
               Object RESULT =null;
-
+		
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1012,7 +1041,9 @@ class CUP$parser$actions {
           case 23: // expresion_comparacion ::= expresion_aritmetica LE expresion_aritmetica 
             {
               Object RESULT =null;
-
+		
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1021,7 +1052,9 @@ class CUP$parser$actions {
           case 24: // expresion_comparacion ::= expresion_aritmetica GT expresion_aritmetica 
             {
               Object RESULT =null;
-
+		
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1030,7 +1063,9 @@ class CUP$parser$actions {
           case 25: // expresion_comparacion ::= expresion_aritmetica GE expresion_aritmetica 
             {
               Object RESULT =null;
-
+		
+                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1051,7 +1086,19 @@ class CUP$parser$actions {
           case 27: // expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1060,7 +1107,19 @@ class CUP$parser$actions {
           case 28: // expresion_aritmetica ::= expresion_aritmetica MINUS expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1069,7 +1128,19 @@ class CUP$parser$actions {
           case 29: // expresion_aritmetica ::= expresion_aritmetica TIMES expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                           SymbolInfo op1 = (SymbolInfo) ea1;
+                           SymbolInfo op2 = (SymbolInfo) ea2;
+                           FunctionInfo currentTable = symbolTable.getCurrentScope();
+                           ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                           RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1078,7 +1149,19 @@ class CUP$parser$actions {
           case 30: // expresion_aritmetica ::= expresion_aritmetica DIV expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1087,7 +1170,19 @@ class CUP$parser$actions {
           case 31: // expresion_aritmetica ::= expresion_aritmetica MOD expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1096,7 +1191,19 @@ class CUP$parser$actions {
           case 32: // expresion_aritmetica ::= expresion_aritmetica POW expresion_aritmetica 
             {
               Object RESULT =null;
-
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1105,7 +1212,12 @@ class CUP$parser$actions {
           case 33: // expresion_aritmetica ::= OPEN_PAREN expresion_aritmetica CLOSE_PAREN 
             {
               Object RESULT =null;
-
+		int ealeft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int earight = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object ea = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		
+                            RESULT = ea;
+                       
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1126,7 +1238,10 @@ class CUP$parser$actions {
           case 35: // expresion_aritmetica ::= unary_operators 
             {
               Object RESULT =null;
-
+		int uoleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int uoright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object uo = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		 RESULT = uo; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
