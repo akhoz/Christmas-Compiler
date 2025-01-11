@@ -103,16 +103,16 @@ Linea: 32 Columna: 5 Token: WHILE Valor: envuelve
 Linea: 32 Columna: 14 Token: OPEN_PAREN Valor: abreregalo
 Linea: 32 Columna: 25 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=31, column=24}
 Linea: 32 Columna: 29 Token: GT Valor: minstix
-Linea: 32 Columna: 37 Token: FLOAT_LITERAL Valor: TokenInfo{value='0.85', line=31, column=36}
-Linea: 32 Columna: 42 Token: CLOSE_PAREN Valor: cierraregalo
-Linea: 32 Columna: 55 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 32 Columna: 37 Token: FLOAT_LITERAL Valor: TokenInfo{value='0.5', line=31, column=36}
+Linea: 32 Columna: 41 Token: CLOSE_PAREN Valor: cierraregalo
+Linea: 32 Columna: 54 Token: OPEN_BLOCK Valor: abrecuento
 Linea: 33 Columna: 5 Token: INTEGER Valor: rodolfo
 Linea: 33 Columna: 13 Token: SEMICOLON Valor: finregalo
-Linea: 39 Columna: 9 Token: INTEGER Valor: rodolfo
-Linea: 39 Columna: 17 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=38, column=16}
-Linea: 39 Columna: 21 Token: EQ Valor: entrega
-Linea: 39 Columna: 29 Token: INTEGER_LITERAL Valor: TokenInfo{value='3', line=38, column=28}
-Linea: 39 Columna: 31 Token: SEMICOLON Valor: finregalo
+Linea: 39 Columna: 9 Token: FLOAT Valor: bromista
+Linea: 39 Columna: 18 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=38, column=17}
+Linea: 39 Columna: 22 Token: EQ Valor: entrega
+Linea: 39 Columna: 30 Token: FLOAT_LITERAL Valor: TokenInfo{value='3.0', line=38, column=29}
+Linea: 39 Columna: 34 Token: SEMICOLON Valor: finregalo
 Linea: 40 Columna: 9 Token: IF Valor: elfo
 Linea: 40 Columna: 14 Token: OPEN_PAREN Valor: abreregalo
 Linea: 40 Columna: 25 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=39, column=24}

@@ -194,34 +194,51 @@ expresion_logica ::= expresion_logica AND expresion_logica
 
 expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                        {:
-                           SymbolInfo op1 = (SymbolInfo) ea1;
-                           SymbolInfo op2 = (SymbolInfo) ea2;
-
-                           if (!op1.getType().equals(op2.getType())) {
-                                System.err.println("Error semantico, comparando dos cosas diferentes");
-                           }
-
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
-                        | expresion_aritmetica NEQ expresion_aritmetica
+                        | expresion_aritmetica:ea1 NEQ expresion_aritmetica:ea2
                         {:
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
-                        | expresion_aritmetica LT expresion_aritmetica
+                        | expresion_aritmetica:ea1 LT expresion_aritmetica:ea2
                         {:
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
-                        | expresion_aritmetica LE expresion_aritmetica
+                        | expresion_aritmetica:ea1 LE expresion_aritmetica:ea2
                         {:
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
-                        | expresion_aritmetica GT expresion_aritmetica
+                        | expresion_aritmetica:ea1 GT expresion_aritmetica:ea2
                         {:
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
-                        | expresion_aritmetica GE expresion_aritmetica
+                        | expresion_aritmetica:ea1 GE expresion_aritmetica:ea2
                         {:
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
                         | expresion_aritmetica:ea {: RESULT = ea; :} ;
 

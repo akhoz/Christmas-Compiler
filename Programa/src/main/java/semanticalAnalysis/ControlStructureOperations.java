@@ -18,25 +18,27 @@ public class ControlStructureOperations {
                 operand1 = operandOneFromTable;
             }
 
-            if (!basicTypes.contains(operand2.getType())) {
+            if (!basicTypes.contains(operand2.getType()) && !operand1.getType().equals(operand2.getType())) {
                 operandTwoFromTable = currentScope.lookup(operand2.getName());
                 operand2 = operandTwoFromTable;
             }
 
             if (!operand1.getType().equals(operand2.getType())) {
-                System.err.println("Error semantico, operando cosas diferentes: " + operand1.getType() + " y " + operand2.getType() +
-                        ", linea: " + operand1.getLine() + ", columna: " + operand1.getColumn());
+                System.err.println("Error semantico, operando/comparando cosas diferentes: " + operand1.getType() + " y " + operand2.getType() +
+                        ", linea: " + operand2.getLine() + ", columna: " + operand2.getColumn());
             }
         } catch (NullPointerException e) {
             String op1 = null;
             String op2 = null;
             if (operand1 != null) {
                 op1 = operand1.getType();
+                System.err.println("Error semantico, se intentó operar algo que no es algo valido del lenguaje: " + op1 + " y " + op2 + " linea: " + operand1.getLine() + ", columna: " + operand1.getColumn());
             }
             if (operand2 != null) {
                 op2 = operand2.getType();
+                System.err.println("Error semantico, se intentó operar algo que no es algo valido del lenguaje: " + op1 + " y " + op2 + "; linea: " + operand2.getLine() + ", columna: " + operand2.getColumn());
             }
-            System.err.println("Error semantico, se intentó operar algo que no es algo valido del lenguaje: " + op1 + " y " + op2);
+
         }
     }
 }

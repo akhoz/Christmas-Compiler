@@ -1002,14 +1002,11 @@ class CUP$parser$actions {
 		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                           SymbolInfo op1 = (SymbolInfo) ea1;
-                           SymbolInfo op2 = (SymbolInfo) ea2;
-
-                           if (!op1.getType().equals(op2.getType())) {
-                                System.err.println("Error semantico, comparando dos cosas diferentes");
-                           }
-
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1019,8 +1016,18 @@ class CUP$parser$actions {
           case 21: // expresion_comparacion ::= expresion_aritmetica NEQ expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1030,8 +1037,18 @@ class CUP$parser$actions {
           case 22: // expresion_comparacion ::= expresion_aritmetica LT expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1041,8 +1058,18 @@ class CUP$parser$actions {
           case 23: // expresion_comparacion ::= expresion_aritmetica LE expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1052,8 +1079,18 @@ class CUP$parser$actions {
           case 24: // expresion_comparacion ::= expresion_aritmetica GT expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1063,8 +1100,18 @@ class CUP$parser$actions {
           case 25: // expresion_comparacion ::= expresion_aritmetica GE expresion_aritmetica 
             {
               Object RESULT =null;
+		int ea1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int ea1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object ea1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int ea2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int ea2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ea2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_comparacion",39, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
