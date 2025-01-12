@@ -1,9 +1,10 @@
- \_ aa
+\_ aa
  _/
 
 rodolfo _func_ abreregalo rodolfo _a_ cierraregalo abrecuento
     cupido _variabledefunc1_ finregalo
     trueno _var_ entrega true finregalo
+    rodolfo _a_ entrega 3 finregalo
 
     trueno _vartipomalo_ entrega 1 finregalo
     _vartipomalo_ entrega _a_ finregalo
@@ -17,7 +18,8 @@ cierracuento
 
 trueno _funcion2_ abreregalo rodolfo _arg1_ , cupido _arg2_ cierraregalo abrecuento
     cometa _varfunc2_ finregalo
-    trueno _vardefunc1_ entrega _func_ abreregalo 1 cierraregalo finregalo
+    trueno _vardefunc1_ finregalo
+    _vardefunc1_ entrega _func_ abreregalo 1 cierraregalo finregalo
 cierracuento
 
 rodolfo _verano_ abrecuento

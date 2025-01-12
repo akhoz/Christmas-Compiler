@@ -217,25 +217,11 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
 {:
     TokenInfo token = (TokenInfo) id;
     SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
-
+    SymbolInfo expressionResult = (SymbolInfo) e;
     FunctionInfo currentTable = symbolTable.getCurrentScope();
 
-    if (e instanceof FunctionInfo) {
-        // Si la expresión es una función
-            System.out.println("IF++++++++++++++++++++++++++");
-        FunctionInfo functionResult = (FunctionInfo) e;
-        SymbolInfo expressionFunction = new SymbolInfo("function", functionResult.getType(), 0, 0);
-
-        // Verificar compatibilidad de tipos
-        Variable.checkType(variable, expressionFunction, currentTable);
-    } else {
-        // Si la expresión no es una función (es un SymbolInfo)
-        System.out.println("ELSE--------------------------------");
-        SymbolInfo expressionResult = (SymbolInfo) e;
-
-        // Verificar compatibilidad de tipos
-        Variable.checkType(variable, expressionResult, currentTable);
-    }
+    // Verificar compatibilidad de tipos
+    Variable.checkType(variable, expressionResult, currentTable);
 :};
 
 creacion ::= nombrar:n SEMICOLON
@@ -347,10 +333,11 @@ llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
         TokenInfo token = (TokenInfo) id;
 
         String funcName = token.getValue();
-        System.out.println(token.getValue());
-        FunctionInfo function = symbolTable.lookupFunction("_func_");
-        System.out.println(function + "------------+++-----");
-        RESULT = function;
+        FunctionInfo function = symbolTable.lookupFunction(funcName);
+
+        SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
+
+        RESULT = symbolFunc;
     :} ;
 
 argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
