@@ -49,7 +49,7 @@ public class Variable {
                 }
             }
         } catch (NullPointerException e) {
-            System.err.println("Error semantico: se intentó pasar algo que no es un token valido a la variable. Se esperaba tipo: " + SymbolTableVariable.getName() +
+            System.err.println("Error semantico: se intentó pasar algo que no es un token valido a la variable. Se esperaba tipo: " + SymbolTableVariable.getType() +
                     " en la linea: " + SymbolTableVariable.getLine() + " y columna: " + SymbolTableVariable.getColumn());
         }
     }

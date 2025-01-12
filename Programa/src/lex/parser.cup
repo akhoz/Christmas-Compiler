@@ -4,6 +4,8 @@ import tables.SymbolInfo;
 import tables.FunctionInfo;
 import tables.TokenInfo;
 import semanticalAnalysis.Variable;
+import semanticalAnalysis.Function;
+import semanticalAnalysis.ControlStructureOperations;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -174,27 +176,126 @@ nombrar ::= tipos:t IDENTIFIER:id
 expresion ::= expresion_logica:el {: RESULT = el; :} ;
 
 expresion_logica ::= expresion_logica AND expresion_logica
+                   {:
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   :}
                    | expresion_logica OR expresion_logica
+                   {:
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   :}
                    | NOT expresion_logica
-                   | expresion_comparacion:ec {: RESULT = ec; :} ;
+                   {:
+                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                   :}
+                   | expresion_comparacion:ec
+                   {:
+                       RESULT = ec;
+                   :};
 
-expresion_comparacion ::= expresion_aritmetica EQEQ expresion_aritmetica  // Comparacion ==
-                        | expresion_aritmetica NEQ expresion_aritmetica  // Comparacion !=
-                        | expresion_aritmetica LT expresion_aritmetica   // Menor que <
-                        | expresion_aritmetica LE expresion_aritmetica   // Menor o igual que <=
-                        | expresion_aritmetica GT expresion_aritmetica   // Mayor que >
-                        | expresion_aritmetica GE expresion_aritmetica   // Mayor o igual que >=
-                        | expresion_aritmetica:ea {: RESULT = ea; :} ; // Sin comparación, pasa la aritmética
+expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
+                       {:
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                        | expresion_aritmetica:ea1 NEQ expresion_aritmetica:ea2
+                        {:
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                        | expresion_aritmetica:ea1 LT expresion_aritmetica:ea2
+                        {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                        | expresion_aritmetica:ea1 LE expresion_aritmetica:ea2
+                        {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                        | expresion_aritmetica:ea1 GT expresion_aritmetica:ea2
+                        {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                        | expresion_aritmetica:ea1 GE expresion_aritmetica:ea2
+                        {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                        | expresion_aritmetica:ea {: RESULT = ea; :} ;
 
-expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
-                       | expresion_aritmetica MINUS expresion_aritmetica
-                       | expresion_aritmetica TIMES expresion_aritmetica
-                       | expresion_aritmetica DIV expresion_aritmetica
-                       | expresion_aritmetica MOD expresion_aritmetica
-                       | expresion_aritmetica POW expresion_aritmetica
-                       | OPEN_PAREN expresion_aritmetica CLOSE_PAREN
+expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
+                        {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                        :}
+                       | expresion_aritmetica:ea1 MINUS expresion_aritmetica:ea2
+                       {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                       | expresion_aritmetica:ea1 TIMES expresion_aritmetica:ea2
+                       {:
+                           SymbolInfo op1 = (SymbolInfo) ea1;
+                           SymbolInfo op2 = (SymbolInfo) ea2;
+                           FunctionInfo currentTable = symbolTable.getCurrentScope();
+                           ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                           RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                       | expresion_aritmetica:ea1 DIV expresion_aritmetica:ea2
+                       {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                       | expresion_aritmetica:ea1 MOD expresion_aritmetica:ea2
+                       {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                       | expresion_aritmetica:ea1 POW expresion_aritmetica:ea2
+                       {:
+                            SymbolInfo op1 = (SymbolInfo) ea1;
+                            SymbolInfo op2 = (SymbolInfo) ea2;
+                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                       :}
+                       | OPEN_PAREN expresion_aritmetica:ea CLOSE_PAREN
+                       {:
+                            RESULT = ea;
+                       :}
                        | literales:l {: RESULT = l; :}
-                       | unary_operators
+                       | unary_operators:uo {: RESULT = uo; :}
                        | llamada_funcion:lf {: RESULT = lf; :}
                        | error SEMICOLON
                        | error CLOSE_PAREN
@@ -335,9 +436,16 @@ llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
         String funcName = token.getValue();
         FunctionInfo function = symbolTable.lookupFunction(funcName);
 
-        SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
+        if (function != null) {
 
-        RESULT = symbolFunc;
+            SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
+
+            RESULT = symbolFunc;
+
+        } else {
+            System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + token.getLine() + " y columna: " + token.getColumn());
+            RESULT = null;
+        }
     :} ;
 
 argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
