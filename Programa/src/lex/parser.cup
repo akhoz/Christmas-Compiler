@@ -93,7 +93,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo, encontrar_error, encontrar_error_aux,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size;
+ apertura_bloque, cierre_bloque, asignar, array_size, llama_funcion, argumentos, nombrar_array;
 
 
 // Precedencias
@@ -193,13 +193,14 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | IDENTIFIER
                        | literales
                        | unary_operators
-                       | funcion
+                       | llama_funcion
                        | encontrar_error SEMICOLON
                        | encontrar_error CLOSE_PAREN ;
 
+
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | llama_funcion SEMICOLON | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
@@ -306,7 +307,11 @@ parametroAux ::= parametro:p
     :};
 
 
-parametro ::= nombrar:n {: RESULT = n; :};
+parametro ::= nombrar:n {: RESULT = n; :} | nombrar_array:n;
+
+llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN;
+
+argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
 
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
@@ -347,8 +352,10 @@ default_stmt_opt ::= default_stmt | /* vacío */ ;
 default_stmt ::= DEFAULT COLON sentencias ;
 
 // Static Array
-arreglo ::= tipos IDENTIFIER array_size SEMICOLON  // Declaración sin inicialización
-          | tipos IDENTIFIER array_size EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+arreglo ::= nombrar_array SEMICOLON  // Declaración sin inicialización
+          | nombrar_array EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+
+nombrar_array ::= tipos IDENTIFIER array_size;
 
 array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET | OPEN_BRACKET IDENTIFIER CLOSE_BRACKET ;
 
