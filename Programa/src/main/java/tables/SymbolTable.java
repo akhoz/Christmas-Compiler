@@ -50,6 +50,10 @@ public class SymbolTable {
         return null;  // Si la pila está vacía, no hay ninguna función.
     }
 
+    public void changeName() {
+        functionScopes.pop();
+    }
+
     // pop function from stack
     public void popFunction() {
         if (!functionScopes.isEmpty()) {
