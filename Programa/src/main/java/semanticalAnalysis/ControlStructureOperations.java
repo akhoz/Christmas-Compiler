@@ -41,4 +41,35 @@ public class ControlStructureOperations {
 
         }
     }
+    public static void checkUnaryOperandType(SymbolInfo operand, FunctionInfo currentScope) {
+        try {
+            List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
+            if (!basicTypes.contains(operand.getType())) {
+                SymbolInfo operandFromTable = currentScope.lookup(operand.getName());
+                if (!operandFromTable.getType().equals("int")) {
+                    System.err.println("Error semantico: se le está pasando un algo que no es de tipo int a una operacion unaria, linea: " + operand.getLine() + ", columna: " + operand.getColumn());
+                }
+            } else {
+                System.err.println("Error semantico: las operaciones unarias de incremento/decremento solo funcionan con variables, linea: " + operand.getLine() + ", columna: " + operand.getColumn());
+            }
+
+        } catch (NullPointerException e) {
+            System.err.println("Error semantico: se le intentó pasar a una operacion unaria algo desconocido para el lenguaje, se esperaba un int ");
+        }
+    }
+
+    public static void checkNegationType(SymbolInfo operand) {
+        try {
+            List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
+            if (basicTypes.contains(operand.getType())) {
+                if (!operand.getType().equals("int") || !operand.getType().equals("float")) {
+                    System.err.println("Error semantico: se le está pasando un algo que no es de tipo int o float a una negación, linea: " + operand.getLine() + ", columna: " + operand.getColumn());
+                }
+            } else {
+                System.err.println("Error semantico: se intentó pasar algo a una negación que no es un literal entero o flotante, linea: " + operand.getLine() + ", columna: " + operand.getColumn());
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Error semantico: se le intentó pasar a una negación algo desconocido para el lenguaje, se esperaba un int ");
+        }
+    }
 }

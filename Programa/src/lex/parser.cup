@@ -33,19 +33,20 @@ action code {:
 parser code {:
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
+    String currentFunctionName = null; // Variable para rastrear la función actual
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
     public parser(Lexer parser){
         this.parser = parser;
-        this.symbolFactory = new DefaultSymbolFactory();
 
-        // Inicializar el ámbito global
         FunctionInfo globalFunction = new FunctionInfo("global", "void",0,0, new ArrayList<>());
         if (!symbolTable.pushFunction(globalFunction)) {
             System.err.println("Error: Función global ya está definida.");
         }
         globalFunction.beginScope();
+
+        this.symbolFactory = new DefaultSymbolFactory();
     }
 
     @Override
@@ -196,7 +197,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                        {:
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
-                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -204,7 +205,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                         {:
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
-                             FunctionInfo currentTable = symbolTable.getCurrentScope();
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -212,7 +213,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                         {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -220,7 +221,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                         {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -228,7 +229,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                         {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -236,7 +237,7 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                         {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -246,7 +247,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                         {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                         :}
@@ -254,7 +255,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                        {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -262,7 +263,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                        {:
                            SymbolInfo op1 = (SymbolInfo) ea1;
                            SymbolInfo op2 = (SymbolInfo) ea2;
-                           FunctionInfo currentTable = symbolTable.getCurrentScope();
+                           FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -270,7 +271,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                        {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -278,7 +279,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                        {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -286,7 +287,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                        {:
                             SymbolInfo op1 = (SymbolInfo) ea1;
                             SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.getCurrentScope();
+                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                        :}
@@ -304,11 +305,12 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                            TokenInfo token = (TokenInfo) id;
                            SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
 
-                           FunctionInfo currentTable = symbolTable.getCurrentScope();
+                           FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
                            Variable.checkExistance(variable, currentTable);
                            RESULT = variable;
                        :};
+
 
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
@@ -319,7 +321,7 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     TokenInfo token = (TokenInfo) id;
     SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
     SymbolInfo expressionResult = (SymbolInfo) e;
-    FunctionInfo currentTable = symbolTable.getCurrentScope();
+    FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable);
@@ -328,7 +330,7 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
 creacion ::= nombrar:n SEMICOLON
 {:
     SymbolInfo info = (SymbolInfo) n;
-    FunctionInfo currentTable = symbolTable.getCurrentScope();
+    FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
     Variable.checkRepeated(info, currentTable);
 
@@ -340,7 +342,7 @@ creacion ::= nombrar:n SEMICOLON
 creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 {:
     SymbolInfo info = (SymbolInfo) n;
-    FunctionInfo currentTable = symbolTable.getCurrentScope();
+    FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
     SymbolInfo expressionResult = (SymbolInfo) e;
 
     Variable.checkRepeated(info, currentTable);
@@ -356,14 +358,17 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 
 // Funciones
 funciones ::= funcion | funciones funcion ;
-funcion ::= encabezadoFuncion bloque ;
+funcion ::= encabezadoFuncion bloque
+    {:
+        currentFunctionName = "global";
+    :};
 
 bloque ::= apertura_bloque sentencias cierre_bloque
          | apertura_bloque cierre_bloque | apertura_bloque error cierre_bloque ;
 
 apertura_bloque ::= OPEN_BLOCK
     {:
-        FunctionInfo currentFunction = symbolTable.getCurrentScope();
+        FunctionInfo currentFunction = symbolTable.lookupFunction(currentFunctionName);
         if (currentFunction != null) {
             currentFunction.beginScope();
         } else {
@@ -373,14 +378,15 @@ apertura_bloque ::= OPEN_BLOCK
 
 cierre_bloque ::= CLOSE_BLOCK
     {:
-        FunctionInfo currentTable = symbolTable.getCurrentScope();
+        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
         if (currentTable != null) {
             currentTable.printScopes();
             currentTable.endScope();
         } else {
             System.err.println("Error: No se puede cerrar un bloque fuera de una función.");
         }
-    :} ;
+    :};
+
 
 
 encabezadoFuncion ::= nombrar:i parametros:e
@@ -393,14 +399,25 @@ encabezadoFuncion ::= nombrar:i parametros:e
         for (SymbolInfo param : paramList) {
             System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
         }
-        FunctionInfo fInfo = new FunctionInfo(funcName, returnType,0,0, paramList);
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, 0, 0, paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
+        if (inserted) {
+            System.out.println("encabezadoFuncion: Función '" + funcName + "' insertada correctamente en la tabla de símbolos.");
+        } else {
+            System.err.println("encabezadoFuncion: Error: Función '" + funcName + "' ya está definida.");
+        }
+        currentFunctionName = funcName;
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
+        RESULT = fInfo;  // Retorna el FunctionInfo creado
+
+        // Imprimir todas las funciones después de la inserción
+        symbolTable.printAllFunctions();
     :};
+
 
 
 parametros ::= OPEN_PAREN CLOSE_PAREN
@@ -499,10 +516,37 @@ listaValores ::= listaValores COMMA literales | literales ;
 
 // Unary Operators
 unary_operators ::= negacion
-                  | IDENTIFIER INCREMENT
-                  | IDENTIFIER DECREMENT ;
+                  | IDENTIFIER:id INCREMENT
+                    {:
+                        TokenInfo token = (TokenInfo) id;
+                        SymbolInfo op = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+                        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                        ControlStructureOperations.checkUnaryOperandType(op, currentTable);
+                        if (op != null) {
+                            RESULT = new SymbolInfo(op.getType(), op.getType(), op.getLine(), op.getColumn());
+                        } else {
+                            RESULT = new SymbolInfo("null", "null", 0, 0);
+                        }
+                    :}
+                  | IDENTIFIER:id DECREMENT
+                    {:
+                        TokenInfo token = (TokenInfo) id;
+                        SymbolInfo op = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+                        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                        ControlStructureOperations.checkUnaryOperandType(op, currentTable);
+                        if (op != null) {
+                            RESULT = new SymbolInfo(op.getType(), op.getType(), op.getLine(), op.getColumn());
+                        } else {
+                            RESULT = new SymbolInfo("null", "null", 0, 0);
+                        }
+                    :};
 
-negacion ::= MINUS literales_num ;
+negacion ::= MINUS literales:l
+    {:
+        SymbolInfo literal = (SymbolInfo) l;
+        ControlStructureOperations.checkNegationType(literal);
+        RESULT = new SymbolInfo(literal.getType(), literal.getType(), literal.getLine(), literal.getColumn());
+    :};
 
 return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
 
@@ -515,4 +559,9 @@ read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
 programa ::= conjuntoFunciones | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
-funcionMain ::= tipos MAIN bloque ;
+funcionMain ::= tipos:t MAIN bloque:c
+    {:
+        currentFunctionName = "global";
+    :};
+
+

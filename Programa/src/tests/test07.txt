@@ -68,7 +68,9 @@ _/
         # Else
         hada abrecuento
             narra abreregalo _p_ , "Hello World!!" cierraregalo finregalo
-
+              rodolfo _varPrueba_ entrega 1 finregalo
+              bromista _varPruebaDos_ entrega 1.0 finregalo
+              _varPrueba_ entrega _varPruebaDos_ quien finregalo
         cierracuento
 
     cierracuento

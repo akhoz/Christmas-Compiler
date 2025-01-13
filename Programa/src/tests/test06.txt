@@ -21,11 +21,6 @@ int main {
 }
 _/
 
-bromista _funcion01_ abreregalo cierraregalo abrecuento
-    _verano_ cierraempaque bromista rodolfo
-    duende navidad
-cierracuento
-
 rodolfo _verano_ abrecuento
     abreempaque finregalo bromista rodolfo finregalo
 
