@@ -1,4 +1,4 @@
- \_ aa
+\_ aa
  _/
 
 rodolfo _func_ abreregalo rodolfo _a_ cierraregalo abrecuento
