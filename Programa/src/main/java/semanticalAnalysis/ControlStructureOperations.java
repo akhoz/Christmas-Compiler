@@ -13,6 +13,10 @@ public class ControlStructureOperations {
             SymbolInfo operandTwoFromTable = null;
             List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
 
+            int line = operand1.getLine();
+            int column = operand1.getColumn();
+
+
             if (!basicTypes.contains(operand1.getType())) {
                 operandOneFromTable = currentScope.lookup(operand1.getName());
                 operand1 = operandOneFromTable;
@@ -25,7 +29,7 @@ public class ControlStructureOperations {
 
             if (!operand1.getType().equals(operand2.getType())) {
                 System.err.println("Error semantico, operando/comparando cosas diferentes: " + operand1.getType() + " y " + operand2.getType() +
-                        ", linea: " + operand2.getLine() + ", columna: " + operand2.getColumn());
+                        ", linea: " + line + ", columna: " + column);
             }
         } catch (NullPointerException e) {
             String op1 = null;

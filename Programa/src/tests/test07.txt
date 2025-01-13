@@ -38,7 +38,7 @@ _/
         # If
         bromista _x_ entrega 3.0 finregalo
         elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
-            rodolfo _z_ entrega _pepe_ finregalo
+            rodolfo _z_ entrega _varfunc2_ finregalo
 
             # If
             elfo abreregalo _juan_ snowball 0.7 cierraregalo abrecuento
@@ -59,7 +59,9 @@ _/
 
             # Else
             hada abrecuento
-               bromista navidad finregalo
+               # bromista navidad finregalo
+               elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
+               cierracuento
             cierracuento
             rodolfo finregalo
 
@@ -73,6 +75,7 @@ _/
 
     cierracuento
 cierracuento
+
 
  \_ aa
  _/
