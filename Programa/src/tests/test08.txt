@@ -1,23 +1,14 @@
- " -.10 .12 cierra #$% "
- _a_
-\_
-#$! _ sad
-_/
+rodolfo _func_ abreregalo rodolfo _param_ cierraregalo abrecuento
+    rodolfo _var_ entrega 1 finregalo
+    envia 1 finregalo
+cierracuento
 
-abrecuento cierracuento
-rodolfo bromista trueno cupido cometa
-324 -34 -1.3 -0.0000001 true false
-'!'
-"@$#%%$"
-abreempaque cierraempaque
-entrega
-abreregalo cierraregalo
-navidad intercambio reyes nochebuena magos adviento
-quien grinch
-snowball evergreen minstix upatree mary openslae
-melchor gaspar baltazar
-finregalo
-elfo hada envuelve duende varios historia ultimo corta envia sigue
-narra escucha
-_verano_
-, ;
+rodolfo _func2_ abreregalo rodolfo _param_ , bromista _param2_ cierraregalo abrecuento
+    rodolfo _var_ entrega 1 finregalo
+    envia 1 finregalo
+cierracuento
+
+rodolfo _verano_ abrecuento
+    _func_ abreregalo 1 cierraregalo finregalo
+    _func2_ abreregalo 1 , 2 cierraregalo finregalo
+cierracuento

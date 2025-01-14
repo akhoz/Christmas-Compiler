@@ -34,6 +34,7 @@ parser code {:
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
     String currentFunctionName = null; // Variable para rastrear la función actual
+    int paramsQuantity = 0 ;
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -362,6 +363,11 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 funciones ::= funcion | funciones funcion ;
 funcion ::= encabezadoFuncion bloque
     {:
+        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+        if (!currentTable.retornoEncontrado) {
+            System.err.println("Error semantico: no se encontró retorno de la función: " + currentTable.getName());
+        }
         currentFunctionName = "global";
     :};
 
@@ -459,15 +465,31 @@ llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
 
             SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
 
+            if (function.getParamCount() != paramsQuantity) {
+                System.err.println("Error semantico, se le estan pasando una cantidad de parametros incorrecta a la funcion: " + function.getName() + ", cantidad de parametros esperada: "
+                    + function.getParamCount() + " y se recibieron: " + paramsQuantity + ", en la linea: " + (token.getLine() + 1) + " y columna: " + (token.getColumn() + 1));
+            }
+
+            paramsQuantity = 0;
             RESULT = symbolFunc;
 
         } else {
             System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + token.getLine() + " y columna: " + token.getColumn());
             RESULT = null;
         }
+
     :} ;
 
-argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
+argumentos ::=
+        /* vacio */
+        | expresion
+            {:
+                paramsQuantity++;
+            :}
+        | argumentos COMMA expresion
+            {:
+                paramsQuantity++;
+            :};
 
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
@@ -554,7 +576,14 @@ negacion ::= MINUS literales:l
         RESULT = new SymbolInfo(literal.getType(), literal.getType(), literal.getLine(), literal.getColumn());
     :};
 
-return_stmt ::= RETURN SEMICOLON | RETURN expresion SEMICOLON ;
+return_stmt ::= RETURN SEMICOLON
+            | RETURN expresion:e SEMICOLON
+            {:
+                SymbolInfo retorno = (SymbolInfo) e;
+                FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                Function.checkReturnType(retorno, currentTable);
+                currentTable.retornoEncontrado = true ;
+            :};
 
 // Print y Read
 

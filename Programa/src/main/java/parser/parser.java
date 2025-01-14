@@ -670,6 +670,7 @@ public class parser extends java_cup.runtime.lr_parser {
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
     String currentFunctionName = null; // Variable para rastrear la función actual
+    int paramsQuantity = 0 ;
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -1573,6 +1574,11 @@ class CUP$parser$actions {
             {
               Object RESULT =null;
 		
+        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+        if (!currentTable.retornoEncontrado) {
+            System.err.println("Error semantico: no se encontró retorno de la función: " + currentTable.getName());
+        }
         currentFunctionName = "global";
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("funcion",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1785,12 +1791,19 @@ class CUP$parser$actions {
 
             SymbolInfo symbolFunc = new SymbolInfo(function.getName(), function.getType(), 0, 0);
 
+            if (function.getParamCount() != paramsQuantity) {
+                System.err.println("Error semantico, se le estan pasando una cantidad de parametros incorrecta a la funcion: " + function.getName() + ", cantidad de parametros esperada: "
+                    + function.getParamCount() + " y se recibieron: " + paramsQuantity + ", en la linea: " + (token.getLine() + 1) + " y columna: " + (token.getColumn() + 1));
+            }
+
+            paramsQuantity = 0;
             RESULT = symbolFunc;
 
         } else {
             System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + token.getLine() + " y columna: " + token.getColumn());
             RESULT = null;
         }
+
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("llamada_funcion",51, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1809,7 +1822,9 @@ class CUP$parser$actions {
           case 73: // argumentos ::= expresion 
             {
               Object RESULT =null;
-
+		
+                paramsQuantity++;
+            
               CUP$parser$result = parser.getSymbolFactory().newSymbol("argumentos",52, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1818,7 +1833,9 @@ class CUP$parser$actions {
           case 74: // argumentos ::= argumentos COMMA expresion 
             {
               Object RESULT =null;
-
+		
+                paramsQuantity++;
+            
               CUP$parser$result = parser.getSymbolFactory().newSymbol("argumentos",52, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2274,7 +2291,15 @@ class CUP$parser$actions {
           case 121: // return_stmt ::= RETURN expresion SEMICOLON 
             {
               Object RESULT =null;
-
+		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		
+                SymbolInfo retorno = (SymbolInfo) e;
+                FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                Function.checkReturnType(retorno, currentTable);
+                currentTable.retornoEncontrado = true ;
+            
               CUP$parser$result = parser.getSymbolFactory().newSymbol("return_stmt",22, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

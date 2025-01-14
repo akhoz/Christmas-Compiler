@@ -2,14 +2,18 @@ package tables;
 
 import java.util.*;
 
-public class FunctionInfo extends SymbolInfo{
+public class FunctionInfo extends SymbolInfo {
     public Stack<HashMap<String, SymbolInfo>> scopes;
     private List<SymbolInfo> params;
+    public boolean retornoEncontrado = false;
 
     public FunctionInfo(String name, String type, int line, int column, List<SymbolInfo> params) {
         super(name, type, line, column);
         this.params = params;
         scopes = new Stack<>();
+        if (this.getName().equals("global")) {
+            retornoEncontrado = true;
+        }
     }
 
     public void beginScope() {
@@ -81,6 +85,7 @@ public class FunctionInfo extends SymbolInfo{
         return params;
     }
 
-
-
+    public int getParamCount() {
+        return params.size();
+    }
 }
