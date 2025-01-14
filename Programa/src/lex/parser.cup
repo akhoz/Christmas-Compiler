@@ -409,6 +409,8 @@ encabezadoFuncion ::= nombrar:i parametros:e
         }
         FunctionInfo fInfo = new FunctionInfo(funcName, returnType, 0, 0, paramList);
 
+        fInfo.insertParamList(paramList);
+
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
         if (inserted) {

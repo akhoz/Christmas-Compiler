@@ -32,12 +32,25 @@ public class FunctionInfo extends SymbolInfo {
 
     /** Inserta un símbolo en el ámbito actual */
     public boolean insert(String name, SymbolInfo info) {
-        HashMap<String, SymbolInfo> currentScope = scopes.peek();
-        if (currentScope.containsKey(name)) {
-            // Ya existe un símbolo con ese nombre en el ámbito actual
+        if (!scopes.isEmpty()) {
+            HashMap<String, SymbolInfo> scope = scopes.peek();
+            if (scope.containsKey(name)) {
+                return false;
+            }
+            scope.put(name, info);
+            return true;
+        } else {
+            System.err.println("No hay ámbitos para insertar.");
             return false;
         }
-        currentScope.put(name, info);
+    }
+
+    public boolean insertParamList(List<SymbolInfo> params) {
+        for (SymbolInfo param : params) {
+            if (!insert(param.getName(), param)) {
+                return false;
+            }
+        }
         return true;
     }
 
