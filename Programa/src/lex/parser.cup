@@ -35,6 +35,7 @@ parser code {:
     SymbolTable symbolTable = new SymbolTable();
     String currentFunctionName = null; // Variable para rastrear la función actual
     int paramsQuantity = 0 ;
+    String currentCalledFunction = null;
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -454,11 +455,21 @@ parametroAux ::= parametro:p
 
 parametro ::= nombrar:n {: RESULT = n; :} | nombrar_array:n {: RESULT = n; :} ;
 
-llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
-    {:
+llamada_funcion ::=
+       IDENTIFIER:id
+       {:
+         TokenInfo token = (TokenInfo) id;
+         String funcName = token.getValue();
+         currentCalledFunction = funcName;
+       :}
+
+        OPEN_PAREN argumentos:a CLOSE_PAREN
+
+      {:
         TokenInfo token = (TokenInfo) id;
 
         String funcName = token.getValue();
+        currentCalledFunction = funcName;
         FunctionInfo function = symbolTable.lookupFunction(funcName);
 
         if (function != null) {
@@ -471,6 +482,7 @@ llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
             }
 
             paramsQuantity = 0;
+
             RESULT = symbolFunc;
 
         } else {
@@ -482,12 +494,30 @@ llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN
 
 argumentos ::=
         /* vacio */
-        | expresion
+        | expresion:e
             {:
+                FunctionInfo currentScope  = symbolTable.lookupFunction(currentFunctionName);
+                FunctionInfo function = symbolTable.lookupFunction(currentCalledFunction);
+                if (function.getParamCount() > 0 && paramsQuantity < function.getParamCount()) {
+                    SymbolInfo currentParam = function.getParams().get(paramsQuantity);
+                    SymbolInfo currentArg = (SymbolInfo) e;
+                    Function.checkParamsTypes(currentParam, currentArg, currentScope);
+                } else {
+                    System.out.println("ASKAKSKASKASKAKSAKSK" + function.getParamCount() + " " + paramsQuantity + " " + function.getName());
+                }
                 paramsQuantity++;
             :}
-        | argumentos COMMA expresion
+        | argumentos COMMA expresion:e
             {:
+                FunctionInfo currentScope  = symbolTable.lookupFunction(currentFunctionName);
+                FunctionInfo function = symbolTable.lookupFunction(currentCalledFunction);
+                if (function.getParamCount() > 0 && paramsQuantity < function.getParamCount()) {
+                    SymbolInfo currentParam = function.getParams().get(paramsQuantity);
+                    SymbolInfo currentArg = (SymbolInfo) e;
+                    Function.checkParamsTypes(currentParam, currentArg, currentScope);
+                } else {
+                    System.out.println("ASKAKSKASKASKAKSAKSK" + function.getParamCount() + " " + paramsQuantity + " " + function.getName());
+                }
                 paramsQuantity++;
             :};
 
