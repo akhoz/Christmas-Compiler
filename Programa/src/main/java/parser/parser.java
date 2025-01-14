@@ -1494,6 +1494,7 @@ class CUP$parser$actions {
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
+        fInfo.insertParamList(paramList);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("encabezadoFuncion",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

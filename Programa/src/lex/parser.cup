@@ -281,6 +281,7 @@ encabezadoFuncion ::= nombrar:i parametros:e
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
+        fInfo.insertParamList(paramList);
     :};
 
 
