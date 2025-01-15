@@ -36,6 +36,7 @@ parser code {:
     String currentFunctionName = null; // Variable para rastrear la función actual
     int paramsQuantity = 0 ;
     String currentCalledFunction = null;
+    SymbolInfo nullSymbol = new SymbolInfo("null", "null", 0, 0);
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -201,7 +202,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                         | expresion_aritmetica:ea1 NEQ expresion_aritmetica:ea2
                         {:
@@ -209,89 +214,133 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                         | expresion_aritmetica:ea1 LT expresion_aritmetica:ea2
                         {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                         | expresion_aritmetica:ea1 LE expresion_aritmetica:ea2
                         {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                         | expresion_aritmetica:ea1 GT expresion_aritmetica:ea2
                         {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                         | expresion_aritmetica:ea1 GE expresion_aritmetica:ea2
                         {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                         | expresion_aritmetica:ea {: RESULT = ea; :} ;
 
 expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                         {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                         :}
                        | expresion_aritmetica:ea1 MINUS expresion_aritmetica:ea2
                        {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                        | expresion_aritmetica:ea1 TIMES expresion_aritmetica:ea2
                        {:
-                           SymbolInfo op1 = (SymbolInfo) ea1;
-                           SymbolInfo op2 = (SymbolInfo) ea2;
-                           FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                           ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                           RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                        | expresion_aritmetica:ea1 DIV expresion_aritmetica:ea2
                        {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                        | expresion_aritmetica:ea1 MOD expresion_aritmetica:ea2
                        {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                        | expresion_aritmetica:ea1 POW expresion_aritmetica:ea2
                        {:
-                            SymbolInfo op1 = (SymbolInfo) ea1;
-                            SymbolInfo op2 = (SymbolInfo) ea2;
-                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                            ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                            RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             SymbolInfo op1 = (SymbolInfo) ea1;
+                             SymbolInfo op2 = (SymbolInfo) ea2;
+                             FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                             ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             if (op1 != null) {
+                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                             } else {
+                                RESULT = nullSymbol;
+                             }
                        :}
                        | OPEN_PAREN expresion_aritmetica:ea CLOSE_PAREN
                        {:
@@ -327,7 +376,7 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
     // Verificar compatibilidad de tipos
-    Variable.checkType(variable, expressionResult, currentTable);
+    Variable.checkType(variable, expressionResult, currentTable, symbolTable);
 :};
 
 creacion ::= nombrar:n SEMICOLON
@@ -352,7 +401,7 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
 
     boolean inserted = currentTable.insert(info.getName(), info);
 
-    Variable.checkType(info, expressionResult, currentTable);
+    Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
     RESULT = null;
@@ -486,7 +535,7 @@ llamada_funcion ::=
             RESULT = symbolFunc;
 
         } else {
-            System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + token.getLine() + " y columna: " + token.getColumn());
+            System.err.println("Error semantico, la funcion: " + funcName + " no existe, linea: " + (token.getLine() + 1) + " y columna: " + (token.getColumn() + 1));
             RESULT = null;
         }
 
@@ -563,9 +612,19 @@ default_stmt ::= DEFAULT COLON sentencias ;
 arreglo ::=  nombrar_array SEMICOLON  // Declaración sin inicialización
           | nombrar_array EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
 
-nombrar_array ::= tipos IDENTIFIER array_size ;
+nombrar_array ::= tipos IDENTIFIER:id array_size:as
+    {:
+         TokenInfo token = (TokenInfo) id;
+         SymbolInfo array = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+         SymbolInfo expression = (SymbolInfo) as;
+         FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+         Variable.checkArraySize(array, expression, currentTable, symbolTable);
+    :};
 
-array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET | OPEN_BRACKET IDENTIFIER CLOSE_BRACKET ;
+array_size ::= OPEN_BRACKET expresion:e CLOSE_BRACKET
+    {:
+        RESULT = e;
+    :};
 
 indice_array ::= IDENTIFIER array_size ;
 
