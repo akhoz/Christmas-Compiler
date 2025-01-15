@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09dcd3b2-110b-4d6b-8b4b-fa5980d0a876" name="Changes" comment="" />
+    <list default="true" id="09dcd3b2-110b-4d6b-8b4b-fa5980d0a876" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacion/Documentación-Externa.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacion/Proyecto 1 Compiladores.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Programa/src/lex/parser.cup" beforeDir="false" afterPath="$PROJECT_DIR$/Programa/src/lex/parser.cup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Programa/src/tests/test07.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Programa/src/tests/test07.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/info.txt" beforeDir="false" afterPath="$PROJECT_DIR$/info.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.cup" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,9 +36,9 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Fase1&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Fase2&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/akhoz/Akhoz/TEC/Verano-2024-Proyecto/Proyecto&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/akhoz/Akhoz/Entregables/Christmas-Compiler&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -77,6 +88,12 @@
       <workItem from="1733951963109" duration="6000" />
       <workItem from="1733951971686" duration="17000" />
       <workItem from="1733952086709" duration="4000" />
+      <workItem from="1736912835064" duration="23000" />
+      <workItem from="1736912860877" duration="25000" />
+      <workItem from="1736912957448" duration="15000" />
+      <workItem from="1736913362912" duration="30000" />
+      <workItem from="1736913395724" duration="19000" />
+      <workItem from="1736913417797" duration="13000" />
     </task>
     <servers />
   </component>
