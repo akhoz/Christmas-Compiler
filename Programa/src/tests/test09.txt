@@ -1,0 +1,20 @@
+
+rodolfo _func1_ abreregalo cierraregalo abrecuento
+   cupido _x_ entrega 0.1291291 finregalo
+   _x_ entrega _func2_ abreregalo cierraregalo finregalo
+   cupido _z_ entrega _x_ finregalo
+cierracuento
+
+bromista _func2_ abreregalo rodolfo _param1_ , trueno _param2_ cierraregalo abrecuento
+   cupido _yy_ entrega _func1_ abreregalo _x_ , _p_ cierraregalo finregalo
+cierracuento
+
+trueno _func3_ abreregalo cierraregalo abrecuento
+
+cierracuento
+
+rodolfo _verano_ abrecuento
+   trueno _x_ entrega _func2_ abreregalo cierraregalo finregalo
+
+   rodolfo _array_ abreempaque _func2_ abreregalo 1 , _y_ cierraregalo cierraempaque finregalo
+cierracuento

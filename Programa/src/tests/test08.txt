@@ -9,6 +9,9 @@ rodolfo _func2_ abreregalo rodolfo _param_ , bromista _param2_ cierraregalo abre
 cierracuento
 
 rodolfo _verano_ abrecuento
-    _func_ abreregalo 1 cierraregalo finregalo
-    _func2_ abreregalo 1 , 2 cierraregalo finregalo
+    rodolfo _x_ entrega 1 finregalo
+    rodolfo _y_ entrega 2 finregalo
+    bromista _z_ entrega 2.0 finregalo
+    _func_ abreregalo _x_ cierraregalo finregalo
+    _func2_ abreregalo _x_ , _z_ , _y_ cierraregalo finregalo
 cierracuento

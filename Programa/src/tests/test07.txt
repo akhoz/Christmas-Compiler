@@ -22,6 +22,7 @@ trueno _funcion2_ abreregalo rodolfo _arg1_ , cupido _arg2_ cierraregalo abrecue
     cometa _varfunc2_ finregalo
     trueno _vardefunc1_ finregalo
     _vardefunc1_ entrega _func_ abreregalo 1 cierraregalo finregalo
+    envia _vardefunc1_ finregalo
 cierracuento
 
 rodolfo _verano_ abrecuento
