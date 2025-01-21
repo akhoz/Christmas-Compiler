@@ -72,6 +72,11 @@ parser code {:
             System.err.println("Error no recuperable en la linea " + (info.left + 1) + ", columna " + (info.right + 1));
         }
     }
+
+    @Override
+    public int error_sync_size() {
+        return 3;
+    }
 :}
 
 init with {: :};
@@ -93,7 +98,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo, encontrar_error, encontrar_error_aux,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array;
 
 
 // Precedencias
@@ -165,7 +170,7 @@ nombrar ::= tipos:t IDENTIFIER:id
 
     // Crear el SymbolInfo con la información de posición
     RESULT = new SymbolInfo(nombre, tipo, linea, columna);
-:};
+:} | encontrar_error SEMICOLON ;
 
 // Expresiones
 expresion ::= expresion_logica ;
@@ -193,13 +198,15 @@ expresion_aritmetica ::= expresion_aritmetica PLUS expresion_aritmetica
                        | IDENTIFIER
                        | literales
                        | unary_operators
-                       | funcion
+                       | llamada_funcion
+                       | indice_array
                        | encontrar_error SEMICOLON
                        | encontrar_error CLOSE_PAREN ;
 
+
 // Sentencias
 sentencias ::= sentencia | sentencias sentencia ;
-sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
+sentencia ::= creacion | creacionAsignacion | estructuraControl | arreglo | print_stmt | read_stmt | asignar | llamada_funcion SEMICOLON | IDENTIFIER SEMICOLON | encontrar_error SEMICOLON ;
 
 asignar ::= IDENTIFIER EQ expresion SEMICOLON ;
 
@@ -279,7 +286,8 @@ encabezadoFuncion ::= nombrar:i parametros:e
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
-    :};
+        fInfo.insertParamList(paramList);
+    :} | error OPEN_BLOCK ;
 
 
 parametros ::= OPEN_PAREN CLOSE_PAREN
@@ -303,10 +311,14 @@ parametroAux ::= parametro:p
         List<SymbolInfo> lista = (List<SymbolInfo>) pl;
         lista.add((SymbolInfo)p);
         RESULT = lista;
-    :};
+    :} | error CLOSE_PAREN ;
 
 
-parametro ::= nombrar:n {: RESULT = n; :};
+parametro ::= nombrar:n {: RESULT = n; :} | nombrar_array:n;
+
+llamada_funcion ::= IDENTIFIER:id OPEN_PAREN argumentos:a CLOSE_PAREN;
+
+argumentos ::= /* vacio */ | expresion | argumentos COMMA expresion ;
 
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
@@ -324,13 +336,13 @@ break_stmt ::= BREAK SEMICOLON ;
 
 // Ciclo For
 for_cicle ::= FOR OPEN_PAREN condicion_for CLOSE_PAREN bloque ;
-condicion_for ::= inicializacion_opt SEMICOLON condicion_opt SEMICOLON actualizacion_opt ;
+condicion_for ::= inicializacion_opt COMMA condicion_opt COMMA actualizacion_opt ;
 
-inicializacion_opt ::= creacionAsignacion | expresion | /* vacío */ ;
+inicializacion_opt ::= creacionAsignacion | expresion | IDENTIFIER EQ expresion  | /* vacío */ ;
 
-condicion_opt ::= expresion | /* vacío */ ;
+condicion_opt ::= expresion  | IDENTIFIER EQ expresion | /* vacío */ ;
 
-actualizacion_opt ::= expresion | /* vacío */ ;
+actualizacion_opt ::= expresion | IDENTIFIER EQ expresion | /* vacío */ ;
 
 
 // Switch-case
@@ -347,10 +359,14 @@ default_stmt_opt ::= default_stmt | /* vacío */ ;
 default_stmt ::= DEFAULT COLON sentencias ;
 
 // Static Array
-arreglo ::= tipos IDENTIFIER array_size SEMICOLON  // Declaración sin inicialización
-          | tipos IDENTIFIER array_size EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+arreglo ::= nombrar_array SEMICOLON  // Declaración sin inicialización
+          | nombrar_array EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+
+nombrar_array ::= tipos IDENTIFIER array_size;
 
 array_size ::= OPEN_BRACKET INTEGER_LITERAL CLOSE_BRACKET | OPEN_BRACKET IDENTIFIER CLOSE_BRACKET ;
+
+indice_array ::= IDENTIFIER array_size ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales | literales ;

@@ -1,39 +1,49 @@
- \_ aa
+\_ aa
  _/
 
 rodolfo _func_ abreregalo rodolfo _a_ cierraregalo abrecuento
     cupido _variabledefunc1_ finregalo
+    trueno _var_ entrega true finregalo
+    rodolfo _a_ entrega 3 finregalo
+    _funcnoexiste_ abreregalo cierraregalo finregalo
+    rodolfo _b_ entrega abreregalo 1 navidad false cierraregalo intercambio abreregalo 4 nochebuena 5 cierraregalo finregalo
+
+    trueno _vartipomalo_ entrega 1 finregalo
+    _vartipomalo_ entrega _a_ finregalo
 
     elfo abreregalo _variablefuc1_ snowball 0.8 cierraregalo abrecuento
         trueno _varbool_ finregalo
          \_ aa
          _/
     cierracuento
-
 cierracuento
 
 trueno _funcion2_ abreregalo rodolfo _arg1_ , cupido _arg2_ cierraregalo abrecuento
     cometa _varfunc2_ finregalo
+    trueno _vardefunc1_ finregalo
+    _vardefunc1_ entrega _func_ abreregalo 1 cierraregalo finregalo
 cierracuento
 
 rodolfo _verano_ abrecuento
     # While
     rodolfo _y_ entrega 1 finregalo
+    _func_ abreregalo cierraregalo finregalo
     rodolfo _a_ entrega 3 finregalo
-    envuelve abreregalo _y_ minstix 0.85 cierraregalo abrecuento
+    envuelve abreregalo _y_ minstix 0.5 cierraregalo abrecuento
+    rodolfo finregalo
 
 \_
 #$! _ sad
 _/
         # If
-        rodolfo _x_ entrega 3 finregalo
+        bromista _x_ entrega 3.0 finregalo
         elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
-            rodolfo _z_ entrega 4 finregalo
+            rodolfo _z_ entrega _varfunc2_ finregalo
 
             # If
-            elfo abreregalo _x_ snowball 0.7 cierraregalo abrecuento
+            elfo abreregalo _juan_ snowball 0.7 cierraregalo abrecuento
                 narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
-                rodolfo _w_ entrega 4 finregalo
+                rodolfo _a_ entrega 4 finregalo
             cierracuento
 
             # Elif
@@ -44,23 +54,30 @@ _/
 
             # Elif
             hada elfo abreregalo _x_ evergreen 0.81 cierraregalo abrecuento
-                narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+                narra abreregalo _x_ , "Hello World!!", true , 1 , 0.7 , 'a' cierraregalo finregalo
             cierracuento
 
             # Else
             hada abrecuento
-               bromista navidad finregalo
+               # bromista navidad finregalo
+               elfo abreregalo _x_ snowball 0.8 cierraregalo abrecuento
+               cierracuento
             cierracuento
+            rodolfo finregalo
 
         cierracuento
 
         # Else
         hada abrecuento
-            narra abreregalo _x_ , "Hello World!!" cierraregalo finregalo
+            narra abreregalo _p_ , "Hello World!!" cierraregalo finregalo
+              rodolfo _varPrueba_ entrega 1 finregalo
+              bromista _varPruebaDos_ entrega 1.0 finregalo
+              _varPrueba_ entrega _varPruebaDos_ quien finregalo
         cierracuento
 
     cierracuento
 cierracuento
+
 
  \_ aa
  _/
