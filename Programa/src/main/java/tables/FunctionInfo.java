@@ -15,7 +15,6 @@ public class FunctionInfo extends SymbolInfo{
     public void beginScope() {
         scopes.push(new HashMap<String, SymbolInfo>());
     }
-
     /** Cierra el ámbito actual */
     public void endScope() {
         if (!scopes.isEmpty()) {
