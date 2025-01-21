@@ -1,0 +1,7 @@
+
+rodolfo _func1_ abreregalo cierraregalo abrecuento
+    rodolfo _x_ entrega 3 finregalo
+cierracuento
+
+
+rodolfo _verano_ abrecuento cierracuento

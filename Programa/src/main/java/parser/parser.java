@@ -9,6 +9,7 @@ import tables.SymbolTable;
 import tables.SymbolInfo;
 import tables.FunctionInfo;
 import tables.TokenInfo;
+import destCodeGenerator.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -722,12 +723,14 @@ public class parser extends java_cup.runtime.lr_parser {
 
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
+    CodeGenerator codeGenerator;
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
     public parser(Lexer parser){
         this.parser = parser;
         this.symbolFactory = new DefaultSymbolFactory();
+        this.codeGenerator = new CodeGenerator();
 
         // Inicializar el ámbito global
         FunctionInfo globalFunction = new FunctionInfo("global", "void",0,0, new ArrayList<>());
@@ -1423,6 +1426,8 @@ class CUP$parser$actions {
     if (!inserted) {
         System.err.println("Error semántico: La variable '" + info.getName() + "' ya existe en este ámbito.");
     }
+    System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
+    codeGenerator.assignVariableToRegister(info.getName(), e);
     RESULT = null; // 'creacionAsignacion' no necesita un valor semántico
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("creacionAsignacion",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
