@@ -12,6 +12,7 @@ import tables.TokenInfo;
 import semanticalAnalysis.Variable;
 import semanticalAnalysis.Function;
 import semanticalAnalysis.ControlStructureOperations;
+import destCodeGenerator.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
@@ -674,15 +675,18 @@ public class parser extends java_cup.runtime.lr_parser {
 
     Lexer parser;
     SymbolTable symbolTable = new SymbolTable();
+    CodeGenerator codeGenerator;
     String currentFunctionName = null; // Variable para rastrear la función actual
     int paramsQuantity = 0 ;
     String currentCalledFunction = null;
     SymbolInfo nullSymbol = new SymbolInfo("null", "null", 0, 0);
 
+
     // Constructor del parser
     @SuppressWarnings("deprecation")
     public parser(Lexer parser){
         this.parser = parser;
+        this.codeGenerator = new CodeGenerator();
 
         FunctionInfo globalFunction = new FunctionInfo("global", "void",0,0, new ArrayList<>());
         if (!symbolTable.pushFunction(globalFunction)) {
@@ -830,7 +834,10 @@ class CUP$parser$actions {
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
     TokenInfo token = (TokenInfo) i;
-    RESULT = new SymbolInfo("int", "int", token.getLine() + 1, token.getColumn() + 1);
+    int value = Integer.parseInt(token.getValue());
+    SymbolInfo symbol = new SymbolInfo("int", "int", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(value);
+    RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -845,7 +852,10 @@ class CUP$parser$actions {
 		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
     TokenInfo token = (TokenInfo) s;
-    RESULT = new SymbolInfo("string", "string", token.getLine() + 1, token.getColumn() + 1);
+    String value = token.getValue(); // Usar el valor del token
+    SymbolInfo<String> symbol = new SymbolInfo<>("string", "string", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(value);
+    RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -860,7 +870,10 @@ class CUP$parser$actions {
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
     TokenInfo token = (TokenInfo) c;
-    RESULT = new SymbolInfo("char", "char", token.getLine() + 1, token.getColumn() + 1);
+    char value = token.getValue().charAt(0); // Obtener el primer carácter
+    SymbolInfo<Character> symbol = new SymbolInfo<>("char", "char", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(value);
+    RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -875,7 +888,10 @@ class CUP$parser$actions {
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
     TokenInfo token = (TokenInfo) b;
-    RESULT = new SymbolInfo("boolean", "boolean", token.getLine() + 1, token.getColumn() + 1);
+    boolean value = Boolean.parseBoolean(token.getValue()); // Convertir el valor a booleano
+    SymbolInfo<Boolean> symbol = new SymbolInfo<>("boolean", "boolean", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(value);
+    RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -890,7 +906,10 @@ class CUP$parser$actions {
 		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
     TokenInfo token = (TokenInfo) f;
-    RESULT = new SymbolInfo("float", "float", token.getLine() + 1, token.getColumn() + 1);
+    float value = Float.parseFloat(token.getValue()); // Convertir el valor a flotante
+    SymbolInfo<Float> symbol = new SymbolInfo<>("float", "float", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(value);
+    RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1600,6 +1619,9 @@ class CUP$parser$actions {
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
+    System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
+
+    codeGenerator.assignVariableToRegister(info.getName(), expressionResult.getValue());
     RESULT = null;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("creacionAsignacion",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1720,6 +1742,8 @@ class CUP$parser$actions {
             System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
         }
         FunctionInfo fInfo = new FunctionInfo(funcName, returnType, 0, 0, paramList);
+
+        fInfo.insertParamList(paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);

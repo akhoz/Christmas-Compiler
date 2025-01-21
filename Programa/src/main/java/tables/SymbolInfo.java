@@ -1,10 +1,11 @@
 package tables;
 
-public class SymbolInfo {
+public class SymbolInfo<T>  {
     private String name;
     private String type;
     private int line;
     private int column;
+    private T value;
 
     public SymbolInfo(String name, String type, int line, int column) {
         this.name = name;
@@ -32,6 +33,14 @@ public class SymbolInfo {
 
     public int getColumn() {
         return column;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
     }
 
 
