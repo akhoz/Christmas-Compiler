@@ -76,7 +76,7 @@ public class Main {
                         test(archivo);
                     }
                     else {
-                        System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt validoa");
+                        System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt valido");
                     }
                     scanner.close();
                     return;

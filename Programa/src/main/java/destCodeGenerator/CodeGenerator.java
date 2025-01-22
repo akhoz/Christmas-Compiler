@@ -36,6 +36,12 @@ public class CodeGenerator {
         data.add(name + ": .asciiz \"" + value + "\"");
     }
 
+    public static void addFinalCode() {
+        text.add("li $v0, 10");
+        text.add("syscall");
+        System.out.println(data + "\n" + text);
+    }
+
     public static void assignVariableToRegister(String variable, Object value) {
         String reg = RegisterManager.allocateRegister(variable);
 
@@ -64,7 +70,6 @@ public class CodeGenerator {
                 System.err.println("Tipo de dato no soportado: " + value);
             }
         }
-        System.out.println(text + "---------------");
     }
 
 

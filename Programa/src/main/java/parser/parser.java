@@ -2475,7 +2475,7 @@ class CUP$parser$actions {
           case 126: // programa ::= conjuntoFunciones 
             {
               Object RESULT =null;
-
+		codeGenerator.addFinalCode(); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("programa",0, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

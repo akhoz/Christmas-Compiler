@@ -705,7 +705,7 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
+programa ::= conjuntoFunciones {:codeGenerator.addFinalCode(); :} | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos:t MAIN bloque:c
     {:

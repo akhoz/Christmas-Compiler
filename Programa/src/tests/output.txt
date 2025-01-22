@@ -3,13 +3,18 @@ Linea: 1 Columna: 9 Token: IDENTIFIER Valor: TokenInfo{value='_func1_', line=0, 
 Linea: 1 Columna: 17 Token: OPEN_PAREN Valor: abreregalo
 Linea: 1 Columna: 28 Token: CLOSE_PAREN Valor: cierraregalo
 Linea: 1 Columna: 41 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 2 Columna: 4 Token: INTEGER Valor: rodolfo
-Linea: 2 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=1, column=11}
-Linea: 2 Columna: 16 Token: EQ Valor: entrega
-Linea: 2 Columna: 24 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=1, column=23}
-Linea: 2 Columna: 28 Token: SEMICOLON Valor: finregalo
-Linea: 3 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 6 Columna: 1 Token: INTEGER Valor: rodolfo
-Linea: 6 Columna: 9 Token: MAIN Valor: _verano_
-Linea: 6 Columna: 18 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 7 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
+Linea: 2 Columna: 4 Token: BOOLEAN Valor: trueno
+Linea: 2 Columna: 11 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=1, column=10}
+Linea: 2 Columna: 15 Token: EQ Valor: entrega
+Linea: 2 Columna: 23 Token: BOOLEAN_LITERAL Valor: TokenInfo{value='false', line=1, column=22}
+Linea: 2 Columna: 29 Token: SEMICOLON Valor: finregalo
+Linea: 3 Columna: 4 Token: INTEGER Valor: rodolfo
+Linea: 3 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=2, column=11}
+Linea: 3 Columna: 16 Token: EQ Valor: entrega
+Linea: 3 Columna: 24 Token: INTEGER_LITERAL Valor: TokenInfo{value='3', line=2, column=23}
+Linea: 3 Columna: 26 Token: SEMICOLON Valor: finregalo
+Linea: 4 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
+Linea: 7 Columna: 1 Token: INTEGER Valor: rodolfo
+Linea: 7 Columna: 9 Token: MAIN Valor: _verano_
+Linea: 7 Columna: 18 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 8 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
