@@ -5,4 +5,7 @@ cierracuento
 
 
 rodolfo _verano_ abrecuento
+    bromista _y_ finregalo
+    rodolfo _array1_ abreempaque 3 cierraempaque finregalo
+    bromista _array1_ abreempaque 1 cierraempaque finregalo
 cierracuento

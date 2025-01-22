@@ -88,6 +88,9 @@ public class Variable {
             if (basicTypes.contains(expression.getName()) && !expression.getType().equals("int")) {
                 System.err.println("Error semantico: se le está pasando un tipo distinto a int como tamaño de array al array: " +  array.getName() +
                         ", en la linea: " + array.getLine() + " y columna: " + array.getColumn());
+            } else if (expression.getName().equals("int") && expression.getValue() instanceof Integer && (int) expression.getValue() < 0) {
+                System.err.println("Error semantico: no se puede declarar un array con un tamaño negativo, esto pasa en el array: " +
+                        array.getName() + ", en la linea: " + array.getLine() + " y columna: " + array.getColumn());
             }
 
             if (SymbolTableExpressionResult != null) {
