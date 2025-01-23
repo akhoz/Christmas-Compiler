@@ -1045,6 +1045,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1070,6 +1073,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1095,6 +1101,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1120,6 +1129,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1145,6 +1157,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1170,6 +1185,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1207,6 +1225,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1232,6 +1253,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1257,6 +1281,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1282,6 +1309,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1307,6 +1337,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1332,6 +1365,9 @@ class CUP$parser$actions {
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1611,7 +1647,7 @@ class CUP$parser$actions {
     SymbolInfo expressionResult = (SymbolInfo) e;
 
     Variable.checkRepeated(info, currentTable);
-
+    info.setDeclared(true); // Marcar la variable como declarada
     boolean inserted = currentTable.insert(info.getName(), info);
 
     Variable.checkType(info, expressionResult, currentTable, symbolTable);

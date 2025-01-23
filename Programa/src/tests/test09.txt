@@ -1,6 +1,6 @@
 rodolfo _func1_ abreregalo cierraregalo abrecuento
-   trueno _y_ entrega false finregalo
-   rodolfo _x_ entrega 3 finregalo
+   rodolfo _y_  finregalo
+   rodolfo _x_ entrega _y_ navidad 5 finregalo
 cierracuento
 
 

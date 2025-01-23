@@ -6,6 +6,7 @@ public class SymbolInfo<T>  {
     private int line;
     private int column;
     private T value;
+    private boolean isDeclared = false;
 
     public SymbolInfo(String name, String type, int line, int column) {
         this.name = name;
@@ -43,10 +44,18 @@ public class SymbolInfo<T>  {
         this.value = value;
     }
 
+    public void setDeclared(boolean isDeclared) {
+        this.isDeclared = isDeclared;
+    }
+
+    public boolean getDeclared() {
+        return isDeclared;
+    }
+
 
     @Override
     public String toString(){
-        return "SymbolInfo{name='" + name + "', type='" + type + "', line=" + line + ", column=" + column + "}";
+        return "SymbolInfo{name='" + name + "', type='" + type + "', line=" + line + ", column=" + column + "declared" + isDeclared +"}";
     }
 
 }

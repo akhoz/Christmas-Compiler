@@ -220,6 +220,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -232,6 +235,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -244,6 +250,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -256,6 +265,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -268,6 +280,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -280,6 +295,9 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -294,6 +312,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -306,6 +327,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -318,6 +342,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -330,6 +357,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -342,6 +372,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -354,6 +387,9 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op1 = (SymbolInfo) ea1;
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+                             ControlStructureOperations.checkInitialized(op1,op2, currentTable);
+
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
                                 RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -417,7 +453,7 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     SymbolInfo expressionResult = (SymbolInfo) e;
 
     Variable.checkRepeated(info, currentTable);
-
+    info.setDeclared(true); // Marcar la variable como declarada
     boolean inserted = currentTable.insert(info.getName(), info);
 
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
@@ -676,6 +712,7 @@ indice_array ::= IDENTIFIER array_size ;
 
 // Lista de valores para inicialización
 listaValores ::= listaValores COMMA literales | literales ;
+
 
 // Unary Operators
 unary_operators ::= negacion
