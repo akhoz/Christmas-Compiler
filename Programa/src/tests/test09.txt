@@ -1,7 +1,11 @@
-
-rodolfo _func1_ abreregalo cierraregalo abrecuento
-    rodolfo _x_ entrega 3 finregalo
+rodolfo _func1_ abreregalo rodolfo _param1_ , bromista _param2_ cierraregalo abrecuento
+   rodolfo _y_  finregalo
+   rodolfo _x_ entrega _y_ navidad 5 finregalo
 cierracuento
 
 
-rodolfo _verano_ abrecuento cierracuento
+rodolfo _verano_ abrecuento
+    bromista _y_ finregalo
+    rodolfo _array1_ abreempaque 3 cierraempaque finregalo
+    bromista _array1_ abreempaque 1 cierraempaque finregalo
+cierracuento

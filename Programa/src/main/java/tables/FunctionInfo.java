@@ -2,55 +2,35 @@ package tables;
 
 import java.util.*;
 
-/**
- * La clase FunctionInfo extiende SymbolInfo y se utiliza para manejar información sobre funciones,
- * incluyendo sus parámetros y ámbitos de símbolos anidados.
- */
 public class FunctionInfo extends SymbolInfo {
-    private Stack<HashMap<String, SymbolInfo>> scopes;
+    public Stack<HashMap<String, SymbolInfo>> scopes;
     private List<SymbolInfo> params;
+    public boolean retornoEncontrado = false;
 
-    /**
-     * Constructor de la clase FunctionInfo.
-     *
-     * @param name   El nombre de la función.
-     * @param type   El tipo de la función.
-     * @param line   La línea donde se declaró la función.
-     * @param column La columna donde se declaró la función.
-     * @param params La lista de parámetros de la función.
-     */
     public FunctionInfo(String name, String type, int line, int column, List<SymbolInfo> params) {
         super(name, type, line, column);
         this.params = params;
         scopes = new Stack<>();
+        if (this.getName().equals("global")) {
+            retornoEncontrado = true;
+        }
     }
 
-    /**
-     * Inicia un nuevo ámbito para los símbolos.
-     */
     public void beginScope() {
         scopes.push(new HashMap<String, SymbolInfo>());
     }
-    /**
-     * Cierra el ámbito actual, si existe.
-     * Si no hay ámbitos para cerrar, se genera un mensaje de error.
-     */
+
+    /** Cierra el ámbito actual */
     public void endScope() {
         if (!scopes.isEmpty()) {
             scopes.pop();
+
         } else {
             System.err.println("No hay más ámbitos para cerrar.");
         }
     }
 
-    /**
-     * Inserta un símbolo en el ámbito actual.
-     *
-     * @param name El nombre del símbolo.
-     * @param info La información asociada al símbolo.
-     * @return {@code true} si el símbolo se insertó correctamente, {@code false} si el símbolo ya existe
-     * en el ámbito actual o si no hay un ámbito disponible.
-     */
+    /** Inserta un símbolo en el ámbito actual */
     public boolean insert(String name, SymbolInfo info) {
         if (!scopes.isEmpty()) {
             HashMap<String, SymbolInfo> scope = scopes.peek();
@@ -65,13 +45,6 @@ public class FunctionInfo extends SymbolInfo {
         }
     }
 
-    /**
-     * Inserta una lista de parámetros como símbolos en el ámbito actual.
-     *
-     * @param params La lista de parámetros a insertar.
-     * @return {@code true} si todos los parámetros se insertaron correctamente,
-     * {@code false} si alguno de los parámetros ya existe en el ámbito actual.
-     */
     public boolean insertParamList(List<SymbolInfo> params) {
         for (SymbolInfo param : params) {
             if (!insert(param.getName(), param)) {
@@ -81,28 +54,18 @@ public class FunctionInfo extends SymbolInfo {
         return true;
     }
 
-    /**
-     * Busca un símbolo en el ámbito actual y en los superiores.
-     *
-     * @param name El nombre del símbolo a buscar.
-     * @return La información del símbolo si se encuentra, o {@code null} si no existe.
-     */
+    /** Busca un símbolo en el ámbito actual y superiores */
     public SymbolInfo lookup(String name) {
         for (int i = scopes.size() - 1; i >= 0; i--) {
             HashMap<String, SymbolInfo> scope = scopes.get(i);
             if (scope.containsKey(name)) {
                 SymbolInfo info = scope.get(name);
-                System.out.println("Símbolo encontrado: " + info);
                 return info;
             }
         }
-        System.out.println("Símbolo no encontrado: " + name);
         return null;
     }
 
-    /**
-     * Imprime los ámbitos de símbolos de la función en la consola.
-     */
     public void printScopes() {
         System.out.println("\n=== Tabla de símbolos de función '" + this.getName() + "' ===\n");
         for (int i = 0; i < scopes.size(); i++) {
@@ -123,11 +86,7 @@ public class FunctionInfo extends SymbolInfo {
         System.out.println();
     }
 
-    /**
-     * Obtiene los nombres de los símbolos en el ámbito actual.
-     *
-     * @return Un conjunto con los nombres de los símbolos en el ámbito actual, o un conjunto vacío si no hay ámbito.
-     */
+
     public Set<String> getCurrentScopeSymbols() {
         if (!scopes.isEmpty()) {
             return scopes.peek().keySet();
@@ -135,12 +94,11 @@ public class FunctionInfo extends SymbolInfo {
         return Collections.emptySet();
     }
 
-    /**
-     * Obtiene la lista de parámetros de la función.
-     *
-     * @return Una lista con la información de los parámetros de la función.
-     */
     public List<SymbolInfo> getParams() {
         return params;
+    }
+
+    public int getParamCount() {
+        return params.size();
     }
 }
