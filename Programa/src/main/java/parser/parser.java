@@ -1653,9 +1653,8 @@ class CUP$parser$actions {
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
-    System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
+   //System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
 
-    codeGenerator.assignVariableToRegister(info.getName(), expressionResult.getValue());
     RESULT = null;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("creacionAsignacion",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1691,6 +1690,7 @@ class CUP$parser$actions {
             System.err.println("Error semantico: no se encontró retorno de la función: " + currentTable.getName());
         }
         currentFunctionName = "global";
+        codeGenerator.closeFunction();
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("funcion",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1790,10 +1790,16 @@ class CUP$parser$actions {
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
+
+        List<String> names = new ArrayList<>();
+        for (SymbolInfo symbol : paramList) {
+            names.add(symbol.getName());
+        }
+        codeGenerator.createFunction(funcName, names);
         RESULT = fInfo;  // Retorna el FunctionInfo creado
 
         // Imprimir todas las funciones después de la inserción
-        symbolTable.printAllFunctions();
+        //symbolTable.printAllFunctions();
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("encabezadoFuncion",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

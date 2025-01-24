@@ -5,29 +5,17 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
 
+
 public class CodeGenerator {
     public static List<String> data;
     public static List<String> text;
-    public static final String[] registers = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8"};
-    public static final String[] floatRegisters = {"$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8", "$f9", "$f10", "$f11", "$f12"};
-
-    public static final boolean[] available = new boolean[registers.length];
-    public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
-    public static final HashMap<String, String> variableToRegister = new HashMap<>();
-    public static final Stack<String> spillStack = new Stack<>();
+    public static List<String> encabezadoFuncion;
+    public static List<String> cuerpoFuncion;
+    public static List<String> functionScope;
 
     public CodeGenerator() {
         data = new ArrayList<>();
         text = new ArrayList<>();
-
-        // Inicializar todos los registros como disponibles
-        for (int i = 0; i < available.length; i++) {
-            available[i] = true;
-        }
-
-        for (int i = 0; i < floatAvailable.length; i++) {
-            floatAvailable[i] = true;
-        }
 
         // Inicializar los segmentos de datos y texto
         data.add(".data");
@@ -38,9 +26,32 @@ public class CodeGenerator {
         text.add("main:");
     }
 
-    // Método para agregar cadenas al segmento de datos
     private static void addStringToDataSegment(String name, String value) {
         data.add(name + ": .asciiz \"" + value + "\"");
+    }
+
+    public static void createFunction(String functionName, List<String> parameters) {
+        functionScope = new ArrayList<>();
+        encabezadoFuncion = new ArrayList<>();
+        cuerpoFuncion = new ArrayList<>();
+
+        functionName = functionName.replace("_", "");
+        encabezadoFuncion.add(functionName + ":");
+        functionScope.addAll(parameters);
+
+        functionScope.add("ra");
+
+        // Pushear el ra en el stack
+        pushToStack(0, "$ra", (functionScope.size() - 1) * 4);
+    }
+
+    public static void closeFunction() {
+        cuerpoFuncion.add("addu $sp, $sp, " + functionScope.size() * 4);
+        List<String> fullFunction = new ArrayList<>();
+        fullFunction.addAll(encabezadoFuncion);
+        fullFunction.addAll(cuerpoFuncion);
+        text.addAll(fullFunction);
+        System.out.println("\n aasaasaasasasasaspaspapaps \n" + text);
     }
 
     public static void addFinalCode() {
@@ -49,39 +60,14 @@ public class CodeGenerator {
         System.out.println(data + "\n" + text);
     }
 
-    public static void assignVariableToRegister(String variable, Object value) {
-        String reg = "";
-        if (value instanceof Float) {
-            reg = RegisterManager.allocateRegister(variable, true);
-        } else {
-            reg = RegisterManager.allocateRegister(variable, false);
+    public static void pushToStack(Object item, String register, int index) {
+        StringBuilder code = new StringBuilder();
+        if (item instanceof Integer || item instanceof Character) {
+            code.append("sw " + register + ", " + index + "($sp)");
+        } else if (item instanceof Float) {
+            code.append("s.s " + register + ", " + index + "($sp)");
         }
 
-        if (reg == null) {
-            // Si no hay registros disponibles, spill al stack
-            reg = RegisterManager.loadFromStack(variable, value instanceof Float);
-        }
-
-        if (reg != null) {
-            // Generar las instrucciones según el tipo de valor
-            if (value instanceof Integer) {
-                text.add("li " + reg + ", " + value); // Cargar entero
-            } else if (value instanceof Float) {
-                text.add("mov.s " + reg + ", " + value); // Cargar flotante
-            } else if (value instanceof Boolean) {
-                int intValue = (Boolean) value ? 1 : 0;
-                text.add("li " + reg + ", " + intValue); // Cargar boolean como 1 o 0
-            } else if (value instanceof Character) {
-                int charValue = (int) ((Character) value).charValue();
-                text.add("li " + reg + ", " + charValue); // Cargar carácter como entero
-            } else if (value instanceof String) {
-                // Para cadenas, reserva espacio en el segmento de datos
-                addStringToDataSegment(variable, (String) value);
-                text.add("la " + reg + ", " + variable); // Cargar dirección de la cadena
-            } else {
-                System.err.println("Tipo de dato no soportado: " + value);
-            }
-        }
+        cuerpoFuncion.add(code.toString());
     }
-
 }

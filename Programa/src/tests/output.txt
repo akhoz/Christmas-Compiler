@@ -1,8 +1,13 @@
 Linea: 1 Columna: 1 Token: INTEGER Valor: rodolfo
 Linea: 1 Columna: 9 Token: IDENTIFIER Valor: TokenInfo{value='_func1_', line=0, column=8}
 Linea: 1 Columna: 17 Token: OPEN_PAREN Valor: abreregalo
-Linea: 1 Columna: 28 Token: CLOSE_PAREN Valor: cierraregalo
-Linea: 1 Columna: 41 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 1 Columna: 28 Token: INTEGER Valor: rodolfo
+Linea: 1 Columna: 36 Token: IDENTIFIER Valor: TokenInfo{value='_param1_', line=0, column=35}
+Linea: 1 Columna: 45 Token: COMMA Valor: ,
+Linea: 1 Columna: 47 Token: FLOAT Valor: bromista
+Linea: 1 Columna: 56 Token: IDENTIFIER Valor: TokenInfo{value='_param2_', line=0, column=55}
+Linea: 1 Columna: 65 Token: CLOSE_PAREN Valor: cierraregalo
+Linea: 1 Columna: 78 Token: OPEN_BLOCK Valor: abrecuento
 Linea: 2 Columna: 4 Token: INTEGER Valor: rodolfo
 Linea: 2 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=1, column=11}
 Linea: 2 Columna: 17 Token: SEMICOLON Valor: finregalo

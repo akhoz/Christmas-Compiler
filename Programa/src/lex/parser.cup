@@ -459,9 +459,8 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
-    System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
+   //System.out.println("Asignación de variable '" + info.getName() + "' con valor '" + e + "'");
 
-    codeGenerator.assignVariableToRegister(info.getName(), expressionResult.getValue());
     RESULT = null;
 :};
 
@@ -477,6 +476,7 @@ funcion ::= encabezadoFuncion bloque
             System.err.println("Error semantico: no se encontró retorno de la función: " + currentTable.getName());
         }
         currentFunctionName = "global";
+        codeGenerator.closeFunction();
     :};
 
 bloque ::= apertura_bloque sentencias cierre_bloque
@@ -530,10 +530,16 @@ encabezadoFuncion ::= nombrar:i parametros:e
 
         // Iniciar el primer scope de la función
         fInfo.beginScope();
+
+        List<String> names = new ArrayList<>();
+        for (SymbolInfo symbol : paramList) {
+            names.add(symbol.getName());
+        }
+        codeGenerator.createFunction(funcName, names);
         RESULT = fInfo;  // Retorna el FunctionInfo creado
 
         // Imprimir todas las funciones después de la inserción
-        symbolTable.printAllFunctions();
+        //symbolTable.printAllFunctions();
     :};
 
 
