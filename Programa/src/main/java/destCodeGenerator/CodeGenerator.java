@@ -1,9 +1,6 @@
 package destCodeGenerator;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Stack;
+import java.util.*;
 
 
 public class CodeGenerator {
@@ -12,6 +9,7 @@ public class CodeGenerator {
     public static List<String> encabezadoFuncion;
     public static List<String> cuerpoFuncion;
     public static List<String> functionScope;
+    public static List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
 
     public CodeGenerator() {
         data = new ArrayList<>();
@@ -43,6 +41,19 @@ public class CodeGenerator {
 
         // Pushear el ra en el stack
         pushToStack(0, "$ra", (functionScope.size() - 1) * 4);
+    }
+
+    public static void assignValueToIdentifier(String identifierName, Object value) {
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" + identifierName + " = " + value);
+        // En caso de ser literal, se pushea directamente
+        if (basicTypes.contains(identifierName) && (value instanceof Integer || value instanceof Character) ) {
+            cuerpoFuncion.add("li $s7, " + value);
+            pushToStack(value, "$s7", (functionScope.size() - 1) * 4 );
+        }
+    }
+
+    public static void addToFunctionScope(String item) {
+        functionScope.add(item);
     }
 
     public static void closeFunction() {
