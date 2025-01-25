@@ -78,43 +78,45 @@ public class ControlStructureOperations {
     }
 
     public static void checkInitialized(SymbolInfo variable1, SymbolInfo variable2, FunctionInfo currentScope) {
-        // Lista de tipos básicos que corresponden a literales
-        List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
+        try {
+            // Lista de tipos básicos que corresponden a literales
+            List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
 
-        boolean error = false;
-        StringBuilder errorMessage = new StringBuilder("Error semántico:");
+            boolean error = false;
+            StringBuilder errorMessage = new StringBuilder("Error semántico:");
 
-        // Verificar la primera variable solo si no es un literal
-        if (!basicTypes.contains(variable1.getType())) {
-            SymbolInfo varInfo1 = currentScope.lookup(variable1.getName());
-            if (varInfo1 == null) {
-                error = true;
-                errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido declarada.");
-            } else if (!varInfo1.getDeclared()) {
-                error = true;
-                errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido inicializada.");
+            // Verificar la primera variable solo si no es un literal
+            if (!basicTypes.contains(variable1.getType())) {
+                SymbolInfo varInfo1 = currentScope.lookup(variable1.getName());
+                if (varInfo1 == null) {
+                    error = true;
+                    errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido declarada.");
+                } else if (!varInfo1.getDeclared()) {
+                    error = true;
+                    errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido inicializada.");
+                }
             }
-        }
 
-        // Verificar la segunda variable solo si no es un literal
-        if (!basicTypes.contains(variable2.getType())) {
-            SymbolInfo varInfo2 = currentScope.lookup(variable2.getName());
-            if (varInfo2 == null) {
-                error = true;
-                errorMessage.append(" La variable '").append(variable2.getName()).append("' no ha sido declarada.");
-            } else if (!varInfo2.getDeclared()) {
-                error = true;
-                errorMessage.append(" La variable '").append(varInfo2.getName()).append("' no ha sido inicializada.");
+            // Verificar la segunda variable solo si no es un literal
+            if (!basicTypes.contains(variable2.getType())) {
+                SymbolInfo varInfo2 = currentScope.lookup(variable2.getName());
+                if (varInfo2 == null) {
+                    error = true;
+                    errorMessage.append(" La variable '").append(variable2.getName()).append("' no ha sido declarada.");
+                } else if (!varInfo2.getDeclared()) {
+                    error = true;
+                    errorMessage.append(" La variable '").append(varInfo2.getName()).append("' no ha sido inicializada.");
+                }
             }
-        }
 
-        // Si alguna de las variables no está declarada o inicializada, imprimir un solo mensaje
-        if (error) {
-            errorMessage.append(" En la línea: ").append(variable1.getLine())
-                    .append(", columna: ").append(variable1.getColumn()).append(".");
-            System.err.println(errorMessage.toString());
+            // Si alguna de las variables no está declarada o inicializada, imprimir un solo mensaje
+            if (error) {
+                errorMessage.append(" En la línea: ").append(variable1.getLine())
+                        .append(", columna: ").append(variable1.getColumn()).append(".");
+                System.err.println(errorMessage.toString());
+            }
+        } catch (NullPointerException e) {
+
         }
     }
-
-
 }

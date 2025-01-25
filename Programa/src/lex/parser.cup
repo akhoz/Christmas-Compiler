@@ -389,6 +389,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
                            Variable.checkExistance(variable, currentTable);
+
                            RESULT = variable;
                        :};
 
@@ -416,7 +417,7 @@ creacion ::= nombrar:n SEMICOLON
     Variable.checkRepeated(info, currentTable);
 
     boolean inserted = currentTable.insert(info.getName(), info);
-    codeGenerator.addToFunctionScope(info.getName()); // Revisar
+    codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
     RESULT = null;
 :};
 
@@ -434,9 +435,9 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
-    codeGenerator.addToFunctionScope(info.getName()); // Revisar
+    codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
 
-    codeGenerator.assignValueToIdentifier(expressionResult.getName(), expressionResult.getValue());
+    codeGenerator.createAndAssignValueToIdentifier(expressionResult);
 
     RESULT = null;
 :};
@@ -514,11 +515,7 @@ encabezadoFuncion ::= nombrar:i parametros:e
             System.err.println("encabezadoFuncion: Error al insertar parámetros en el ámbito de la función.");
         }
 
-        List<String> names = new ArrayList<>();
-        for (SymbolInfo symbol : paramList) {
-            names.add(symbol.getName());
-        }
-        codeGenerator.createFunction(funcName, names);
+        codeGenerator.createFunction(funcName, paramList);
 
         RESULT = fInfo;  // Retorna el FunctionInfo creado
 
@@ -752,7 +749,7 @@ lista_print ::= expresion | lista_print COMMA expresion ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
+programa ::= conjuntoFunciones {: codeGenerator.addFinalCode(); :}| error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 funcionMain ::= tipos:t MAIN bloque:c
     {:

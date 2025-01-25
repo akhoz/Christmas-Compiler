@@ -1448,6 +1448,7 @@ class CUP$parser$actions {
                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
                            Variable.checkExistance(variable, currentTable);
+
                            RESULT = variable;
                        
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1599,7 +1600,7 @@ class CUP$parser$actions {
     Variable.checkRepeated(info, currentTable);
 
     boolean inserted = currentTable.insert(info.getName(), info);
-    codeGenerator.addToFunctionScope(info.getName()); // Revisar
+    codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
     RESULT = null;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("creacion",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1629,9 +1630,9 @@ class CUP$parser$actions {
     Variable.checkType(info, expressionResult, currentTable, symbolTable);
 
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
-    codeGenerator.addToFunctionScope(info.getName()); // Revisar
+    codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
 
-    codeGenerator.assignValueToIdentifier(expressionResult.getName(), expressionResult.getValue());
+    codeGenerator.createAndAssignValueToIdentifier(expressionResult);
 
     RESULT = null;
 
@@ -1775,11 +1776,7 @@ class CUP$parser$actions {
             System.err.println("encabezadoFuncion: Error al insertar parámetros en el ámbito de la función.");
         }
 
-        List<String> names = new ArrayList<>();
-        for (SymbolInfo symbol : paramList) {
-            names.add(symbol.getName());
-        }
-        codeGenerator.createFunction(funcName, names);
+        codeGenerator.createFunction(funcName, paramList);
 
         RESULT = fInfo;  // Retorna el FunctionInfo creado
 
@@ -2525,7 +2522,7 @@ class CUP$parser$actions {
           case 126: // programa ::= conjuntoFunciones 
             {
               Object RESULT =null;
-
+		 codeGenerator.addFinalCode(); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("programa",0, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
