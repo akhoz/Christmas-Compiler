@@ -377,16 +377,12 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                            FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
                            Variable.checkExistance(variable, currentTable);
-                           if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
-                              System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
-                           }
 
                            SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
 
                            if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
                                 System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
                            }
-
 
                            RESULT = variable;
                        :};
