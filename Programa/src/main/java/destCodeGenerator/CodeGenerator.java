@@ -228,17 +228,14 @@ public class CodeGenerator {
             String register1 = "";
             String register2 = "";
             // x = y + 3
-            if (operand1.getValue() != null) {
-                if (isIdentifier(operand1.getName())) {
-                    register1 = getItemInfoFromStack(operand1);
+            if (isIdentifier(operand1.getName())) {
+                register1 = getItemInfoFromStack(operand1);
+            } else if (operand1.getValue() != null) {
+                register1 = getRegister(operand1);
+                if (register1.contains("$f")) {
+                    cuerpoFuncion.add("li.s " + register1 + ", " + operand1.getValue());
                 } else {
-                    register1 = getRegister(operand1);
-                    if (register1.contains("$f")) {
-                        cuerpoFuncion.add("li.s " + register1 + ", " + operand1.getValue());
-                    } else {
-                        cuerpoFuncion.add("li " + register1 + ", " + operand1.getValue());
-                    }
-
+                    cuerpoFuncion.add("li " + register1 + ", " + operand1.getValue());
                 }
             } else {
                 System.out.println("SKIBIDI ELSEEEE! ----------------- :3 \n");
@@ -247,21 +244,19 @@ public class CodeGenerator {
                 }
             }
 
-            if (operand2.getValue() != null) {
-                if (isIdentifier(operand2.getName())) {
-                    register2 = getItemInfoFromStack(operand2);
+            if (isIdentifier(operand2.getName())) {
+                register2 = getItemInfoFromStack(operand2);
+            } else if (operand2.getValue() != null) {
+                register2 = getRegister(operand2);
+                if (register2.contains("$f")) {
+                    cuerpoFuncion.add("li.s " + register2 + ", " + operand2.getValue());
                 } else {
-                    register2 = getRegister(operand2);
-                    if (register2.contains("$f")) {
-                        cuerpoFuncion.add("li.s " + register2 + ", " + operand2.getValue());
-                    } else {
-                        cuerpoFuncion.add("li " + register2 + ", " + operand2.getValue());
-                    }
+                    cuerpoFuncion.add("li " + register2 + ", " + operand2.getValue());
                 }
             } else {
                 System.out.println("SKIBIDI ELSEEEE! ----------------- :3 \n");
                 if (operations.size() >= 1) {
-                    register2 = operations.get(operations.size() - 2).result;
+                    register2 = operations.get(operations.size() - 1).result;
                 }
             }
 
