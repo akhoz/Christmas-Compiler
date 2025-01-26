@@ -9,6 +9,10 @@ li $s7, 5
 sw $s7, 16($sp)
 lw $t0, 12($sp)
 sw $t0, 20($sp)
+lw $t0, 12($sp)
+sw $t0, 20($sp)
+li $s7, 77
+sw $s7, 12($sp)
 addu $sp, $sp, 24
 func2:
 subu $sp, $sp, 4

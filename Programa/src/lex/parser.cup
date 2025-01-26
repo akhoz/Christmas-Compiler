@@ -390,6 +390,13 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
 
                            Variable.checkExistance(variable, currentTable);
 
+                           SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
+
+                           if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
+                                System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
+                           }
+
+
                            RESULT = variable;
                        :};
 
@@ -407,6 +414,8 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
 
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
+
+    codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
 :};
 
 creacion ::= nombrar:n SEMICOLON
@@ -418,6 +427,7 @@ creacion ::= nombrar:n SEMICOLON
 
     boolean inserted = currentTable.insert(info.getName(), info);
     codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
+    codeGenerator.cleanRegisters("");
     RESULT = null;
 :};
 
@@ -437,7 +447,8 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
     codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
 
-    codeGenerator.createAndAssignValueToIdentifier(expressionResult);
+    codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+    codeGenerator.cleanRegisters("");
 
     RESULT = null;
 :};
