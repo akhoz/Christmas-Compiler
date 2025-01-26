@@ -1,8 +1,10 @@
 package destCodeGenerator;
 
+import jdk.dynalink.Operation;
 import tables.SymbolInfo;
 import java.io.FileWriter;
 import java.io.IOException;
+import destCodeGenerator.Operations;
 
 import java.util.*;
 
@@ -21,6 +23,8 @@ public class CodeGenerator {
             "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8", "$f9", "$f10", "$f11", "$f12"
     };
     public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
+    public static List<Operations> operations = new ArrayList<>();
+
 
     public CodeGenerator() {
         data = new ArrayList<>();
@@ -65,16 +69,18 @@ public class CodeGenerator {
 
     public static void assignValueToIdentifier(String identifierName, SymbolInfo expresion) {
         // En caso de ser literal, se pushea directamente
-        if (basicTypes.contains(expresion.getName()) && (expresion.getName().equals("int") || expresion.getValue().equals("char"))) {
-            cuerpoFuncion.add("li $s7, " + expresion.getValue());
-            pushToStack(expresion.getValue(), expresion.getType(), "$s7", getIndexInFunctionScope(identifierName) * 4 );
-        } else if (basicTypes.contains(expresion.getName()) && expresion.getValue().equals("float")) {
-            cuerpoFuncion.add("li.s $f11, " + expresion.getValue());
-            pushToStack(expresion.getValue(), expresion.getType(),"$f11", getIndexInFunctionScope(identifierName) * 4 );
-        } else {
-            System.out.println(expresion);
-            String register = getItemInfoFromStack(expresion);
-            pushToStack(expresion.getValue(), expresion.getType(), register, getIndexInFunctionScope(identifierName) * 4 );
+        if (expresion.getValue() != null) {
+            if (basicTypes.contains(expresion.getName()) && (expresion.getName().equals("int") || expresion.getValue().equals("char"))) {
+                cuerpoFuncion.add("li $s7, " + expresion.getValue());
+                pushToStack(expresion.getValue(), expresion.getType(), "$s7", getIndexInFunctionScope(identifierName) * 4);
+            } else if (basicTypes.contains(expresion.getName()) && expresion.getValue().equals("float")) {
+                cuerpoFuncion.add("li.s $f11, " + expresion.getValue());
+                pushToStack(expresion.getValue(), expresion.getType(), "$f11", getIndexInFunctionScope(identifierName) * 4);
+            } else {
+                System.out.println(expresion);
+                String register = getItemInfoFromStack(expresion);
+                pushToStack(expresion.getValue(), expresion.getType(), register, getIndexInFunctionScope(identifierName) * 4);
+            }
         }
     }
 
@@ -195,6 +201,93 @@ public class CodeGenerator {
         for (int i = 0; i < floatRegisters.length; i++) {
             if (!floatRegisters[i].equals(dontCleanThis)) {
                 floatAvailable[i] = true;
+            }
+        }
+    }
+
+    public static void cleanRegister(String cleanThis) {
+        for (int i = 0; i < registers.length; i++) {
+            if (registers[i].equals(cleanThis)) {
+                available[i] = true;
+            }
+        }
+
+        for (int i = 0; i < floatRegisters.length; i++) {
+            if (floatRegisters[i].equals(cleanThis)) {
+                floatAvailable[i] = true;
+            }
+        }
+    }
+
+    public static boolean isIdentifier(String name) {
+        return !basicTypes.contains(name);
+    }
+
+    public static void createOperation(String operation, SymbolInfo operand1, SymbolInfo operand2) {
+        if (operand1 != null && operand2 != null) {
+            String register1 = "";
+            String register2 = "";
+            // x = y + 3
+            if (isIdentifier(operand1.getName())) {
+                register1 = getItemInfoFromStack(operand1);
+            } else {
+                register1 = getRegister(operand1);
+                if (register1.contains("$f")) {
+                    cuerpoFuncion.add("li.s " + register1 + ", " + operand1.getValue());
+                } else {
+                    cuerpoFuncion.add("li " + register1 + ", " + operand1.getValue());
+                }
+
+            }
+
+            if (isIdentifier(operand2.getName())) {
+                register2 = getItemInfoFromStack(operand2);
+            } else {
+                register2 = getRegister(operand2);
+                if (register2.contains("$f")) {
+                    cuerpoFuncion.add("li.s " + register2 + ", " + operand2.getValue());
+                } else {
+                    cuerpoFuncion.add("li " + register2 + ", " + operand2.getValue());
+                }
+            }
+
+            String result = getRegister(operand1);
+            cleanRegister(register1);
+            cleanRegister(register2);
+
+            Operations newOperation = new Operations(operation, register1, register2, result);
+            operations.add(newOperation);
+
+            // Operations
+            operate(newOperation);
+        }
+    }
+
+    public static void operate(Operations operation) {
+        String result = operation.result;
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+        String operationType = operation.operation;
+
+        if (result.contains("$t")) {
+            if (operationType.equals("+")) {
+                cuerpoFuncion.add("add " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("-")) {
+                cuerpoFuncion.add("sub " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("*")) {
+                cuerpoFuncion.add("mul " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("/")) {
+                cuerpoFuncion.add("div " + result + ", " + operand1 + ", " + operand2);
+            }
+        } else {
+            if (operationType.equals("+")) {
+                cuerpoFuncion.add("add.s " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("-")) {
+                cuerpoFuncion.add("sub.s " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("*")) {
+                cuerpoFuncion.add("mul.s " + result + ", " + operand1 + ", " + operand2);
+            } else if (operationType.equals("/")) {
+                cuerpoFuncion.add("div.s " + result + ", " + operand1 + ", " + operand2);
             }
         }
     }
