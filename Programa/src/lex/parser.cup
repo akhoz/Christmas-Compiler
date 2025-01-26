@@ -398,7 +398,7 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
 
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
-    // Agreagar checkInitilized ACA !!! 
+    // Agreagar checkInitilized ACA !!!
 :};
 
 creacion ::= nombrar:n SEMICOLON

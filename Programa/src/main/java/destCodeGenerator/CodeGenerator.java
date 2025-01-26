@@ -14,6 +14,8 @@ public class CodeGenerator {
     public static LinkedHashMap<String, String> functionScope; // Cambiado a LinkedHashMap
     public static LinkedHashMap<String, String> functionParams; // Cambiado a LinkedHashMap
     public static List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
+    public static final String[] registers = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8"};
+    public static final boolean[] available = new boolean[registers.length];
 
     public CodeGenerator() {
         data = new ArrayList<>();
@@ -151,5 +153,7 @@ public class CodeGenerator {
         System.out.println(functionScope);
         return keys.indexOf(name);
     }
+
+
 
 }
