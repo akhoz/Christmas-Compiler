@@ -14,8 +14,13 @@ public class CodeGenerator {
     public static LinkedHashMap<String, String> functionScope; // Cambiado a LinkedHashMap
     public static LinkedHashMap<String, String> functionParams; // Cambiado a LinkedHashMap
     public static List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
+
     public static final String[] registers = {"$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8"};
     public static final boolean[] available = new boolean[registers.length];
+    public static final String[] floatRegisters = {
+            "$f0", "$f1", "$f2", "$f3", "$f4", "$f5", "$f6", "$f7", "$f8", "$f9", "$f10", "$f11", "$f12"
+    };
+    public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
 
     public CodeGenerator() {
         data = new ArrayList<>();
@@ -28,6 +33,9 @@ public class CodeGenerator {
         // Inicializar el segmento de texto con la dirección de retorno
         text.add(".globl main");
         text.add("main:");
+
+        Arrays.fill(available, true);
+        Arrays.fill(floatAvailable, true);
     }
 
     private static void addStringToDataSegment(String name, String value) {
@@ -55,17 +63,18 @@ public class CodeGenerator {
         pushToStack(0, "int", "$ra", (functionScope.size() - 1) * 4);
     }
 
-    public static void createAndAssignValueToIdentifier(SymbolInfo expresion) {
+    public static void assignValueToIdentifier(String identifierName, SymbolInfo expresion) {
         // En caso de ser literal, se pushea directamente
         if (basicTypes.contains(expresion.getName()) && (expresion.getName().equals("int") || expresion.getValue().equals("char"))) {
             cuerpoFuncion.add("li $s7, " + expresion.getValue());
-            pushToStack(expresion.getValue(), expresion.getType(), "$s7", (functionScope.size() - 1) * 4 );
+            pushToStack(expresion.getValue(), expresion.getType(), "$s7", getIndexInFunctionScope(identifierName) * 4 );
         } else if (basicTypes.contains(expresion.getName()) && expresion.getValue().equals("float")) {
             cuerpoFuncion.add("li.s $f11, " + expresion.getValue());
-            pushToStack(expresion.getValue(), expresion.getType(),"$f11", (functionScope.size() - 1) * 4 );
+            pushToStack(expresion.getValue(), expresion.getType(),"$f11", getIndexInFunctionScope(identifierName) * 4 );
         } else {
-            String register = getItemInfoFromStack(expresion.getName());
-            pushToStack(expresion.getValue(), expresion.getType(), register, (functionScope.size() - 1) * 4 );
+            System.out.println(expresion);
+            String register = getItemInfoFromStack(expresion);
+            pushToStack(expresion.getValue(), expresion.getType(), register, getIndexInFunctionScope(identifierName) * 4 );
         }
     }
 
@@ -73,9 +82,10 @@ public class CodeGenerator {
         functionScope.put(name, type);
     }
 
-    public static String getItemInfoFromStack(String itemName) {
+    public static String getItemInfoFromStack(SymbolInfo expresion) {
         // esta funcion es para obtener el valor de un identifier del stack, se almacena en un registro el cual se retorna
-        String register = getRegister();
+        String itemName = expresion.getName();
+        String register = getRegister(expresion);
         int index = getIndexInFunctionScope(itemName);
         String type = functionScope.get(itemName);
         System.out.println(itemName + "AAAAPPPPPPPPPPPPPPPPPPPPPPPPP");
@@ -143,17 +153,49 @@ public class CodeGenerator {
         }
     }
 
-    public static String getRegister() {
-        return "$t0"; // Camviar esto, obviamente
+    public static String getRegister(SymbolInfo expresion) {
+        String register = "";
+        if (basicTypes.contains(expresion.getName()) && expresion.getValue().equals("float")) {
+            for (int i =0; i < floatRegisters.length; i++) {
+                if (floatAvailable[i]) {
+                    register = floatRegisters[i];
+                    floatAvailable[i] = false;
+                    break;
+                }
+            }
+        } else {
+            for (int i =0; i < registers.length; i++) {
+                if (available[i]) {
+                    register = registers[i];
+                    available[i] = false;
+                    break;
+                }
+            }
+
+        }
+
+        return register;
     }
 
     public static int getIndexInFunctionScope(String name) {
         List<String> keys = new ArrayList<>(functionScope.keySet());
         System.out.println(keys);
         System.out.println(functionScope);
+        System.out.println(name);
         return keys.indexOf(name);
     }
 
+    public static void cleanRegisters(String dontCleanThis) {
+        for (int i = 0; i < registers.length; i++) {
+            if (!registers[i].equals(dontCleanThis)) {
+                available[i] = true;
+            }
+        }
 
-
+        for (int i = 0; i < floatRegisters.length; i++) {
+            if (!floatRegisters[i].equals(dontCleanThis)) {
+                floatAvailable[i] = true;
+            }
+        }
+    }
 }
