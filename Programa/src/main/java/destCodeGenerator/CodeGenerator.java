@@ -161,7 +161,7 @@ public class CodeGenerator {
 
     public static String getRegister(SymbolInfo expresion) {
         String register = "";
-        if (basicTypes.contains(expresion.getName()) && expresion.getValue().equals("float")) {
+        if (basicTypes.contains(expresion.getName()) && expresion.getType().equals("float")) {
             for (int i =0; i < floatRegisters.length; i++) {
                 if (floatAvailable[i]) {
                     register = floatRegisters[i];
@@ -228,26 +228,40 @@ public class CodeGenerator {
             String register1 = "";
             String register2 = "";
             // x = y + 3
-            if (isIdentifier(operand1.getName())) {
-                register1 = getItemInfoFromStack(operand1);
-            } else {
-                register1 = getRegister(operand1);
-                if (register1.contains("$f")) {
-                    cuerpoFuncion.add("li.s " + register1 + ", " + operand1.getValue());
+            if (operand1.getValue() != null) {
+                if (isIdentifier(operand1.getName())) {
+                    register1 = getItemInfoFromStack(operand1);
                 } else {
-                    cuerpoFuncion.add("li " + register1 + ", " + operand1.getValue());
-                }
+                    register1 = getRegister(operand1);
+                    if (register1.contains("$f")) {
+                        cuerpoFuncion.add("li.s " + register1 + ", " + operand1.getValue());
+                    } else {
+                        cuerpoFuncion.add("li " + register1 + ", " + operand1.getValue());
+                    }
 
+                }
+            } else {
+                System.out.println("SKIBIDI ELSEEEE! ----------------- :3 \n");
+                if (operations.size() >= 1) {
+                    register1 = operations.get(operations.size() - 1).result;
+                }
             }
 
-            if (isIdentifier(operand2.getName())) {
-                register2 = getItemInfoFromStack(operand2);
-            } else {
-                register2 = getRegister(operand2);
-                if (register2.contains("$f")) {
-                    cuerpoFuncion.add("li.s " + register2 + ", " + operand2.getValue());
+            if (operand2.getValue() != null) {
+                if (isIdentifier(operand2.getName())) {
+                    register2 = getItemInfoFromStack(operand2);
                 } else {
-                    cuerpoFuncion.add("li " + register2 + ", " + operand2.getValue());
+                    register2 = getRegister(operand2);
+                    if (register2.contains("$f")) {
+                        cuerpoFuncion.add("li.s " + register2 + ", " + operand2.getValue());
+                    } else {
+                        cuerpoFuncion.add("li " + register2 + ", " + operand2.getValue());
+                    }
+                }
+            } else {
+                System.out.println("SKIBIDI ELSEEEE! ----------------- :3 \n");
+                if (operations.size() >= 1) {
+                    register2 = operations.get(operations.size() - 2).result;
                 }
             }
 
@@ -260,6 +274,8 @@ public class CodeGenerator {
 
             // Operations
             operate(newOperation);
+
+            // LIMPIAR OPERATIONS CUANDO YA SE HAYA TERMINADO TODA LA EXPRESION !!!! PUEDE SER CUANDO TERMINA CREACION ASIGNACION
         }
     }
 

@@ -8,6 +8,8 @@ sw $ra, 8($sp)
 li $t0, 5
 li $t1, 3
 add $t2, $t0, $t1
+li $t0, 4
+add $t1, $t2, $t0
 li $s7, 77
 sw $s7, -4($sp)
 addu $sp, $sp, 20
