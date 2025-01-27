@@ -84,6 +84,17 @@ public class CodeGenerator {
         }
     }
 
+    public static void assignStmtValueToIdentifier(String identifierName) {
+        int index = getIndexInFunctionScope(identifierName) * 4;
+        String register = operations.getLast().result; // el result es el registro donde se almacena el resultado de toda la operacion
+
+        if (register.contains("$t")) {
+            cuerpoFuncion.add("sw " + register + ", " + index + "($sp)");
+        } else {
+            cuerpoFuncion.add("s.s " + register + ", " + index);
+        }
+    }
+
     public static void addToFunctionScope(String name, String type) {
         functionScope.put(name, type);
     }
@@ -228,7 +239,7 @@ public class CodeGenerator {
             String register1 = "";
             String register2 = "";
             // x = y + 3
-            if (isIdentifier(operand1.getName())) {
+            if (isIdentifier(operand1.getName()) && operand1.getName() != null) {
                 register1 = getItemInfoFromStack(operand1);
             } else if (operand1.getValue() != null) {
                 register1 = getRegister(operand1);
@@ -244,8 +255,10 @@ public class CodeGenerator {
                 }
             }
 
-            if (isIdentifier(operand2.getName())) {
+            if (isIdentifier(operand2.getName()) && operand2.getName() != null ) {
                 register2 = getItemInfoFromStack(operand2);
+                System.out.println(operand2);
+                System.out.println("pepe");
             } else if (operand2.getValue() != null) {
                 register2 = getRegister(operand2);
                 if (register2.contains("$f")) {

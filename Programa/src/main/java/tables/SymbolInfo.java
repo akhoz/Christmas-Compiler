@@ -7,6 +7,7 @@ public class SymbolInfo<T>  {
     private int column;
     private T value;
     private boolean isDeclared = false;
+    private boolean isSingleObject = true;
 
     public SymbolInfo(String name, String type, int line, int column) {
         this.name = name;
@@ -40,6 +41,10 @@ public class SymbolInfo<T>  {
         return value;
     }
 
+    public boolean getSingleObject() {
+        return isSingleObject;
+    }
+
     public void setValue(T value) {
         this.value = value;
     }
@@ -50,6 +55,10 @@ public class SymbolInfo<T>  {
 
     public boolean getDeclared() {
         return isDeclared;
+    }
+
+    public void setSingleObject(boolean isSingleObject) {
+        this.isSingleObject = isSingleObject;
     }
 
 

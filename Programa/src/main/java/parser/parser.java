@@ -1209,11 +1209,17 @@ class CUP$parser$actions {
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("+", op1, op2);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
-
                         
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_aritmetica",25, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1236,8 +1242,15 @@ class CUP$parser$actions {
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("-", op1, op2);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        
@@ -1262,8 +1275,15 @@ class CUP$parser$actions {
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("*", op1, op2);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        
@@ -1288,8 +1308,15 @@ class CUP$parser$actions {
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("/", op1, op2);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        
@@ -1313,8 +1340,15 @@ class CUP$parser$actions {
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        
@@ -1338,8 +1372,15 @@ class CUP$parser$actions {
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        
@@ -1443,6 +1484,8 @@ class CUP$parser$actions {
                            Variable.checkExistance(variable, currentTable);
 
                            SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
+
+                           variable.setType(variableDeTabla.getType());
 
                            if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
                                 System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
@@ -1581,7 +1624,11 @@ class CUP$parser$actions {
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
 
-    codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
+    if (expressionResult.getSingleObject()) {
+       codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
+    } else {
+        codeGenerator.assignStmtValueToIdentifier(variable.getName());
+    }
 
     // Agreagar checkInitilized ACA !!!
 
@@ -1636,7 +1683,12 @@ class CUP$parser$actions {
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
     codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
 
-    codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+    if (expressionResult.getSingleObject()) {
+       codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+    } else {
+        codeGenerator.assignStmtValueToIdentifier(info.getName());
+    }
+
     codeGenerator.cleanRegisters("");
 
     RESULT = null;
