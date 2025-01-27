@@ -15,7 +15,8 @@ add $t1, $t0, $t2
 sw $t1, 16($sp)
 lw $t0, 16($sp)
 li $t1, 77
-div $t2, $t0, $t1
+div $t0, $t1
+lw lo, $t2
 sw $t2, 12($sp)
 addu $sp, $sp, 24
 func2:

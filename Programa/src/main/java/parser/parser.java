@@ -1485,7 +1485,10 @@ class CUP$parser$actions {
 
                            SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
 
-                           variable.setType(variableDeTabla.getType());
+                            if (variableDeTabla != null) {
+                                variable.setType(variableDeTabla.getType());
+                            }
+
 
                            if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
                                 System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
@@ -1630,6 +1633,8 @@ class CUP$parser$actions {
         codeGenerator.assignStmtValueToIdentifier(variable.getName());
     }
 
+    codeGenerator.cleanOperations();
+
     // Agreagar checkInitilized ACA !!!
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("asignar",49, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1688,6 +1693,8 @@ class CUP$parser$actions {
     } else {
         codeGenerator.assignStmtValueToIdentifier(info.getName());
     }
+
+    codeGenerator.cleanOperations();
 
     codeGenerator.cleanRegisters("");
 

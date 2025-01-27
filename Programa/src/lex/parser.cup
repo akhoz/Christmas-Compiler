@@ -426,7 +426,10 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
 
                            SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
 
-                           variable.setType(variableDeTabla.getType());
+                            if (variableDeTabla != null) {
+                                variable.setType(variableDeTabla.getType());
+                            }
+
 
                            if (variableDeTabla != null && !variableDeTabla.getDeclared()) {
                                 System.err.println("Error semantico: variable no inicializada: " + variable.getName() + ", linea: " + variable.getLine() + " columna: " + variable.getColumn());
@@ -455,6 +458,8 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     } else {
         codeGenerator.assignStmtValueToIdentifier(variable.getName());
     }
+
+    codeGenerator.cleanOperations();
 
     // Agreagar checkInitilized ACA !!!
 :};
@@ -493,6 +498,8 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     } else {
         codeGenerator.assignStmtValueToIdentifier(info.getName());
     }
+
+    codeGenerator.cleanOperations();
 
     codeGenerator.cleanRegisters("");
 

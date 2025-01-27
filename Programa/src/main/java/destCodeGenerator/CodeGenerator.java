@@ -301,7 +301,11 @@ public class CodeGenerator {
             } else if (operationType.equals("*")) {
                 cuerpoFuncion.add("mul " + result + ", " + operand1 + ", " + operand2);
             } else if (operationType.equals("/")) {
-                cuerpoFuncion.add("div " + result + ", " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("div " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("lw lo, " + result);
+            } else if (operationType.equals("%")) {
+                cuerpoFuncion.add("div " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("lw hi, " + result);
             }
         } else {
             if (operationType.equals("+")) {
@@ -311,8 +315,27 @@ public class CodeGenerator {
             } else if (operationType.equals("*")) {
                 cuerpoFuncion.add("mul.s " + result + ", " + operand1 + ", " + operand2);
             } else if (operationType.equals("/")) {
-                cuerpoFuncion.add("div.s " + result + ", " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("div.s " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("lw lo, " + result);
+            } else if (operationType.equals("%")) {
+                cuerpoFuncion.add("div.s " + operand1 + ", " + operand2);
+                cuerpoFuncion.add("lw hi, " + result);
             }
         }
+    }
+
+    public static void createLogicalOperation(String operation, SymbolInfo operand1, SymbolInfo operand2) {
+        if (operand1 != null && operand2 != null) {
+            String register1 = "";
+            String register2 = "";
+            if (isIdentifier(operand1.getName()) && operand1.getName() != null) {
+                register1 = getItemInfoFromStack(operand1);
+            }
+            if (isIdentifier(operand2.getName()) && operand2.getName() != null) {}
+        }
+    }
+
+    public static void cleanOperations() {
+        operations.clear();
     }
 }
