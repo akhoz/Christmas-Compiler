@@ -85,13 +85,15 @@ public class CodeGenerator {
     }
 
     public static void assignStmtValueToIdentifier(String identifierName) {
-        int index = getIndexInFunctionScope(identifierName) * 4;
-        String register = operations.getLast().result; // el result es el registro donde se almacena el resultado de toda la operacion
+        if (!operations.isEmpty()) {
+            int index = getIndexInFunctionScope(identifierName) * 4;
+            String register = operations.getLast().result; // el result es el registro donde se almacena el resultado de toda la operacion
 
-        if (register.contains("$t")) {
-            cuerpoFuncion.add("sw " + register + ", " + index + "($sp)");
-        } else {
-            cuerpoFuncion.add("s.s " + register + ", " + index);
+            if (register.contains("$t")) {
+                cuerpoFuncion.add("sw " + register + ", " + index + "($sp)");
+            } else {
+                cuerpoFuncion.add("s.s " + register + ", " + index);
+            }
         }
     }
 

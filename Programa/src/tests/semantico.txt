@@ -1,0 +1,15 @@
+
+trueno _func_ abreregalo rodolfo _param1_ , rodolfo _param2_ , bromista _param3_ cierraregalo abrecuento
+    trueno _bool_ entrega true finregalo
+    rodolfo _arreglo_ abreempaque 2 cierraempaque entrega abrecuento 1 , 2 , _bool_ cierracuento finregalo
+    trueno _arreglo2_ abreempaque 2 cierraempaque entrega abrecuento 1 , 2 , _bool_ , "holamundo" cierracuento finregalo
+    trueno _arreglo3_ abreempaque 2 cierraempaque entrega abrecuento _bool_ , false cierracuento finregalo
+    envia _bool_ finregalo
+cierracuento
+
+rodolfo _verano_ abrecuento
+trueno _bool_ entrega true finregalo
+    rodolfo _varfunc_ entrega _func_ abreregalo 1 , 3.0 cierraregalo finregalo
+    rodolfo _arreglo_ abreempaque 2 cierraempaque finregalo
+    _arreglo_ entrega abrecuento 1 , _bool_ , 3 cierracuento finregalo
+cierracuento

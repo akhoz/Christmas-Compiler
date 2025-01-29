@@ -37,6 +37,7 @@ parser code {:
     CodeGenerator codeGenerator;
     String currentFunctionName = null; // Variable para rastrear la función actual
     int paramsQuantity = 0 ;
+    String currentArrayType = null ;
     String currentCalledFunction = null;
     SymbolInfo nullSymbol = new SymbolInfo("null", "null", 0, 0);
 
@@ -103,7 +104,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray;
 
 
 // Precedencias
@@ -453,8 +454,10 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
 
-    if (expressionResult.getSingleObject()) {
-       codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
+    if (expressionResult != null) {
+        if (expressionResult.getSingleObject()) {
+            codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
+        }
     } else {
         codeGenerator.assignStmtValueToIdentifier(variable.getName());
     }
@@ -462,7 +465,21 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     codeGenerator.cleanOperations();
 
     // Agreagar checkInitilized ACA !!!
-:};
+:} |
+    IDENTIFIER:id asignarArray {:
+       TokenInfo token = (TokenInfo) id;
+       SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
+
+       FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+
+       Variable.checkExistance(variable, currentTable);
+
+       SymbolInfo variableDeTabla = currentTable.lookup(variable.getName());
+
+        if (variableDeTabla != null) {
+            currentArrayType = variableDeTabla.getType();
+        }
+    :};
 
 creacion ::= nombrar:n SEMICOLON
 {:
@@ -493,8 +510,10 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     // System.out.println("--------++_+_+_-" + symbolTable.functionScopes);
     codeGenerator.addToFunctionScope(info.getName(), info.getType()); // Revisar
 
-    if (expressionResult.getSingleObject()) {
-       codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+    if (expressionResult != null) {
+        if (expressionResult.getSingleObject()) {
+            codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+        }
     } else {
         codeGenerator.assignStmtValueToIdentifier(info.getName());
     }
@@ -739,18 +758,22 @@ default_stmt ::= DEFAULT COLON sentencias ;
 
 // Static Array
 arreglo ::=  nombrar_array SEMICOLON  // Declaración sin inicialización
-          | nombrar_array EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+          | nombrar_array:a asignarArray {:
+                currentArrayType = null ;
+            :};
 
 nombrar_array ::= tipos:t IDENTIFIER:id array_size:as
     {:
          TokenInfo token = (TokenInfo) id;
           String tipo = (String) t;
+          currentArrayType = tipo ;
          SymbolInfo array = new SymbolInfo(token.getValue(), tipo, token.getLine() + 1, token.getColumn() + 1);
          SymbolInfo expression = (SymbolInfo) as;
          FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
          Variable.checkRepeated(array, currentTable);
          boolean inserted = currentTable.insert(array.getName(), array);
          Variable.checkArraySize(array, expression, currentTable, symbolTable);
+         RESULT = as ;
     :};
 
 array_size ::= OPEN_BRACKET expresion:e CLOSE_BRACKET
@@ -760,8 +783,28 @@ array_size ::= OPEN_BRACKET expresion:e CLOSE_BRACKET
 
 indice_array ::= IDENTIFIER array_size ;
 
+asignarArray ::= EQ OPEN_BLOCK listaValores CLOSE_BLOCK SEMICOLON ;
+
 // Lista de valores para inicialización
-listaValores ::= listaValores COMMA literales | literales ;
+listaValores ::= listaValores COMMA expresion:e {:
+       SymbolInfo expressionResult = (SymbolInfo) e;
+         if (expressionResult != null) {
+          if (expressionResult.getType() != null && currentArrayType != null) {
+             if (!expressionResult.getType().equals(currentArrayType)) {
+                 System.err.println("Error semantico, se le está pasando algo de tipo distinto un array, se esperaba: " + currentArrayType + " y se recibió: " + expressionResult.getType() + " en la linea: " + expressionResult.getLine() + " y columna: " + expressionResult.getColumn());
+               }
+          }
+         }
+  :} | expresion:e {:
+         SymbolInfo expressionResult = (SymbolInfo) e;
+         if (expressionResult != null) {
+          if (expressionResult.getType() != null && currentArrayType != null) {
+             if (!expressionResult.getType().equals(currentArrayType)) {
+                 System.err.println("Error semantico, se le está pasando algo de tipo distinto un array, se esperaba: " + currentArrayType + " y se recibió: " + expressionResult.getType() + " en la linea: " + expressionResult.getLine() + " y columna: " + expressionResult.getColumn());
+               }
+          }
+         }
+    :};
 
 // Unary Operators
 unary_operators ::= negacion
