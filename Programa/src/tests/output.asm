@@ -4,9 +4,7 @@
 main:
 func:
 subu $sp, $sp, 8
-sw $ra, 12($sp)
-lw $t0, -4($sp)
-
-addu $sp, $sp, 20
+sw $ra, 16($sp)
+addu $sp, $sp, 24
 li $v0, 10
 syscall

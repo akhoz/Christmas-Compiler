@@ -578,8 +578,9 @@ encabezadoFuncion ::= nombrar:i parametros:e
         List<SymbolInfo> paramList = (List<SymbolInfo>) e;
         for (SymbolInfo param : paramList) {
             System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
+            param.setDeclared(true);
         }
-        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, 0, 0, paramList);
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, funcSymbol.getLine(), funcSymbol.getColumn(), paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
@@ -636,7 +637,11 @@ parametroAux ::= parametro:p
     :};
 
 
-parametro ::= nombrar:n {: RESULT = n; :} | nombrar_array:n {: RESULT = n; :} ;
+parametro ::= nombrar:n {:
+    RESULT = n;
+    :} | nombrar_array:n {:
+    RESULT = n;
+    :} ;
 
 llamada_funcion ::=
        IDENTIFIER:id

@@ -1868,8 +1868,9 @@ class CUP$parser$actions {
         List<SymbolInfo> paramList = (List<SymbolInfo>) e;
         for (SymbolInfo param : paramList) {
             System.out.println("Parámetro: nombre = " + param.getName() + ", tipo = " + param.getType());
+            param.setDeclared(true);
         }
-        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, 0, 0, paramList);
+        FunctionInfo fInfo = new FunctionInfo(funcName, returnType, funcSymbol.getLine(), funcSymbol.getColumn(), paramList);
 
         // Insertar la función en la tabla de símbolos
         boolean inserted = symbolTable.pushFunction(fInfo);
@@ -1970,7 +1971,9 @@ class CUP$parser$actions {
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object n = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = n; 
+		
+    RESULT = n;
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametro",14, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -1982,7 +1985,9 @@ class CUP$parser$actions {
 		int nleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int nright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		Object n = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = n; 
+		
+    RESULT = n;
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("parametro",14, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
