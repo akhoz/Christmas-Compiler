@@ -697,8 +697,11 @@ public class parser extends java_cup.runtime.lr_parser {
     String currentArrayType = null ;
     String currentCalledFunction = null;
     SymbolInfo nullSymbol = new SymbolInfo("null", "null", 0, 0);
-    SymbolInfo<Integer> zero = new SymbolInfo<>("zero", "int", 10, 5) {{
+    SymbolInfo<Integer> zero = new SymbolInfo<>("int", "int", 0, 0) {{
         setValue(0);
+    }};
+    SymbolInfo<Integer> one = new SymbolInfo<>("int", "int", 0, 0) {{
+        setValue(1);
     }};
 
     // Constructor del parser
@@ -908,8 +911,12 @@ class CUP$parser$actions {
 		
     TokenInfo token = (TokenInfo) b;
     boolean value = Boolean.parseBoolean(token.getValue()); // Convertir el valor a booleano
-    SymbolInfo<Boolean> symbol = new SymbolInfo<>("boolean", "boolean", token.getLine() + 1, token.getColumn() + 1);
-    symbol.setValue(value);
+    int numericValue = 0 ;
+    if (value == true) {
+        numericValue = 1 ;
+    }
+    SymbolInfo<Integer> symbol = new SymbolInfo<>("boolean", "boolean", token.getLine() + 1, token.getColumn() + 1);
+    symbol.setValue(numericValue);
     RESULT = symbol;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("literales",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -1022,10 +1029,9 @@ class CUP$parser$actions {
                        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                         ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
 
-
                         codeGenerator.createOperation("&&", op1, zero, "logical");
                         codeGenerator.createOperation("&&", op2, zero, "logical");
-
+                        codeGenerator.andOperationFinalCode();
 
                         if (op1 != null) {
                            SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
@@ -1048,8 +1054,35 @@ class CUP$parser$actions {
           case 17: // expresion_logica ::= expresion_logica OR expresion_logica 
             {
               Object RESULT =null;
+		int el1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int el1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		Object el1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int el2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int el2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object el2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
+                       SymbolInfo op1 = (SymbolInfo) el1;
+                       SymbolInfo op2 = (SymbolInfo) el2;
                        RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                       FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                        ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+
+                        codeGenerator.createOperation("||", op1, one, "logical");
+                        codeGenerator.createOperation("||", op2, one, "logical");
+                        codeGenerator.orOperationFinalCode();
+
+                        if (op1 != null) {
+                           SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                           exp.setSingleObject(false);
+                           RESULT = exp;
+                        } else if (op1 == null && op2 != null) {
+                            SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                            exp.setSingleObject(false);
+                            RESULT = exp;
+                        }
+                        else {
+                           RESULT = nullSymbol;
+                        }
                    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1059,8 +1092,26 @@ class CUP$parser$actions {
           case 18: // expresion_logica ::= NOT expresion_logica 
             {
               Object RESULT =null;
+		int elleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int elright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object el = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                      SymbolInfo op1 = (SymbolInfo) el;
+                      RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                      FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                       // ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+
+                       codeGenerator.createOperation("!", op1, zero, "logical");
+                       codeGenerator.notOperationFinalCode();
+
+                       if (op1 != null) {
+                          SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                          exp.setSingleObject(false);
+                          RESULT = exp;
+                       }
+                       else {
+                          RESULT = nullSymbol;
+                       }
                    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("expresion_logica",38, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

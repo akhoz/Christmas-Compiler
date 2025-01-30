@@ -17,26 +17,3 @@ rodolfo _verano_ abrecuento
     rodolfo _arreglo_ abreempaque 2 cierraempaque finregalo
     _arreglo_ entrega abrecuento 1 , _bool_ , 3 cierracuento finregalo
 cierracuento
-
-beq t0, t1 setTrue1:
-t2 = 0
-endComparison1:
-
-setTrue1:
-t2 = 1
-gotoEndComparison1
-
-
-
-bool1 = true
-bool2 = true
-
-beq bool1, 0 resultFalso
-beq bool2, 0 resultFalso
-t1 = 1 // resultado es true
-finalLogica:
-
-resultadoFalso:
-t1 = 0
-goto finalLogica
-

@@ -297,9 +297,9 @@ public class CodeGenerator {
                 if (newOperation.operation.equals("&&")) {
                     andOperation(newOperation);
                 } else if (newOperation.operation.equals("||")) {
-
+                    orOperation(newOperation);
                 } else if (newOperation.operation.equals("!")) {
-
+                    notOperation(newOperation);
                 }
             }
 
@@ -368,19 +368,79 @@ public class CodeGenerator {
         cuerpoFuncion.add("comparisonEnd" + labelCounter + ":");
         cuerpoFinal.add("setTrue" + labelCounter + ":");
         cuerpoFinal.add("li " + result + ", " + 1 ); // Caso true
-        cuerpoFinal.add("j comparisonEnd");
+        cuerpoFinal.add("j comparisonEnd" + labelCounter);
 
         labelCounter++;
     }
 
     public static void andOperation(Operations operation) {
-        String result = operation.result;
         String operand1 = operation.operand1;
         String operand2 = operation.operand2;
-        String operationType = operation.operation;
 
         cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setAndFalse" + labelCounter + ":");
     }
+
+    public static void andOperationFinalCode() {
+        String result = operations.getLast().result;
+        cuerpoFuncion.add("li " + result + ", " + 1); // setear true si ninguno era false
+        cuerpoFuncion.add("logicalEnd" + labelCounter + ":");
+
+        cuerpoFinal.add("setAndFalse" + labelCounter + ":");
+        cuerpoFinal.add("li " + result + ", " + 0); // setear false
+        cuerpoFinal.add("j logicalEnd" + labelCounter);
+        labelCounter++;
+    }
+
+    public static void orOperation(Operations operation) {
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setOrTrue" + labelCounter + ":");
+    }
+
+    public static void orOperationFinalCode() {
+        String result = operations.getLast().result;
+        cuerpoFuncion.add("li " + result + ", " + 0); // setear false si ninguno es true
+        cuerpoFuncion.add("logicalEnd" + labelCounter + ":");
+
+        cuerpoFinal.add("setOrTrue" + labelCounter + ":");
+        cuerpoFinal.add("li " + result + ", " + 1); // setear true
+        cuerpoFinal.add("j logicalEnd" + labelCounter);
+        labelCounter++;
+    }
+
+    public static void notOperation(Operations operation) {
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setNotTrue" + labelCounter + ":");
+    }
+
+    public static void notOperationFinalCode() {
+        String result = operations.getLast().result;
+        cuerpoFuncion.add("li " + result + ", " + 0); // setear false si era true
+        cuerpoFuncion.add("logicalEnd" + labelCounter + ":");
+
+        cuerpoFinal.add("setNotTrue" + labelCounter + ":");
+        cuerpoFinal.add("li " + result + ", " + 1); // setear true si era false
+        cuerpoFinal.add("j logicalEnd" + labelCounter);
+        labelCounter++;
+    }
+
+    /*
+
+    bool x = !false
+    bool y = !x
+
+
+    beq x 0 ponerTrue
+    x = 0
+    finalNot:
+
+    ponerTrue
+    x = 1
+    j finalNot
+     */
 
     public static void cleanOperations() {
         operations.clear();

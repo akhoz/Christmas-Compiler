@@ -6,7 +6,9 @@ rodolfo _func1_ abreregalo rodolfo _param1_ , bromista _param2_ cierraregalo abr
    _y_ entrega _x_ navidad 77  finregalo
 
     trueno _w_ entrega _x_ openslae _y_ finregalo
-    trueno _p_ entrega true melchor true finregalo
+    trueno _and_ entrega true melchor false finregalo
+    trueno _or_ entrega true gaspar false finregalo
+    trueno _not_ entrega baltazar true finregalo
 
    envia _y_ finregalo
 cierracuento
