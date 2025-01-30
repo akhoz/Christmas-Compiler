@@ -13,6 +13,7 @@ public class CodeGenerator {
     public static List<String> text;
     public static List<String> encabezadoFuncion;
     public static List<String> cuerpoFuncion;
+    public static List<String> cuerpoFinal;
     public static LinkedHashMap<String, String> functionScope; // Cambiado a LinkedHashMap
     public static LinkedHashMap<String, String> functionParams; // Cambiado a LinkedHashMap
     public static List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
@@ -24,11 +25,13 @@ public class CodeGenerator {
     };
     public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
     public static List<Operations> operations = new ArrayList<>();
+    public static int labelCounter = 0;
 
 
     public CodeGenerator() {
         data = new ArrayList<>();
         text = new ArrayList<>();
+        cuerpoFinal = new ArrayList<>();
 
         // Inicializar los segmentos de datos y texto
         data.add(".data");
@@ -85,7 +88,9 @@ public class CodeGenerator {
     }
 
     public static void assignStmtValueToIdentifier(String identifierName) {
+        // System.out.println("\n-----------------BBBBBBBBBBBBBBBBBB-----\n");
         if (!operations.isEmpty()) {
+
             int index = getIndexInFunctionScope(identifierName) * 4;
             String register = operations.getLast().result; // el result es el registro donde se almacena el resultado de toda la operacion
 
@@ -155,6 +160,7 @@ public class CodeGenerator {
     }
 
     public static void addFinalCode() {
+        text.addAll(cuerpoFinal);
         text.add("li $v0, 10");
         text.add("syscall");
         System.out.println(data + "\n" + text);
@@ -236,7 +242,7 @@ public class CodeGenerator {
         return !basicTypes.contains(name);
     }
 
-    public static void createOperation(String operation, SymbolInfo operand1, SymbolInfo operand2) {
+    public static void createOperation(String operation, SymbolInfo operand1, SymbolInfo operand2, String type) {
         if (operand1 != null && operand2 != null) {
             String register1 = "";
             String register2 = "";
@@ -260,7 +266,7 @@ public class CodeGenerator {
             if (isIdentifier(operand2.getName()) && operand2.getName() != null ) {
                 register2 = getItemInfoFromStack(operand2);
                 System.out.println(operand2);
-                System.out.println("pepe");
+              //  System.out.println("pepe");
             } else if (operand2.getValue() != null) {
                 register2 = getRegister(operand2);
                 if (register2.contains("$f")) {
@@ -283,7 +289,19 @@ public class CodeGenerator {
             operations.add(newOperation);
 
             // Operations
-            operate(newOperation);
+            if (type == "arithmetic") {
+                operate(newOperation);
+            } else if (type == "comparison") {
+                createComparisonOperation(newOperation);
+            } else if (type == "logical") {
+                if (newOperation.operation.equals("&&")) {
+                    andOperation(newOperation);
+                } else if (newOperation.operation.equals("||")) {
+
+                } else if (newOperation.operation.equals("!")) {
+
+                }
+            }
 
             // LIMPIAR OPERATIONS CUANDO YA SE HAYA TERMINADO TODA LA EXPRESION !!!! PUEDE SER CUANDO TERMINA CREACION ASIGNACION
         }
@@ -326,15 +344,42 @@ public class CodeGenerator {
         }
     }
 
-    public static void createLogicalOperation(String operation, SymbolInfo operand1, SymbolInfo operand2) {
-        if (operand1 != null && operand2 != null) {
-            String register1 = "";
-            String register2 = "";
-            if (isIdentifier(operand1.getName()) && operand1.getName() != null) {
-                register1 = getItemInfoFromStack(operand1);
-            }
-            if (isIdentifier(operand2.getName()) && operand2.getName() != null) {}
+    public static void createComparisonOperation(Operations operation) {
+        String result = operation.result;
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+        String operationType = operation.operation;
+
+        if (operationType.equals("==")) {
+            cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+        } else if (operationType.equals("!=")) {
+            cuerpoFuncion.add("bne " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+        } else if (operationType.equals(">")) {
+            cuerpoFuncion.add("bgtz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+        } else if (operationType.equals(">=")) {
+            cuerpoFuncion.add("bgez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+        } else if (operationType.equals("<")) {
+            cuerpoFuncion.add("bltz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+        } else if (operationType.equals("<=")) {
+            cuerpoFuncion.add("blez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
         }
+
+        cuerpoFuncion.add("li " + result + ", " + 0); // Caso false
+        cuerpoFuncion.add("comparisonEnd" + labelCounter + ":");
+        cuerpoFinal.add("setTrue" + labelCounter + ":");
+        cuerpoFinal.add("li " + result + ", " + 1 ); // Caso true
+        cuerpoFinal.add("j comparisonEnd");
+
+        labelCounter++;
+    }
+
+    public static void andOperation(Operations operation) {
+        String result = operation.result;
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+        String operationType = operation.operation;
+
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setAndFalse" + labelCounter + ":");
     }
 
     public static void cleanOperations() {

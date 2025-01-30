@@ -40,6 +40,9 @@ parser code {:
     String currentArrayType = null ;
     String currentCalledFunction = null;
     SymbolInfo nullSymbol = new SymbolInfo("null", "null", 0, 0);
+    SymbolInfo<Integer> zero = new SymbolInfo<>("zero", "int", 10, 5) {{
+        setValue(0);
+    }};
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -197,9 +200,31 @@ nombrar ::= tipos:t IDENTIFIER:id
 // Expresiones
 expresion ::= expresion_logica:el {: RESULT = el; :} ;
 
-expresion_logica ::= expresion_logica AND expresion_logica
+expresion_logica ::= expresion_logica:el1 AND expresion_logica:el2
                    {:
+                       SymbolInfo op1 = (SymbolInfo) el1;
+                       SymbolInfo op2 = (SymbolInfo) el2;
                        RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
+                       FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+                        ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+
+
+                        codeGenerator.createOperation("&&", op1, zero, "logical");
+                        codeGenerator.createOperation("&&", op2, zero, "logical");
+
+
+                        if (op1 != null) {
+                           SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                           exp.setSingleObject(false);
+                           RESULT = exp;
+                        } else if (op1 == null && op2 != null) {
+                            SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                            exp.setSingleObject(false);
+                            RESULT = exp;
+                        }
+                        else {
+                           RESULT = nullSymbol;
+                        }
                    :}
                    | expresion_logica OR expresion_logica
                    {:
@@ -220,9 +245,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation("==", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                        :}
@@ -232,9 +265,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation("!=", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                         :}
@@ -244,9 +285,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation("<", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                         :}
@@ -256,9 +305,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation("<=", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                         :}
@@ -268,9 +325,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation(">", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                         :}
@@ -280,9 +345,17 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
+                             codeGenerator.createOperation(">=", op1, op2, "comparison");
                              if (op1 != null) {
-                                RESULT = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
-                             } else {
+                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                exp.setSingleObject(false);
+                                RESULT = exp;
+                             } else if (op1 == null && op2 != null) {
+                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 exp.setSingleObject(false);
+                                 RESULT = exp;
+                             }
+                             else {
                                 RESULT = nullSymbol;
                              }
                         :}
@@ -294,7 +367,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             codeGenerator.createOperation("+", op1, op2);
+                             codeGenerator.createOperation("+", op1, op2, "arithmetic");
                              if (op1 != null) {
                                 SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
@@ -314,7 +387,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             codeGenerator.createOperation("-", op1, op2);
+                             codeGenerator.createOperation("-", op1, op2, "arithmetic");
                              if (op1 != null) {
                                 SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
@@ -334,7 +407,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             codeGenerator.createOperation("*", op1, op2);
+                             codeGenerator.createOperation("*", op1, op2, "arithmetic");
                              if (op1 != null) {
                                 SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
@@ -354,7 +427,7 @@ expresion_aritmetica ::= expresion_aritmetica:ea1 PLUS expresion_aritmetica:ea2
                              SymbolInfo op2 = (SymbolInfo) ea2;
                              FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
-                             codeGenerator.createOperation("/", op1, op2);
+                             codeGenerator.createOperation("/", op1, op2, "arithmetic");
                              if (op1 != null) {
                                 SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
@@ -459,9 +532,9 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     if (expressionResult != null) {
         if (expressionResult.getSingleObject()) {
             codeGenerator.assignValueToIdentifier(variable.getName(), expressionResult);
+        } else {
+           codeGenerator.assignStmtValueToIdentifier(variable.getName());
         }
-    } else {
-        codeGenerator.assignStmtValueToIdentifier(variable.getName());
     }
 
     codeGenerator.cleanOperations();
@@ -516,9 +589,9 @@ creacionAsignacion ::= nombrar:n EQ expresion:e SEMICOLON
     if (expressionResult != null) {
         if (expressionResult.getSingleObject()) {
             codeGenerator.assignValueToIdentifier(info.getName(), expressionResult);
+        } else {
+           codeGenerator.assignStmtValueToIdentifier(info.getName());
         }
-    } else {
-        codeGenerator.assignStmtValueToIdentifier(info.getName());
     }
 
     codeGenerator.cleanOperations();

@@ -1,116 +1,78 @@
-Linea: 1 Columna: 1 Token: BOOLEAN Valor: trueno
-Linea: 1 Columna: 8 Token: IDENTIFIER Valor: TokenInfo{value='_func_', line=0, column=7}
-Linea: 1 Columna: 15 Token: OPEN_PAREN Valor: abreregalo
-Linea: 1 Columna: 26 Token: INTEGER Valor: rodolfo
-Linea: 1 Columna: 34 Token: IDENTIFIER Valor: TokenInfo{value='_param1_', line=0, column=33}
-Linea: 1 Columna: 43 Token: COMMA Valor: ,
-Linea: 1 Columna: 45 Token: INTEGER Valor: rodolfo
-Linea: 1 Columna: 53 Token: IDENTIFIER Valor: TokenInfo{value='_param2_', line=0, column=52}
-Linea: 1 Columna: 62 Token: COMMA Valor: ,
-Linea: 1 Columna: 64 Token: FLOAT Valor: bromista
-Linea: 1 Columna: 73 Token: IDENTIFIER Valor: TokenInfo{value='_param3_', line=0, column=72}
-Linea: 1 Columna: 82 Token: COMMA Valor: ,
-Linea: 1 Columna: 84 Token: BOOLEAN Valor: trueno
-Linea: 1 Columna: 91 Token: IDENTIFIER Valor: TokenInfo{value='_param4_', line=0, column=90}
-Linea: 1 Columna: 100 Token: CLOSE_PAREN Valor: cierraregalo
-Linea: 1 Columna: 113 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 2 Columna: 5 Token: BOOLEAN Valor: trueno
-Linea: 2 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=1, column=11}
-Linea: 2 Columna: 19 Token: EQ Valor: entrega
-Linea: 2 Columna: 27 Token: IDENTIFIER Valor: TokenInfo{value='_param4_', line=1, column=26}
-Linea: 2 Columna: 36 Token: SEMICOLON Valor: finregalo
-Linea: 3 Columna: 5 Token: INTEGER Valor: rodolfo
-Linea: 3 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_arreglo_', line=2, column=12}
-Linea: 3 Columna: 23 Token: OPEN_BRACKET Valor: abreempaque
-Linea: 3 Columna: 35 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=2, column=34}
-Linea: 3 Columna: 37 Token: CLOSE_BRACKET Valor: cierraempaque
-Linea: 3 Columna: 51 Token: EQ Valor: entrega
-Linea: 3 Columna: 59 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 3 Columna: 70 Token: INTEGER_LITERAL Valor: TokenInfo{value='1', line=2, column=69}
-Linea: 3 Columna: 72 Token: COMMA Valor: ,
-Linea: 3 Columna: 74 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=2, column=73}
-Linea: 3 Columna: 76 Token: COMMA Valor: ,
-Linea: 3 Columna: 78 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=2, column=77}
-Linea: 3 Columna: 85 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 3 Columna: 98 Token: SEMICOLON Valor: finregalo
-Linea: 4 Columna: 5 Token: BOOLEAN Valor: trueno
-Linea: 4 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_arreglo2_', line=3, column=11}
-Linea: 4 Columna: 23 Token: OPEN_BRACKET Valor: abreempaque
-Linea: 4 Columna: 35 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=3, column=34}
-Linea: 4 Columna: 37 Token: CLOSE_BRACKET Valor: cierraempaque
-Linea: 4 Columna: 51 Token: EQ Valor: entrega
-Linea: 4 Columna: 59 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 4 Columna: 70 Token: INTEGER_LITERAL Valor: TokenInfo{value='1', line=3, column=69}
-Linea: 4 Columna: 72 Token: COMMA Valor: ,
-Linea: 4 Columna: 74 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=3, column=73}
-Linea: 4 Columna: 76 Token: COMMA Valor: ,
-Linea: 4 Columna: 78 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=3, column=77}
-Linea: 4 Columna: 85 Token: COMMA Valor: ,
-Linea: 4 Columna: 97 Token: STRING_LITERAL Valor: TokenInfo{value='holamundo', line=3, column=96}
-Linea: 4 Columna: 99 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 4 Columna: 112 Token: SEMICOLON Valor: finregalo
-Linea: 5 Columna: 5 Token: BOOLEAN Valor: trueno
-Linea: 5 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_arreglo3_', line=4, column=11}
-Linea: 5 Columna: 23 Token: OPEN_BRACKET Valor: abreempaque
-Linea: 5 Columna: 35 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=4, column=34}
-Linea: 5 Columna: 37 Token: CLOSE_BRACKET Valor: cierraempaque
-Linea: 5 Columna: 51 Token: EQ Valor: entrega
-Linea: 5 Columna: 59 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 5 Columna: 70 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=4, column=69}
-Linea: 5 Columna: 77 Token: COMMA Valor: ,
-Linea: 5 Columna: 79 Token: BOOLEAN_LITERAL Valor: TokenInfo{value='false', line=4, column=78}
-Linea: 5 Columna: 85 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 5 Columna: 98 Token: SEMICOLON Valor: finregalo
-Linea: 6 Columna: 5 Token: RETURN Valor: envia
-Linea: 6 Columna: 11 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=5, column=10}
-Linea: 6 Columna: 18 Token: SEMICOLON Valor: finregalo
-Linea: 7 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 9 Columna: 1 Token: INTEGER Valor: rodolfo
-Linea: 9 Columna: 9 Token: MAIN Valor: _verano_
-Linea: 9 Columna: 18 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 10 Columna: 5 Token: BOOLEAN Valor: trueno
-Linea: 10 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=9, column=11}
-Linea: 10 Columna: 19 Token: EQ Valor: entrega
-Linea: 10 Columna: 27 Token: BOOLEAN_LITERAL Valor: TokenInfo{value='true', line=9, column=26}
-Linea: 10 Columna: 32 Token: SEMICOLON Valor: finregalo
-Linea: 11 Columna: 5 Token: INTEGER Valor: rodolfo
-Linea: 11 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_hola_', line=10, column=12}
-Linea: 11 Columna: 20 Token: SEMICOLON Valor: finregalo
-Linea: 12 Columna: 5 Token: INTEGER Valor: rodolfo
-Linea: 12 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_adios_', line=11, column=12}
-Linea: 12 Columna: 21 Token: SEMICOLON Valor: finregalo
-Linea: 13 Columna: 5 Token: IDENTIFIER Valor: TokenInfo{value='_hola_', line=12, column=4}
-Linea: 13 Columna: 12 Token: EQ Valor: entrega
-Linea: 13 Columna: 20 Token: INTEGER_LITERAL Valor: TokenInfo{value='1', line=12, column=19}
-Linea: 13 Columna: 22 Token: SEMICOLON Valor: finregalo
-Linea: 14 Columna: 5 Token: IDENTIFIER Valor: TokenInfo{value='_adios_', line=13, column=4}
-Linea: 14 Columna: 13 Token: EQ Valor: entrega
-Linea: 14 Columna: 21 Token: IDENTIFIER Valor: TokenInfo{value='_hola_', line=13, column=20}
-Linea: 14 Columna: 28 Token: SEMICOLON Valor: finregalo
-Linea: 16 Columna: 5 Token: INTEGER Valor: rodolfo
-Linea: 16 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_varfunc_', line=15, column=12}
-Linea: 16 Columna: 23 Token: EQ Valor: entrega
-Linea: 16 Columna: 31 Token: IDENTIFIER Valor: TokenInfo{value='_func_', line=15, column=30}
-Linea: 16 Columna: 38 Token: OPEN_PAREN Valor: abreregalo
-Linea: 16 Columna: 49 Token: INTEGER_LITERAL Valor: TokenInfo{value='1', line=15, column=48}
-Linea: 16 Columna: 51 Token: COMMA Valor: ,
-Linea: 16 Columna: 53 Token: FLOAT_LITERAL Valor: TokenInfo{value='3.0', line=15, column=52}
-Linea: 16 Columna: 57 Token: CLOSE_PAREN Valor: cierraregalo
-Linea: 16 Columna: 70 Token: SEMICOLON Valor: finregalo
-Linea: 17 Columna: 5 Token: INTEGER Valor: rodolfo
-Linea: 17 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_arreglo_', line=16, column=12}
-Linea: 17 Columna: 23 Token: OPEN_BRACKET Valor: abreempaque
-Linea: 17 Columna: 35 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=16, column=34}
-Linea: 17 Columna: 37 Token: CLOSE_BRACKET Valor: cierraempaque
-Linea: 17 Columna: 51 Token: SEMICOLON Valor: finregalo
-Linea: 18 Columna: 5 Token: IDENTIFIER Valor: TokenInfo{value='_arreglo_', line=17, column=4}
-Linea: 18 Columna: 15 Token: EQ Valor: entrega
-Linea: 18 Columna: 23 Token: OPEN_BLOCK Valor: abrecuento
-Linea: 18 Columna: 34 Token: INTEGER_LITERAL Valor: TokenInfo{value='1', line=17, column=33}
-Linea: 18 Columna: 36 Token: COMMA Valor: ,
-Linea: 18 Columna: 38 Token: IDENTIFIER Valor: TokenInfo{value='_bool_', line=17, column=37}
-Linea: 18 Columna: 45 Token: COMMA Valor: ,
-Linea: 18 Columna: 47 Token: INTEGER_LITERAL Valor: TokenInfo{value='3', line=17, column=46}
-Linea: 18 Columna: 49 Token: CLOSE_BLOCK Valor: cierracuento
-Linea: 18 Columna: 62 Token: SEMICOLON Valor: finregalo
-Linea: 19 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
+Linea: 2 Columna: 1 Token: INTEGER Valor: rodolfo
+Linea: 2 Columna: 9 Token: IDENTIFIER Valor: TokenInfo{value='_func1_', line=1, column=8}
+Linea: 2 Columna: 17 Token: OPEN_PAREN Valor: abreregalo
+Linea: 2 Columna: 28 Token: INTEGER Valor: rodolfo
+Linea: 2 Columna: 36 Token: IDENTIFIER Valor: TokenInfo{value='_param1_', line=1, column=35}
+Linea: 2 Columna: 45 Token: COMMA Valor: ,
+Linea: 2 Columna: 47 Token: FLOAT Valor: bromista
+Linea: 2 Columna: 56 Token: IDENTIFIER Valor: TokenInfo{value='_param2_', line=1, column=55}
+Linea: 2 Columna: 65 Token: CLOSE_PAREN Valor: cierraregalo
+Linea: 2 Columna: 78 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 3 Columna: 4 Token: INTEGER Valor: rodolfo
+Linea: 3 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=2, column=11}
+Linea: 3 Columna: 16 Token: EQ Valor: entrega
+Linea: 3 Columna: 24 Token: INTEGER_LITERAL Valor: TokenInfo{value='2', line=2, column=23}
+Linea: 3 Columna: 26 Token: SEMICOLON Valor: finregalo
+Linea: 4 Columna: 4 Token: INTEGER Valor: rodolfo
+Linea: 4 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=3, column=11}
+Linea: 4 Columna: 16 Token: EQ Valor: entrega
+Linea: 4 Columna: 24 Token: INTEGER_LITERAL Valor: TokenInfo{value='5', line=3, column=23}
+Linea: 4 Columna: 26 Token: PLUS Valor: navidad
+Linea: 4 Columna: 34 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=3, column=33}
+Linea: 4 Columna: 38 Token: TIMES Valor: nochebuena
+Linea: 4 Columna: 49 Token: INTEGER_LITERAL Valor: TokenInfo{value='4', line=3, column=48}
+Linea: 4 Columna: 51 Token: SEMICOLON Valor: finregalo
+Linea: 5 Columna: 4 Token: INTEGER Valor: rodolfo
+Linea: 5 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_z_', line=4, column=11}
+Linea: 5 Columna: 16 Token: EQ Valor: entrega
+Linea: 5 Columna: 24 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=4, column=23}
+Linea: 5 Columna: 28 Token: SEMICOLON Valor: finregalo
+Linea: 6 Columna: 4 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=5, column=3}
+Linea: 6 Columna: 8 Token: EQ Valor: entrega
+Linea: 6 Columna: 16 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=5, column=15}
+Linea: 6 Columna: 20 Token: PLUS Valor: navidad
+Linea: 6 Columna: 28 Token: INTEGER_LITERAL Valor: TokenInfo{value='77', line=5, column=27}
+Linea: 6 Columna: 32 Token: SEMICOLON Valor: finregalo
+Linea: 8 Columna: 5 Token: BOOLEAN Valor: trueno
+Linea: 8 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_w_', line=7, column=11}
+Linea: 8 Columna: 16 Token: EQ Valor: entrega
+Linea: 8 Columna: 24 Token: IDENTIFIER Valor: TokenInfo{value='_x_', line=7, column=23}
+Linea: 8 Columna: 28 Token: NEQ Valor: openslae
+Linea: 8 Columna: 37 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=7, column=36}
+Linea: 8 Columna: 41 Token: SEMICOLON Valor: finregalo
+Linea: 9 Columna: 5 Token: BOOLEAN Valor: trueno
+Linea: 9 Columna: 12 Token: IDENTIFIER Valor: TokenInfo{value='_p_', line=8, column=11}
+Linea: 9 Columna: 16 Token: EQ Valor: entrega
+Linea: 9 Columna: 24 Token: BOOLEAN_LITERAL Valor: TokenInfo{value='true', line=8, column=23}
+Linea: 9 Columna: 29 Token: AND Valor: melchor
+Linea: 9 Columna: 37 Token: BOOLEAN_LITERAL Valor: TokenInfo{value='true', line=8, column=36}
+Linea: 9 Columna: 42 Token: SEMICOLON Valor: finregalo
+Linea: 11 Columna: 4 Token: RETURN Valor: envia
+Linea: 11 Columna: 10 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=10, column=9}
+Linea: 11 Columna: 14 Token: SEMICOLON Valor: finregalo
+Linea: 12 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
+Linea: 14 Columna: 1 Token: FLOAT Valor: bromista
+Linea: 14 Columna: 10 Token: IDENTIFIER Valor: TokenInfo{value='_func2_', line=13, column=9}
+Linea: 14 Columna: 18 Token: OPEN_PAREN Valor: abreregalo
+Linea: 14 Columna: 29 Token: CLOSE_PAREN Valor: cierraregalo
+Linea: 14 Columna: 42 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 15 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
+Linea: 17 Columna: 1 Token: INTEGER Valor: rodolfo
+Linea: 17 Columna: 9 Token: MAIN Valor: _verano_
+Linea: 17 Columna: 18 Token: OPEN_BLOCK Valor: abrecuento
+Linea: 18 Columna: 5 Token: FLOAT Valor: bromista
+Linea: 18 Columna: 14 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=17, column=13}
+Linea: 18 Columna: 18 Token: SEMICOLON Valor: finregalo
+Linea: 19 Columna: 5 Token: INTEGER Valor: rodolfo
+Linea: 19 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_array1_', line=18, column=12}
+Linea: 19 Columna: 22 Token: OPEN_BRACKET Valor: abreempaque
+Linea: 19 Columna: 34 Token: INTEGER_LITERAL Valor: TokenInfo{value='-3', line=18, column=33}
+Linea: 19 Columna: 37 Token: CLOSE_BRACKET Valor: cierraempaque
+Linea: 19 Columna: 51 Token: SEMICOLON Valor: finregalo
+Linea: 20 Columna: 5 Token: INTEGER Valor: rodolfo
+Linea: 20 Columna: 13 Token: IDENTIFIER Valor: TokenInfo{value='_array1_', line=19, column=12}
+Linea: 20 Columna: 22 Token: OPEN_BRACKET Valor: abreempaque
+Linea: 20 Columna: 34 Token: IDENTIFIER Valor: TokenInfo{value='_y_', line=19, column=33}
+Linea: 20 Columna: 38 Token: CLOSE_BRACKET Valor: cierraempaque
+Linea: 20 Columna: 52 Token: SEMICOLON Valor: finregalo
+Linea: 23 Columna: 1 Token: CLOSE_BLOCK Valor: cierracuento
