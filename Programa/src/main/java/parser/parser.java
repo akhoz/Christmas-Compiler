@@ -1027,7 +1027,8 @@ class CUP$parser$actions {
                        SymbolInfo op2 = (SymbolInfo) el2;
                        RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
                        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                        ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+                        ControlStructureOperations.checkLogicalOperandType(op1);
+                        ControlStructureOperations.checkLogicalOperandType(op2);
 
                         codeGenerator.createOperation("&&", op1, zero, "logical");
                         codeGenerator.createOperation("&&", op2, zero, "logical");
@@ -1065,7 +1066,8 @@ class CUP$parser$actions {
                        SymbolInfo op2 = (SymbolInfo) el2;
                        RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
                        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                        ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+                       ControlStructureOperations.checkLogicalOperandType(op1);
+                       ControlStructureOperations.checkLogicalOperandType(op2);
 
                         codeGenerator.createOperation("||", op1, one, "logical");
                         codeGenerator.createOperation("||", op2, one, "logical");
@@ -1099,7 +1101,7 @@ class CUP$parser$actions {
                       SymbolInfo op1 = (SymbolInfo) el;
                       RESULT = new SymbolInfo("boolean", "boolean", 0, 0);
                       FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
-                       // ControlStructureOperations.checkOperandsType(op1, op2, currentTable); // en lugar de hacer esto, hay que comparar que ambos sean boolean
+                      ControlStructureOperations.checkLogicalOperandType(op1);
 
                        codeGenerator.createOperation("!", op1, zero, "logical");
                        codeGenerator.notOperationFinalCode();
