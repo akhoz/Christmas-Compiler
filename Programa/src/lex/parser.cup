@@ -451,6 +451,8 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
     SymbolInfo expressionResult = (SymbolInfo) e;
     FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
+    Variable.initializeVar(variable.getName(), currentTable);
+
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
 
@@ -471,6 +473,7 @@ asignar ::= IDENTIFIER:id EQ expresion:e SEMICOLON
        SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
 
        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+       Variable.initializeVar(variable.getName(), currentTable);
 
        Variable.checkExistance(variable, currentTable);
 

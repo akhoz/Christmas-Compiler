@@ -121,4 +121,13 @@ public class Variable {
             }
         }
     }
+
+
+    public static void initializeVar(String name, FunctionInfo currentScope) {
+        SymbolInfo variable = currentScope.lookup(name);
+        if (variable != null) {
+            variable.setDeclared(true);
+        }
+
+    }
 }

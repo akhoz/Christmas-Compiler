@@ -1643,6 +1643,8 @@ class CUP$parser$actions {
     SymbolInfo expressionResult = (SymbolInfo) e;
     FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
 
+    Variable.initializeVar(variable.getName(), currentTable);
+
     // Verificar compatibilidad de tipos
     Variable.checkType(variable, expressionResult, currentTable, symbolTable);
 
@@ -1674,6 +1676,7 @@ class CUP$parser$actions {
        SymbolInfo variable = new SymbolInfo(token.getValue(), null, token.getLine() + 1, token.getColumn() + 1);
 
        FunctionInfo currentTable = symbolTable.lookupFunction(currentFunctionName);
+       Variable.initializeVar(variable.getName(), currentTable);
 
        Variable.checkExistance(variable, currentTable);
 
