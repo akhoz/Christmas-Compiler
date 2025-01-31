@@ -13,6 +13,7 @@ public class CodeGenerator {
     public static List<String> text;
     public static List<String> encabezadoFuncion;
     public static List<String> cuerpoFuncion;
+    public static List<String> cuerpoFinal = new ArrayList<>();
     public static LinkedHashMap<String, String> functionScope; // Cambiado a LinkedHashMap
     public static LinkedHashMap<String, String> functionParams; // Cambiado a LinkedHashMap
     public static List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
@@ -24,6 +25,8 @@ public class CodeGenerator {
     };
     public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
     public static List<Operations> operations = new ArrayList<>();
+    public static int labelCounter = 0;
+
 
 
     public CodeGenerator() {
@@ -155,6 +158,7 @@ public class CodeGenerator {
     }
 
     public static void addFinalCode() {
+        text.addAll(cuerpoFinal);
         text.add("li $v0, 10");
         text.add("syscall");
         System.out.println(data + "\n" + text);
@@ -326,16 +330,23 @@ public class CodeGenerator {
         }
     }
 
-    public static void createLogicalOperation(String operation, SymbolInfo operand1, SymbolInfo operand2) {
-        if (operand1 != null && operand2 != null) {
-            String register1 = "";
-            String register2 = "";
-            if (isIdentifier(operand1.getName()) && operand1.getName() != null) {
-                register1 = getItemInfoFromStack(operand1);
-            }
-            if (isIdentifier(operand2.getName()) && operand2.getName() != null) {}
+    public static void createComparisonOperation(Operations operation) {
+        String result = operation.result;
+        String operand1 = operation.operand1;
+        String operand2 = operation.operand2;
+        String operationType = operation.operation;
+
+        if (operationType.equals("==")) {
+            cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("li " + result + ", " + 0); // Caso false
+            cuerpoFuncion.add("comparisonEnd" + labelCounter + ":");
+            cuerpoFinal.add("setTrue" + labelCounter + ":");
+            cuerpoFinal.add("li " + result + ", " + 1 ); // Caso true
+            cuerpoFinal.add("goto comparisonEnd");
         }
     }
+
+
 
     public static void cleanOperations() {
         operations.clear();
