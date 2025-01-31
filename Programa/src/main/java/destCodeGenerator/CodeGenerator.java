@@ -11,6 +11,7 @@ import java.util.*;
 public class CodeGenerator {
     public static List<String> data;
     public static List<String> text;
+    public static String funcName;
     public static List<String> encabezadoFuncion;
     public static List<String> cuerpoFuncion;
     public static List<String> cuerpoFinal;
@@ -40,6 +41,7 @@ public class CodeGenerator {
         // Inicializar el segmento de texto con la dirección de retorno
         text.add(".globl main");
         text.add("main:");
+        text.add("j global");
 
         Arrays.fill(available, true);
         Arrays.fill(floatAvailable, true);
@@ -56,6 +58,7 @@ public class CodeGenerator {
         functionParams = new LinkedHashMap<>();
 
         functionName = functionName.replace("_", "");
+        funcName = functionName;
         encabezadoFuncion.add(functionName + ":");
 
         for (SymbolInfo<?> param : parameters) {
@@ -121,6 +124,13 @@ public class CodeGenerator {
         int difference = Math.max(functionScope.size() - functionParams.size(), 0) * 4;
         encabezadoFuncion.add("subu $sp, $sp, " + difference);
         cuerpoFuncion.add("addu $sp, $sp, " + functionScope.size() * 4);
+        if (funcName != "global") {
+            int raIndex = getIndexInFunctionScope("ra") * 4;
+            popFromStack("$ra", raIndex, "int");
+            cuerpoFuncion.add("jr $ra");
+        } else {
+            cuerpoFuncion.add("j finalCodigo");
+        }
         List<String> fullFunction = new ArrayList<>();
         fullFunction.addAll(encabezadoFuncion);
         fullFunction.addAll(cuerpoFuncion);
@@ -161,6 +171,7 @@ public class CodeGenerator {
 
     public static void addFinalCode() {
         text.addAll(cuerpoFinal);
+        text.add("finalCodigo:");
         text.add("li $v0, 10");
         text.add("syscall");
         System.out.println(data + "\n" + text);
@@ -351,17 +362,17 @@ public class CodeGenerator {
         String operationType = operation.operation;
 
         if (operationType.equals("==")) {
-            cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals("!=")) {
-            cuerpoFuncion.add("bne " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("bne " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals(">")) {
-            cuerpoFuncion.add("bgtz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("bgtz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals(">=")) {
-            cuerpoFuncion.add("bgez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("bgez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals("<")) {
-            cuerpoFuncion.add("bltz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("bltz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals("<=")) {
-            cuerpoFuncion.add("blez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter + ":");
+            cuerpoFuncion.add("blez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         }
 
         cuerpoFuncion.add("li " + result + ", " + 0); // Caso false
@@ -377,7 +388,7 @@ public class CodeGenerator {
         String operand1 = operation.operand1;
         String operand2 = operation.operand2;
 
-        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setAndFalse" + labelCounter + ":");
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setAndFalse" + labelCounter);
     }
 
     public static void andOperationFinalCode() {
@@ -395,7 +406,7 @@ public class CodeGenerator {
         String operand1 = operation.operand1;
         String operand2 = operation.operand2;
 
-        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setOrTrue" + labelCounter + ":");
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setOrTrue" + labelCounter);
     }
 
     public static void orOperationFinalCode() {
@@ -413,7 +424,7 @@ public class CodeGenerator {
         String operand1 = operation.operand1;
         String operand2 = operation.operand2;
 
-        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setNotTrue" + labelCounter + ":");
+        cuerpoFuncion.add("beq " + operand1 + ", " + operand2 + ", setNotTrue" + labelCounter);
     }
 
     public static void notOperationFinalCode() {
@@ -441,6 +452,12 @@ public class CodeGenerator {
     x = 1
     j finalNot
      */
+
+    public static void callFunction(String functionName, int paramsQuantity) {
+        cuerpoFuncion.add("subu $sp, $sp, " + (paramsQuantity * 4));
+        functionName = functionName.replace("_", "");
+        cuerpoFuncion.add("jal " + functionName);
+    }
 
     public static void cleanOperations() {
         operations.clear();

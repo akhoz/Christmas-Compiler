@@ -18,8 +18,7 @@ cierracuento
 
 rodolfo _verano_ abrecuento
     bromista _y_ finregalo
-    rodolfo _array1_ abreempaque -3 cierraempaque finregalo
-    rodolfo _array1_ abreempaque _y_ cierraempaque finregalo
-
-
+   # _func1_ abreregalo 1.0  cierraregalo finregalo
+   # rodolfo _array1_ abreempaque -3 cierraempaque finregalo
+   # rodolfo _array1_ abreempaque _y_ cierraempaque finregalo
 cierracuento

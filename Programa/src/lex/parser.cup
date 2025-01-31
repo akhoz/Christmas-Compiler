@@ -110,7 +110,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray, nombrarMain;
 
 
 // Precedencias
@@ -786,6 +786,8 @@ llamada_funcion ::=
                     + function.getParamCount() + " y se recibieron: " + paramsQuantity + ", en la linea: " + (token.getLine() + 1) + " y columna: " + (token.getColumn() + 1));
             }
 
+            codeGenerator.callFunction(funcName, paramsQuantity);
+
             paramsQuantity = 0;
 
             RESULT = symbolFunc;
@@ -983,8 +985,13 @@ read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
 programa ::= conjuntoFunciones {: codeGenerator.addFinalCode(); :}| error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
-funcionMain ::= tipos:t MAIN bloque:c
+nombrarMain ::= tipos:t MAIN {:
+                    List<SymbolInfo> params = new ArrayList<>();
+                    codeGenerator.createFunction("global", params);
+                :};
+funcionMain ::= nombrarMain bloque:c
     {:
         currentFunctionName = "global";
+        codeGenerator.closeFunction();
     :};
 
