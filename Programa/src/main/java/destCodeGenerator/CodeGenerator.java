@@ -27,6 +27,7 @@ public class CodeGenerator {
     public static final boolean[] floatAvailable = new boolean[floatRegisters.length];
     public static List<Operations> operations = new ArrayList<>();
     public static int labelCounter = 0;
+    public static int structuresCounter = 0;
 
 
     public CodeGenerator() {
@@ -367,13 +368,13 @@ public class CodeGenerator {
         } else if (operationType.equals("!=")) {
             cuerpoFuncion.add("bne " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals(">")) {
-            cuerpoFuncion.add("bgtz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
+            cuerpoFuncion.add("bgt " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals(">=")) {
-            cuerpoFuncion.add("bgez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
+            cuerpoFuncion.add("bge " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals("<")) {
-            cuerpoFuncion.add("bltz " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
+            cuerpoFuncion.add("blt " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         } else if (operationType.equals("<=")) {
-            cuerpoFuncion.add("blez " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
+            cuerpoFuncion.add("ble " + operand1 + ", " + operand2 + ", setTrue" + labelCounter);
         }
 
         cuerpoFuncion.add("li " + result + ", " + 0); // Caso false
@@ -521,6 +522,41 @@ public class CodeGenerator {
                 labelCounter++;
             }
         }
+    }
+
+    public static void compareCondition(SymbolInfo expression, SymbolInfo condition) {
+        // la condicion es el symbol info que tiene el 0, para que compare si es falso
+        if (expression != null) {
+            String register = "";
+            String register2 = getRegister(condition); // registro para guardar el 0
+
+            ++structuresCounter;
+            cuerpoFuncion.add("nextCondition" + structuresCounter + ":");
+            cuerpoFuncion.add("li " + register2 + " 0");
+
+            if (expression.getSingleObject() && !basicTypes.contains(expression.getName())) {
+                register = getItemInfoFromStack(expression);
+            } else if (!operations.isEmpty()) {
+                register = operations.getLast().result;
+            } else if (basicTypes.contains(expression.getName())) {
+                register = getRegister(expression);
+                // solo hace li ya que esto se hace unicamente con booleanos (0,1) no tiene sentido hacer el caso de floats
+                cuerpoFuncion.add("li " + register + " " + expression.getValue());
+            }
+
+            cuerpoFuncion.add("beq " + register + ", " + register2 + ", nextCondition" + (structuresCounter + 1));
+            structuresCounter++;
+        }
+    }
+
+    public static void ifEnd() {
+        cuerpoFuncion.add("nextCondition" + structuresCounter + ":");
+        cuerpoFuncion.add("ifEnd" + structuresCounter + ":");
+
+    }
+
+    public static void gotoIfEnd() {
+        cuerpoFuncion.add("j ifEnd" + structuresCounter);
     }
 
     public static void cleanOperations() {

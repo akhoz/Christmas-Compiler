@@ -6,5 +6,5 @@ rodolfo _verano_ abrecuento
     rodolfo _y_ entrega 3 finregalo
 
     narra abreregalo _x_ , " + " , _y_ , " = " , _x_ navidad _y_  cierraregalo finregalo
-    narra abreregalo 3.14 , 3 , "hola mundo" cierraregalo finregalo
+    narra abreregalo 3.14 , " " , 3 , " " , "hola mundo" cierraregalo finregalo
 cierracuento

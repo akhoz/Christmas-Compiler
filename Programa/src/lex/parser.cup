@@ -113,7 +113,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray, nombrarMain;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray, nombrarMain, encabezado_condicion, bloque_con_salto;
 
 
 // Precedencias
@@ -224,11 +224,11 @@ expresion_logica ::= expresion_logica:el1 AND expresion_logica:el2
                         codeGenerator.andOperationFinalCode();
 
                         if (op1 != null) {
-                           SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                           SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                            exp.setSingleObject(false);
                            RESULT = exp;
                         } else if (op1 == null && op2 != null) {
-                            SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                            SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                             exp.setSingleObject(false);
                             RESULT = exp;
                         }
@@ -250,11 +250,11 @@ expresion_logica ::= expresion_logica:el1 AND expresion_logica:el2
                         codeGenerator.orOperationFinalCode();
 
                         if (op1 != null) {
-                           SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                           SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                            exp.setSingleObject(false);
                            RESULT = exp;
                         } else if (op1 == null && op2 != null) {
-                            SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                            SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                             exp.setSingleObject(false);
                             RESULT = exp;
                         }
@@ -273,7 +273,7 @@ expresion_logica ::= expresion_logica:el1 AND expresion_logica:el2
                        codeGenerator.notOperationFinalCode();
 
                        if (op1 != null) {
-                          SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                          SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                           exp.setSingleObject(false);
                           RESULT = exp;
                        }
@@ -294,11 +294,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("==", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -314,11 +314,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("!=", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -334,11 +334,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("<", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -354,11 +354,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation("<=", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -374,11 +374,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation(">", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -394,11 +394,11 @@ expresion_comparacion ::= expresion_aritmetica:ea1 EQEQ expresion_aritmetica:ea2
                              ControlStructureOperations.checkOperandsType(op1, op2, currentTable);
                              codeGenerator.createOperation(">=", op1, op2, "comparison");
                              if (op1 != null) {
-                                SymbolInfo exp = new SymbolInfo(op1.getType(), op1.getType(), op1.getLine(), op1.getColumn());
+                                SymbolInfo exp = new SymbolInfo("boolean", "boolean", op1.getLine(), op1.getColumn());
                                 exp.setSingleObject(false);
                                 RESULT = exp;
                              } else if (op1 == null && op2 != null) {
-                                 SymbolInfo exp = new SymbolInfo(op2.getType(), op2.getType(), op2.getLine(), op2.getColumn());
+                                 SymbolInfo exp = new SymbolInfo("boolean", "boolean", op2.getLine(), op2.getColumn());
                                  exp.setSingleObject(false);
                                  RESULT = exp;
                              }
@@ -834,14 +834,30 @@ argumentos ::=
 // Estructuras de Control
 estructuraControl ::= if_stmt | else_if_list | while_cicle | switch_stmt | for_cicle | return_stmt | break_stmt ;
 
-if_stmt ::= IF OPEN_PAREN expresion CLOSE_PAREN bloque // If simple
-          | IF OPEN_PAREN expresion CLOSE_PAREN bloque ELSE bloque  // If con else al final
-          | IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list ; // If con uno o varios elif
+encabezado_condicion ::= OPEN_PAREN expresion:e  CLOSE_PAREN
+    {:
+         SymbolInfo expressionResult = (SymbolInfo) e ;
+         if (expressionResult != null) {
+              if (expressionResult.getType() != null) {
+                 if (!expressionResult.getType().equals("boolean")) {
+                     System.err.println("Error semantico: se le está pasando algo no bool a una condicion: " + expressionResult.getType() + ", linea: " + expressionResult.getLine() + ", columna: " + expressionResult.getColumn());
+                 } else {
+                     codeGenerator.compareCondition(expressionResult, zero);
+                 }
+              }
+         }
+ :};
 
-else_if_list ::= ELSE IF OPEN_PAREN expresion CLOSE_PAREN bloque else_if_list_opt ;
-else_if_list_opt ::= /* vacío */ | else_if_list | ELSE bloque ;
+bloque_con_salto ::= bloque {: codeGenerator.gotoIfEnd(); :} ;
 
-while_cicle ::= WHILE OPEN_PAREN expresion CLOSE_PAREN bloque ;
+if_stmt ::= IF encabezado_condicion bloque {: codeGenerator.ifEnd(); :}
+          | IF encabezado_condicion bloque ELSE bloque {: codeGenerator.ifEnd(); :}
+          | IF encabezado_condicion bloque else_if_list ; // If con uno o varios elif
+
+else_if_list ::= ELSE IF encabezado_condicion bloque else_if_list_opt ;
+else_if_list_opt ::= /* vacío */ | else_if_list | ELSE bloque {: codeGenerator.ifEnd(); :} ;
+
+while_cicle ::= WHILE encabezado_condicion bloque ;
 
 break_stmt ::= BREAK SEMICOLON ;
 

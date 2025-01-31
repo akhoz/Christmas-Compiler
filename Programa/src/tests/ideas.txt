@@ -1,0 +1,14 @@
+
+
+siguienteCondicion:
+beq condicion, false siguienteCondicion
+todo lo que esta en el if
+
+dentro del if hay que saltar a finalIf
+
+siguienteCondicion:
+beq condicion, false siguienteCondicion
+
+siguienteCOndicion:
+finalIf:
+

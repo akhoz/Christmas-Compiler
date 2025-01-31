@@ -9,8 +9,8 @@ package parser;
 public class sym {
   /* terminals */
   public static final int POW = 24;
-  public static final int OPEN_PAREN = 18;
   public static final int STRING_LITERAL = 11;
+  public static final int OPEN_PAREN = 18;
   public static final int INCREMENT = 25;
   public static final int CHAR = 13;
   public static final int CHAR_LITERAL = 49;
@@ -18,8 +18,8 @@ public class sym {
   public static final int CASE = 41;
   public static final int INTEGER = 5;
   public static final int FOR = 39;
-  public static final int DECREMENT = 26;
   public static final int MINUS = 20;
+  public static final int DECREMENT = 26;
   public static final int BOOLEAN_LITERAL = 51;
   public static final int SEMICOLON = 35;
   public static final int NOT = 34;
@@ -34,8 +34,8 @@ public class sym {
   public static final int MAIN = 47;
   public static final int IF = 36;
   public static final int LE = 29;
-  public static final int BOOLEAN = 2;
   public static final int EOF = 0;
+  public static final int BOOLEAN = 2;
   public static final int RETURN = 43;
   public static final int TokenInfo = 52;
   public static final int error = 1;
@@ -43,8 +43,8 @@ public class sym {
   public static final int MOD = 23;
   public static final int NEQ = 27;
   public static final int CLOSE_BRACKET = 17;
-  public static final int OPEN_BRACKET = 16;
   public static final int BREAK = 3;
+  public static final int OPEN_BRACKET = 16;
   public static final int EQ = 8;
   public static final int SWITCH = 40;
   public static final int TIMES = 21;
