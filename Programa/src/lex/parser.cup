@@ -46,6 +46,9 @@ parser code {:
     SymbolInfo<Integer> one = new SymbolInfo<>("int", "int", 0, 0) {{
         setValue(1);
     }};
+    SymbolInfo<String> newLine = new SymbolInfo<>("newLine", "string", 0, 0) {{
+        setValue("");
+    }};
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -978,8 +981,25 @@ return_stmt ::= RETURN SEMICOLON
 
 // Print y Read
 
-print_stmt ::= PRINT OPEN_PAREN lista_print CLOSE_PAREN SEMICOLON ;
-lista_print ::= expresion | lista_print COMMA expresion ;
+print_stmt ::= PRINT OPEN_PAREN lista_print CLOSE_PAREN SEMICOLON
+    {:
+        codeGenerator.cleanOperations();
+        codeGenerator.printExpression(newLine);
+
+    :};
+lista_print ::= expresion:ex
+    {:
+        SymbolInfo exp = (SymbolInfo) ex;
+        if (exp != null) {
+            codeGenerator.printExpression(exp);
+        }
+    :} | lista_print COMMA expresion:ex
+    {:
+        SymbolInfo exp = (SymbolInfo) ex;
+        if (exp != null) {
+            codeGenerator.printExpression(exp);
+        }
+    :} ;
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 

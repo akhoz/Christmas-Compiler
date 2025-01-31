@@ -704,6 +704,9 @@ public class parser extends java_cup.runtime.lr_parser {
     SymbolInfo<Integer> one = new SymbolInfo<>("int", "int", 0, 0) {{
         setValue(1);
     }};
+    SymbolInfo<String> newLine = new SymbolInfo<>("newLine", "string", 0, 0) {{
+        setValue("");
+    }};
 
     // Constructor del parser
     @SuppressWarnings("deprecation")
@@ -2781,7 +2784,11 @@ class CUP$parser$actions {
           case 124: // print_stmt ::= PRINT OPEN_PAREN lista_print CLOSE_PAREN SEMICOLON 
             {
               Object RESULT =null;
+		
+        codeGenerator.cleanOperations();
+        codeGenerator.printExpression(newLine);
 
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("print_stmt",44, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2790,7 +2797,15 @@ class CUP$parser$actions {
           case 125: // lista_print ::= expresion 
             {
               Object RESULT =null;
-
+		int exleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int exright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ex = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+        SymbolInfo exp = (SymbolInfo) ex;
+        if (exp != null) {
+            codeGenerator.printExpression(exp);
+        }
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("lista_print",45, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
@@ -2799,7 +2814,15 @@ class CUP$parser$actions {
           case 126: // lista_print ::= lista_print COMMA expresion 
             {
               Object RESULT =null;
-
+		int exleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int exright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Object ex = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+        SymbolInfo exp = (SymbolInfo) ex;
+        if (exp != null) {
+            codeGenerator.printExpression(exp);
+        }
+    
               CUP$parser$result = parser.getSymbolFactory().newSymbol("lista_print",45, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;

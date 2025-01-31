@@ -69,7 +69,7 @@ public class Main {
                     System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
                     String archivo = scanner.nextLine();
                     if (archivo.equals("")) {
-                        archivo = "src/tests/test09.txt";
+                        archivo = "src/tests/test10.txt";
                     }
                     File file = new File(archivo);
                     if (file.exists() && file.isFile() && archivo.endsWith(".txt")) {

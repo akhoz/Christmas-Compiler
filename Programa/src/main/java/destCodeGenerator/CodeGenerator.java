@@ -36,6 +36,7 @@ public class CodeGenerator {
 
         // Inicializar los segmentos de datos y texto
         data.add(".data");
+        data.add("newLine: .asciiz \"\\n\"");
         text.add(".text");
 
         // Inicializar el segmento de texto con la dirección de retorno
@@ -457,6 +458,69 @@ public class CodeGenerator {
         cuerpoFuncion.add("subu $sp, $sp, " + (paramsQuantity * 4));
         functionName = functionName.replace("_", "");
         cuerpoFuncion.add("jal " + functionName);
+    }
+
+    public static void printExpression(SymbolInfo expression) {
+        if (expression != null) {
+            if (expression.getType() == "int") {
+                printInt(expression);
+            } else if (expression.getType() == "float") {
+                printFloat(expression);
+            } else if (expression.getType() == "string") {
+                printString(expression);
+            }
+        }
+    }
+
+    public static void printFloat(SymbolInfo expression) {
+        if (expression != null) {
+            if (expression.getSingleObject() && expression.getName() != "float") {
+                String register = getItemInfoFromStack(expression);
+                cuerpoFuncion.add("mov.s $f12, " + register);
+            } else if (!operations.isEmpty()) {
+                String register = operations.getLast().result;
+                cuerpoFuncion.add("mov.s $f12, " + register);
+            } else if (expression.getName() == "float") {
+                cuerpoFuncion.add("li.s $f12," + expression.getValue());
+            }
+            cuerpoFuncion.add("li $v0, 2");
+            cuerpoFuncion.add("syscall");
+        }
+    }
+
+    public static void printInt(SymbolInfo expression) {
+        if (expression != null) {
+             if (expression.getSingleObject() && expression.getName() != "int") {
+                String register = getItemInfoFromStack(expression);
+                cuerpoFuncion.add("move $a0, " + register);
+            } else if (!operations.isEmpty()) {
+                String register = operations.getLast().result;
+                cuerpoFuncion.add("move $a0, " + register);
+            } else if (expression.getName() == "int") {
+                cuerpoFuncion.add("li $a0, " + expression.getValue());
+            }
+            cuerpoFuncion.add("li $v0, 1");
+            cuerpoFuncion.add("syscall");
+        }
+
+    }
+
+    public static void printString(SymbolInfo expression) {
+        if (expression != null) {
+            if (expression.getName() == "newLine") {
+                cuerpoFuncion.add("li $v0, 4");
+                cuerpoFuncion.add("la $a0, newLine");
+                cuerpoFuncion.add("syscall");
+            } else if (expression.getValue() instanceof String) {
+                String name = expression.getName() + labelCounter;
+                String value = expression.getValue().toString();
+                addStringToDataSegment(name, value);
+                cuerpoFuncion.add("la $a0," + name);
+                cuerpoFuncion.add("li $v0, 4");
+                cuerpoFuncion.add("syscall");
+                labelCounter++;
+            }
+        }
     }
 
     public static void cleanOperations() {

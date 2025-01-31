@@ -1,0 +1,10 @@
+
+rodolfo _func1_ abreregalo cierraregalo abrecuento cierracuento
+
+rodolfo _verano_ abrecuento
+    rodolfo _x_ entrega 5 finregalo
+    rodolfo _y_ entrega 3 finregalo
+
+    narra abreregalo _x_ , " + " , _y_ , " = " , _x_ navidad _y_  cierraregalo finregalo
+    narra abreregalo 3.14 , 3 , "hola mundo" cierraregalo finregalo
+cierracuento
