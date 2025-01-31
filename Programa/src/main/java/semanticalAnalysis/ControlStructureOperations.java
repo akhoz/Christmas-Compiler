@@ -120,5 +120,13 @@ public class ControlStructureOperations {
         }
     }
 
-
+    public static void checkLogicalOperandType(SymbolInfo operand) {
+        try {
+            if (!operand.getType().equals("boolean")) {
+                System.err.println("Error semantico: se le está pasando un operando de tipo difernte a bool a una operacion logica: " + operand.getType() + ", linea: " + operand.getLine() + ", columna: " + operand.getColumn());
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Error semantico: se está intentando hacer una operacion logica a algo desconocido por el lenguaje, se esperaba un bool");
+        }
+    }
 }
