@@ -5,7 +5,18 @@ import tables.*;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Clase que proporciona operaciones de análisis semántico relacionadas con estructuras de control y operaciones
+ */
 public class ControlStructureOperations {
+
+    /**
+     * Verifica que los operandos tengan el mismo tipo antes de operar o comparar.
+     *
+     * @param operand1 Primer operando.
+     * @param operand2 Segundo operando.
+     * @param currentScope Ámbito actual de la función donde se realiza la comparación.
+     */
     public static void checkOperandsType(SymbolInfo operand1, SymbolInfo operand2, FunctionInfo currentScope) {
         try {
 
@@ -45,6 +56,13 @@ public class ControlStructureOperations {
 
         }
     }
+
+    /**
+     * Verifica que el operando de una operación unaria sea válido.
+     *
+     * @param operand Operando a verificar.
+     * @param currentScope Ámbito actual de la función donde se realiza la verificación.
+     */
     public static void checkUnaryOperandType(SymbolInfo operand, FunctionInfo currentScope) {
         try {
             List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
@@ -62,6 +80,11 @@ public class ControlStructureOperations {
         }
     }
 
+    /**
+     * Verifica que el operando de una operación de negación sea válido.
+     *
+     * @param operand Operando a verificar.
+     */
     public static void checkNegationType(SymbolInfo operand) {
         try {
             List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
@@ -77,49 +100,11 @@ public class ControlStructureOperations {
         }
     }
 
-    public static void checkInitialized(SymbolInfo variable1, SymbolInfo variable2, FunctionInfo currentScope) {
-        try {
-            // Lista de tipos básicos que corresponden a literales
-            List<String> basicTypes = Arrays.asList("int", "char", "boolean", "string", "float");
-
-            boolean error = false;
-            StringBuilder errorMessage = new StringBuilder("Error semántico:");
-
-            // Verificar la primera variable solo si no es un literal
-            if (!basicTypes.contains(variable1.getType())) {
-                SymbolInfo varInfo1 = currentScope.lookup(variable1.getName());
-                if (varInfo1 == null) {
-                    error = true;
-                    errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido declarada.");
-                } else if (!varInfo1.getDeclared()) {
-                    error = true;
-                    errorMessage.append(" La variable '").append(variable1.getName()).append("' no ha sido inicializada.");
-                }
-            }
-
-            // Verificar la segunda variable solo si no es un literal
-            if (!basicTypes.contains(variable2.getType())) {
-                SymbolInfo varInfo2 = currentScope.lookup(variable2.getName());
-                if (varInfo2 == null) {
-                    error = true;
-                    errorMessage.append(" La variable '").append(variable2.getName()).append("' no ha sido declarada.");
-                } else if (!varInfo2.getDeclared()) {
-                    error = true;
-                    errorMessage.append(" La variable '").append(varInfo2.getName()).append("' no ha sido inicializada.");
-                }
-            }
-
-            // Si alguna de las variables no está declarada o inicializada, imprimir un solo mensaje
-            if (error) {
-                errorMessage.append(" En la línea: ").append(variable1.getLine())
-                        .append(", columna: ").append(variable1.getColumn()).append(".");
-                System.err.println(errorMessage.toString());
-            }
-        } catch (NullPointerException e) {
-
-        }
-    }
-
+    /**
+     * Verifica que el operando de una operación lógica sea de tipo booleano.
+     *
+     * @param operand Operando a verificar.
+     */
     public static void checkLogicalOperandType(SymbolInfo operand) {
         try {
             if (!operand.getType().equals("boolean")) {

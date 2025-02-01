@@ -1,16 +1,21 @@
 
 rodolfo _func_ abreregalo cierraregalo abrecuento
+    envia 1 finregalo
 cierracuento
 
 rodolfo _verano_ abrecuento
 
     rodolfo _x_ entrega 3 finregalo
+    rodolfo _y_ entrega 3 finregalo
+    narra abreregalo _x_ , " + " , _y_ , " = " , _x_ navidad _y_  cierraregalo finregalo
+    narra abreregalo 3.14 , " " , 3 , " " , "hola mundo" cierraregalo finregalo
+
     elfo abreregalo _x_ snowball 2 cierraregalo abrecuento
         narra abreregalo _x_ cierraregalo finregalo
     cierracuento
 
    elfo abreregalo _x_ minstix 2 cierraregalo abrecuento
-        narra abreregalo "El pepe ete sech" cierraregalo finregalo
+        narra abreregalo "Hola Mundo, Soy un IF" cierraregalo finregalo
     cierracuento
 
 cierracuento
