@@ -28,6 +28,7 @@ public class CodeGenerator {
     public static List<Operations> operations = new ArrayList<>();
     public static int labelCounter = 0;
     public static int structuresCounter = 0;
+    public static int whileCounter = 0;
 
 
     public CodeGenerator() {
@@ -171,14 +172,16 @@ public class CodeGenerator {
         cuerpoFuncion.add(code.toString());
     }
 
-    public static void addFinalCode() {
+    public static void addFinalCode(String rutaArchivo) {
         text.addAll(cuerpoFinal);
         text.add("finalCodigo:");
         text.add("li $v0, 10");
         text.add("syscall");
         System.out.println(data + "\n" + text);
 
-        try (FileWriter writer = new FileWriter("src/tests/output.asm")) {
+        String outputFileName = "src/tests/" + rutaArchivo + ".asm";
+
+        try (FileWriter writer = new FileWriter(outputFileName)) {
             for (String line : data) {
                 writer.write(line + System.lineSeparator());
             }
@@ -524,7 +527,17 @@ public class CodeGenerator {
         }
     }
 
-    public static void compareCondition(SymbolInfo expression, SymbolInfo condition) {
+    public static void compareCondition(SymbolInfo expression, SymbolInfo condition, String structure) {
+        if (structure.equals("if")) {
+            ifCondition(expression, condition);
+            return;
+        } else {
+            whileCondition(expression, condition);
+            return;
+        }
+    }
+
+    public static void ifCondition(SymbolInfo expression, SymbolInfo condition) {
         // la condicion es el symbol info que tiene el 0, para que compare si es falso
         if (expression != null) {
             String register = "";
@@ -546,6 +559,7 @@ public class CodeGenerator {
 
             cuerpoFuncion.add("beq " + register + ", " + register2 + ", nextCondition" + (structuresCounter + 1));
             structuresCounter++;
+            cleanRegisters("");
         }
     }
 
@@ -561,5 +575,34 @@ public class CodeGenerator {
 
     public static void cleanOperations() {
         operations.clear();
+    }
+
+    public static void whileCondition(SymbolInfo expression, SymbolInfo condition) {
+        if (expression != null) {
+            String register = "";
+            String register2 = getRegister(condition);
+
+            cuerpoFuncion.add("whileLoopCondition" + whileCounter + ":");
+            cuerpoFuncion.add("li " + register2 + " 0");
+
+            if (expression.getSingleObject() && !basicTypes.contains(expression.getName())) {
+                register = getItemInfoFromStack(expression);
+            } else if (!operations.isEmpty()) {
+                register = operations.getLast().result;
+            } else if (basicTypes.contains(expression.getName())) {
+                register = getRegister(expression);
+                // solo hace li ya que esto se hace unicamente con booleanos (0,1) no tiene sentido hacer el caso de floats
+                cuerpoFuncion.add("li " + register + " " + expression.getValue());
+            }
+
+            cuerpoFuncion.add("beq " + register + ", " + register2 + ", whileEnd" + whileCounter);
+            cleanRegisters("");
+        }
+    }
+
+    public static void whileLoopEnd() {
+        cuerpoFuncion.add("j whileLoopCondition" + whileCounter);
+        cuerpoFuncion.add("whileEnd" + whileCounter + ":");
+        whileCounter++;
     }
 }

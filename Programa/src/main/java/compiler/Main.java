@@ -3,6 +3,7 @@ package compiler;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import destCodeGenerator.*;
 
 /**
  * Clase principal del compilador.
@@ -35,6 +36,9 @@ public class Main {
         Tester tester = new Tester();
         try {
             tester.syntacticAnalysis(rutaArchivo);
+            File file = new File(rutaArchivo);
+            String baseName = file.getName().replaceFirst("[.][^.]+$", "");
+            CodeGenerator.addFinalCode(baseName);
         } catch (IOException e) {
             e.printStackTrace();
         }

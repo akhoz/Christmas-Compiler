@@ -113,7 +113,7 @@ non terminal programa, tipos, sentencias, sentencia, creacion, creacionAsignacio
  expresion_aritmetica, literales_num, unary_operators, negacion, case_list, arreglo,
  listaValores, case_stmt, default_stmt, conjuntoFunciones, funcionMain, bloque_switch, default_stmt_opt, expresion_logica,
  expresion_comparacion, condicion_for, inicializacion_opt, condicion_opt, actualizacion_opt, print_stmt, lista_print, read_stmt,
- apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray, nombrarMain, encabezado_condicion, bloque_con_salto;
+ apertura_bloque, cierre_bloque, asignar, array_size, llamada_funcion, argumentos, nombrar_array, indice_array, asignarArray, nombrarMain, encabezado_condicion, bloque_con_salto, encabezado_condicion_while;
 
 
 // Precedencias
@@ -842,7 +842,7 @@ encabezado_condicion ::= OPEN_PAREN expresion:e  CLOSE_PAREN
                  if (!expressionResult.getType().equals("boolean")) {
                      System.err.println("Error semantico: se le está pasando algo no bool a una condicion: " + expressionResult.getType() + ", linea: " + expressionResult.getLine() + ", columna: " + expressionResult.getColumn());
                  } else {
-                     codeGenerator.compareCondition(expressionResult, zero);
+                     codeGenerator.compareCondition(expressionResult, zero, "if");
                  }
               }
          }
@@ -857,7 +857,21 @@ if_stmt ::= IF encabezado_condicion bloque {: codeGenerator.ifEnd(); :}
 else_if_list ::= ELSE IF encabezado_condicion bloque else_if_list_opt ;
 else_if_list_opt ::= /* vacío */ | else_if_list | ELSE bloque {: codeGenerator.ifEnd(); :} ;
 
-while_cicle ::= WHILE encabezado_condicion bloque ;
+encabezado_condicion_while ::= OPEN_PAREN expresion:e  CLOSE_PAREN
+    {:
+         SymbolInfo expressionResult = (SymbolInfo) e ;
+         if (expressionResult != null) {
+              if (expressionResult.getType() != null) {
+                 if (!expressionResult.getType().equals("boolean")) {
+                     System.err.println("Error semantico: se le está pasando algo no bool a una condicion: " + expressionResult.getType() + ", linea: " + expressionResult.getLine() + ", columna: " + expressionResult.getColumn());
+                 } else {
+                     codeGenerator.compareCondition(expressionResult, zero, "while");
+                 }
+              }
+         }
+ :};
+
+while_cicle ::= WHILE encabezado_condicion_while bloque {: codeGenerator.whileLoopEnd(); :} ;
 
 break_stmt ::= BREAK SEMICOLON ;
 
@@ -1019,7 +1033,7 @@ lista_print ::= expresion:ex
 
 read_stmt ::= READ OPEN_PAREN IDENTIFIER CLOSE_PAREN SEMICOLON ;
 
-programa ::= conjuntoFunciones {: codeGenerator.addFinalCode(); :}| error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
+programa ::= conjuntoFunciones | error {: System.err.println("Error relacionado a la ausencia o mal estructura de la funcion main"); :} ;
 conjuntoFunciones ::= funciones funcionMain | funcionMain ;
 nombrarMain ::= tipos:t MAIN {:
                     List<SymbolInfo> params = new ArrayList<>();
