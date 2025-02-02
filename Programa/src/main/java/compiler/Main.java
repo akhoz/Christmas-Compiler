@@ -3,6 +3,7 @@ package compiler;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import destCodeGenerator.*;
 
 /**
  * Clase principal del compilador.
@@ -35,6 +36,9 @@ public class Main {
         Tester tester = new Tester();
         try {
             tester.syntacticAnalysis(rutaArchivo);
+            File file = new File(rutaArchivo);
+            String baseName = file.getName().replaceFirst("[.][^.]+$", "");
+            CodeGenerator.addFinalCode(baseName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,6 +63,7 @@ public class Main {
             System.out.print("Seleccione una opcion: ");
 
             String opcion = scanner.nextLine();
+            //System.out.println(false && false);
 
             switch (opcion) {
                 case "1":
@@ -68,7 +73,7 @@ public class Main {
                     System.out.print("Ingrese la ruta del archivo de prueba (debe ser un archivo .txt): ");
                     String archivo = scanner.nextLine();
                     if (archivo.equals("")) {
-                        archivo = "src/tests/test09.txt";
+                        archivo = "src/tests/testIF.txt";
                     }
                     File file = new File(archivo);
                     if (file.exists() && file.isFile() && archivo.endsWith(".txt")) {
@@ -76,7 +81,7 @@ public class Main {
                         test(archivo);
                     }
                     else {
-                        System.out.println("Ruta invalida. Asegurese de que sea un archivo .txt valido");
+                        System.out.println("Ruta invalida. Asegurese    de que sea un archivo .txt valido");
                     }
                     scanner.close();
                     return;

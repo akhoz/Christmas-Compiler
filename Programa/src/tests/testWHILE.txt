@@ -1,0 +1,14 @@
+rodolfo _func_ abreregalo cierraregalo abrecuento
+cierracuento
+
+rodolfo _verano_ abrecuento
+
+    rodolfo _y_ finregalo
+    _y_ entrega 1 finregalo
+    envuelve abreregalo _y_ snowball 3 cierraregalo abrecuento
+        narra abreregalo "Valor actual de y: " , _y_ cierraregalo finregalo
+        _y_ entrega _y_ navidad 1 finregalo
+    cierracuento
+
+cierracuento
+

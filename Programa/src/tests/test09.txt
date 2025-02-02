@@ -1,11 +1,24 @@
+ 
 rodolfo _func1_ abreregalo rodolfo _param1_ , bromista _param2_ cierraregalo abrecuento
-   rodolfo _y_  finregalo
-   rodolfo _x_ entrega _y_ navidad 5 finregalo
+   rodolfo _y_ entrega 2 finregalo
+   rodolfo _x_ entrega 5 navidad _y_ nochebuena 4 finregalo
+   rodolfo _z_ entrega _x_ finregalo
+   _y_ entrega _x_ navidad 77  finregalo
+
+    trueno _w_ entrega _x_ openslae _y_ finregalo
+    trueno _and_ entrega true melchor false finregalo
+    trueno _or_ entrega true gaspar false finregalo
+    trueno _not_ entrega baltazar true finregalo
+
+   envia _y_ finregalo
 cierracuento
 
+bromista _func2_ abreregalo cierraregalo abrecuento
+cierracuento
 
 rodolfo _verano_ abrecuento
     bromista _y_ finregalo
-    rodolfo _array1_ abreempaque 3 cierraempaque finregalo
-    bromista _array1_ abreempaque 1 cierraempaque finregalo
+   # _func1_ abreregalo 1.0  cierraregalo finregalo
+   # rodolfo _array1_ abreempaque -3 cierraempaque finregalo
+   # rodolfo _array1_ abreempaque _y_ cierraempaque finregalo
 cierracuento

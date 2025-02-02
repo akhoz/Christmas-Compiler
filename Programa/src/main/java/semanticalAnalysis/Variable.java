@@ -3,8 +3,18 @@ package semanticalAnalysis;
 import java.util.*;
 import tables.*;
 
+
+/**
+ * Clase que proporciona métodos para la verificación de variables en análisis semántico.
+ */
 public class Variable {
 
+    /**
+     * Verifica si una variable ya ha sido declarada en el ámbito actual.
+     *
+     * @param variable     La variable a verificar.
+     * @param currentScope El ámbito actual de la función donde se está evaluando la variable.
+     */
     public static void checkRepeated(SymbolInfo variable, FunctionInfo currentScope) {
         try {
             boolean found = currentScope.lookup(variable.getName()) != null;
@@ -17,6 +27,12 @@ public class Variable {
         }
     }
 
+    /**
+     * Verifica si una variable existe en el ámbito actual.
+     *
+     * @param variable     La variable a verificar.
+     * @param currentScope El ámbito actual de la función donde se está evaluando la variable.
+     */
     public static void checkExistance(SymbolInfo variable, FunctionInfo currentScope) {
         try {
             boolean found = currentScope.lookup(variable.getName()) != null;
@@ -29,6 +45,14 @@ public class Variable {
         }
     }
 
+    /**
+     * Verifica si el tipo de una variable coincide con el tipo de la expresión asignada.
+     *
+     * @param variable         La variable a verificar.
+     * @param expressionResult La expresión que se está asignando a la variable.
+     * @param currentScope     El ámbito actual de la función donde se está evaluando la variable.
+     * @param symbolTable      La tabla de símbolos donde se pueden buscar funciones y variables.
+     */
     public static void checkType(SymbolInfo variable, SymbolInfo expressionResult, FunctionInfo currentScope, SymbolTable symbolTable) {
         SymbolInfo SymbolTableVariable = currentScope.lookup(variable.getName());
         try {
@@ -79,6 +103,14 @@ public class Variable {
 
     }
 
+    /**
+     * Verifica que el tamaño de un array sea un número entero válido y positivo.
+     *
+     * @param array      La variable que representa el array.
+     * @param expression La expresión que representa el tamaño del array.
+     * @param currentScope El ámbito actual de la función donde se está evaluando la variable.
+     * @param symbolTable  La tabla de símbolos donde se pueden buscar funciones y variables.
+     */
     public static void checkArraySize(SymbolInfo array, SymbolInfo expression, FunctionInfo currentScope, SymbolTable symbolTable) {
         SymbolInfo SymbolTableVariable = currentScope.lookup(array.getName());
         try {
@@ -120,5 +152,20 @@ public class Variable {
                 System.err.println("Error semantico: al declarar el tamaño del array: (desconocido) se le pasó un caracter invalido y no reconocible");
             }
         }
+    }
+
+    
+    /**
+     * Marca una variable como declarada dentro del ámbito actual.
+     *
+     * @param name         El nombre de la variable a inicializar.
+     * @param currentScope El ámbito actual de la función donde se está declarando la variable.
+     */
+    public static void initializeVar(String name, FunctionInfo currentScope) {
+        SymbolInfo variable = currentScope.lookup(name);
+        if (variable != null) {
+            variable.setDeclared(true);
+        }
+
     }
 }
